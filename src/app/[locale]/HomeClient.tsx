@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { uvLevel, UV_LEVEL_COLOR } from "@/lib/uvLevel";
 import LocationSheet, { type Place } from "./LocationSheet";
 import ScienceSheet from "./ScienceSheet";
@@ -12,6 +12,7 @@ const LAST_PLACE_KEY = "uv-index:last-place";
 
 export default function HomeClient() {
   const t = useTranslations("home");
+  const locale = useLocale();
   const [coords, setCoords] = useState<Coords | null>(null);
   const [uv, setUv] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -28,9 +29,16 @@ export default function HomeClient() {
     setShowLocation(true);
   }, []);
 
+  // Persist on every change, including a label resolved after the fact.
   useEffect(() => {
     if (!coords) return;
     localStorage.setItem(LAST_PLACE_KEY, JSON.stringify(coords));
+  }, [coords]);
+
+  // Refetch UV only when the actual coordinates change, not when a
+  // reverse-geocoded label arrives later for the same point.
+  useEffect(() => {
+    if (!coords) return;
     setUv(null);
     setError(null);
     fetch(`/api/uv?lat=${coords.lat}&lon=${coords.lon}`)
@@ -40,18 +48,31 @@ export default function HomeClient() {
         else setError("no-data");
       })
       .catch(() => setError("fetch-failed"));
-  }, [coords]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [coords?.lat, coords?.lon]);
 
   function useGps() {
     if (!navigator.geolocation) return;
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        setCoords({
-          lat: pos.coords.latitude,
-          lon: pos.coords.longitude,
-          label: t("currentLocation"),
-        });
+        const { latitude: lat, longitude: lon } = pos.coords;
+        setCoords({ lat, lon, label: t("currentLocation") });
         setShowLocation(false);
+
+        // Resolve a human-readable place name in the background; the
+        // GPS-only label above is already a valid state on its own.
+        fetch(`/api/reverse-geocode?lat=${lat}&lon=${lon}&lang=${locale}`)
+          .then((r) => r.json())
+          .then((d) => {
+            if (d.name) {
+              setCoords((prev) =>
+                prev && prev.lat === lat && prev.lon === lon
+                  ? { ...prev, label: d.name }
+                  : prev,
+              );
+            }
+          })
+          .catch(() => {});
       },
       () => setShowLocation(true),
     );
