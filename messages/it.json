@@ -23,7 +23,8 @@
       "extreme": "Resta al chiuso 11-16 se possibile"
     },
     "learnMore": "Perché?",
-    "updated": "Aggiornato alle {time}"
+    "updated": "Aggiornato alle {time}",
+    "settingsLabel": "Impostazioni"
   },
   "location": {
     "title": "Località",
@@ -40,6 +41,14 @@
     "title": "Impostazioni",
     "language": "Lingua",
     "skinType": "Fototipo pelle",
-    "units": "Unità"
+    "skinTypeHint": "Usato per calcolare quando riapplicare la protezione",
+    "skinTypes": {
+      "1": "Molto chiara — scotta sempre, non si abbronza mai",
+      "2": "Chiara — scotta facilmente, abbronzatura minima",
+      "3": "Media — scotta a volte, abbronzatura graduale",
+      "4": "Olivastra — scotta raramente, abbronzatura buona",
+      "5": "Scura — scotta molto raramente, abbronzatura intensa",
+      "6": "Molto scura — non scotta quasi mai"
+    }
   }
 }

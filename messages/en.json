@@ -23,7 +23,8 @@
       "extreme": "Stay indoors 11am-4pm if possible"
     },
     "learnMore": "Why?",
-    "updated": "Updated at {time}"
+    "updated": "Updated at {time}",
+    "settingsLabel": "Settings"
   },
   "location": {
     "title": "Location",
@@ -40,6 +41,14 @@
     "title": "Settings",
     "language": "Language",
     "skinType": "Skin type",
-    "units": "Units"
+    "skinTypeHint": "Used to calculate when to reapply protection",
+    "skinTypes": {
+      "1": "Very fair — always burns, never tans",
+      "2": "Fair — burns easily, tans minimally",
+      "3": "Medium — sometimes burns, tans gradually",
+      "4": "Olive — rarely burns, tans well",
+      "5": "Brown — very rarely burns, tans deeply",
+      "6": "Deeply pigmented — almost never burns"
+    }
   }
 }

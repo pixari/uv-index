@@ -23,7 +23,8 @@
       "extreme": "11-16 Uhr wenn möglich drinnen bleiben"
     },
     "learnMore": "Warum?",
-    "updated": "Aktualisiert um {time}"
+    "updated": "Aktualisiert um {time}",
+    "settingsLabel": "Einstellungen"
   },
   "location": {
     "title": "Standort",
@@ -40,6 +41,14 @@
     "title": "Einstellungen",
     "language": "Sprache",
     "skinType": "Hauttyp",
-    "units": "Einheiten"
+    "skinTypeHint": "Wird verwendet, um zu berechnen, wann der Schutz erneuert werden sollte",
+    "skinTypes": {
+      "1": "Sehr hell — verbrennt immer, bräunt nie",
+      "2": "Hell — verbrennt leicht, bräunt minimal",
+      "3": "Mittel — verbrennt manchmal, bräunt allmählich",
+      "4": "Oliv — verbrennt selten, bräunt gut",
+      "5": "Braun — verbrennt sehr selten, bräunt stark",
+      "6": "Sehr dunkel — verbrennt fast nie"
+    }
   }
 }
