@@ -4,7 +4,7 @@ type Point = { time: string; uv: number };
 
 const WIDTH = 320;
 const HEIGHT = 140;
-const PADDING = { top: 10, right: 10, bottom: 24, left: 10 };
+const PADDING = { top: 10, right: 10, bottom: 24, left: 22 };
 
 export default function UvDayChart({ points }: { points: Point[] }) {
   if (points.length < 2) return null;
@@ -32,6 +32,7 @@ export default function UvDayChart({ points }: { points: Point[] }) {
 
   // Label every ~4 hours.
   const labelEvery = Math.max(1, Math.round(points.length / 6));
+  const maxUvRounded = Math.ceil(maxUv);
 
   return (
     <svg
@@ -40,6 +41,26 @@ export default function UvDayChart({ points }: { points: Point[] }) {
       role="img"
       aria-label="UV index over the course of today"
     >
+      {/* Y axis: 0 at the baseline, the day's peak at the top. */}
+      <text
+        x={PADDING.left - 6}
+        y={PADDING.top + plotH}
+        fontSize={9}
+        fill="var(--muted-foreground)"
+        textAnchor="end"
+      >
+        0
+      </text>
+      <text
+        x={PADDING.left - 6}
+        y={PADDING.top + 8}
+        fontSize={9}
+        fill="var(--muted-foreground)"
+        textAnchor="end"
+      >
+        {maxUvRounded}
+      </text>
+
       <path d={areaPath} fill="var(--brand)" opacity={0.12} />
       <path
         d={linePath}
@@ -68,7 +89,7 @@ export default function UvDayChart({ points }: { points: Point[] }) {
             x={x(i)}
             y={HEIGHT - 6}
             fontSize={9}
-            fill="var(--muted)"
+            fill="var(--muted-foreground)"
             textAnchor="middle"
           >
             {new Date(p.time).getHours()}
