@@ -70,7 +70,9 @@
     "overdue": "È ora di riapplicare la protezione",
     "reapplied": "Fatto, riparti il timer",
     "cancel": "Annulla",
-    "burnEstimate": "Con il tuo fototipo, rischio scottatura in circa {minutes} min senza protezione"
+    "burnEstimate": "Con il tuo fototipo, rischio scottatura in circa {minutes} min senza protezione",
+    "setupPrompt": "Timer di riapplicazione personalizzato",
+    "setupCta": "Imposta il tuo fototipo →"
   },
   "dataSources": {
     "title": "Dati e privacy",

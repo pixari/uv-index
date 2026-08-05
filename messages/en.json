@@ -70,7 +70,9 @@
     "overdue": "Time to reapply sunscreen",
     "reapplied": "Done, restart the timer",
     "cancel": "Cancel",
-    "burnEstimate": "With your skin type, burn risk in about {minutes} min without protection"
+    "burnEstimate": "With your skin type, burn risk in about {minutes} min without protection",
+    "setupPrompt": "Personalized reapplication timer",
+    "setupCta": "Set your skin type →"
   },
   "dataSources": {
     "title": "Data & privacy",

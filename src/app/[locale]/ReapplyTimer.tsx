@@ -10,7 +10,13 @@ import {
 } from "@/lib/reapplyTimer";
 import { getStoredSkinType, burnMinutes, type SkinType } from "@/lib/skinType";
 
-export default function ReapplyTimer({ uv }: { uv: number }) {
+export default function ReapplyTimer({
+  uv,
+  onOpenSettings,
+}: {
+  uv: number;
+  onOpenSettings: () => void;
+}) {
   const t = useTranslations("reapply");
   const [skinType, setSkinType] = useState<SkinType | null>(null);
   const [startedAt, setStartedAt] = useState<number | null>(null);
@@ -35,8 +41,6 @@ export default function ReapplyTimer({ uv }: { uv: number }) {
     return () => clearInterval(id);
   }, [startedAt]);
 
-  if (!skinType) return null;
-
   function start() {
     startReapplyTimer();
     setStartedAt(getReapplyStartedAt());
@@ -47,6 +51,19 @@ export default function ReapplyTimer({ uv }: { uv: number }) {
     setStartedAt(null);
   }
 
+  // No skin type set yet — a discoverable prompt, not silent absence.
+  if (!skinType) {
+    return (
+      <button
+        onClick={onOpenSettings}
+        className="flex w-full max-w-xs flex-col items-center gap-1 rounded-2xl border border-dashed border-black/15 px-4 py-3.5 text-center hover:bg-surface transition-colors"
+      >
+        <span className="text-sm text-ink">{t("setupPrompt")}</span>
+        <span className="text-xs text-brand-ink">{t("setupCta")}</span>
+      </button>
+    );
+  }
+
   // Active countdown running.
   if (startedAt !== null && remaining !== null) {
     const overdue = remaining <= 0;
@@ -55,8 +72,14 @@ export default function ReapplyTimer({ uv }: { uv: number }) {
     const timeLabel = h > 0 ? `${h}h ${m}min` : `${m}min`;
 
     return (
-      <div className="flex flex-col items-center gap-1.5 rounded-2xl border border-black/10 px-4 py-3 text-center">
-        <p className={overdue ? "text-sm font-medium text-brand-ink" : "text-sm text-ink"}>
+      <div className="flex w-full max-w-xs flex-col items-center gap-1.5 rounded-2xl border border-black/10 px-4 py-3.5 text-center">
+        <p
+          className={
+            overdue
+              ? "text-sm font-medium text-brand-ink"
+              : "text-sm text-ink"
+          }
+        >
           {overdue ? t("overdue") : t("countdown", { time: timeLabel })}
         </p>
         <button
@@ -69,18 +92,16 @@ export default function ReapplyTimer({ uv }: { uv: number }) {
     );
   }
 
-  // No active timer — offer to start one, plus the burn-time estimate.
+  // Skin type set, no active timer — burn-time estimate + start button.
   const burn = burnMinutes(skinType, uv);
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex w-full max-w-xs flex-col items-center gap-2 rounded-2xl border border-black/10 px-4 py-3.5 text-center">
       {burn !== null && (
-        <p className="text-xs text-muted">
-          {t("burnEstimate", { minutes: burn })}
-        </p>
+        <p className="text-xs text-muted">{t("burnEstimate", { minutes: burn })}</p>
       )}
       <button
         onClick={start}
-        className="rounded-full border border-black/10 px-4 py-2 text-sm text-ink hover:bg-surface transition-colors"
+        className="rounded-full bg-brand px-4 py-2 text-sm font-medium text-white hover:opacity-90 transition-opacity"
       >
         {t("start")}
       </button>

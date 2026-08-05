@@ -159,57 +159,73 @@ export default function HomeClient() {
         )}
         {uv !== null && level && (
           <div
-            className="flex flex-col items-center gap-5 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+            className="flex flex-col items-center gap-8 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
             style={{
               opacity: revealed ? 1 : 0,
               transform: revealed ? "translateY(0) scale(1)" : "translateY(8px) scale(0.98)",
             }}
           >
-            <p
-              className="font-display font-medium leading-none tracking-[-0.04em] tabular-nums"
-              style={{
-                color,
-                fontSize: "clamp(7rem, 34vw, 13rem)",
-              }}
-            >
-              {Math.round(uv)}
-            </p>
-            <p
-              className="font-display text-4xl italic -mt-3"
-              style={{ color }}
-            >
-              {t(`riskLevels.${level}`)}
-            </p>
-            <p className="max-w-[26ch] text-center text-ink text-lg leading-snug">
-              {t(`actions.${level}`)}
-            </p>
-            {safeAfter && (
-              <p className="text-sm text-brand-ink">
-                {t("safeAfter", {
-                  time: new Date(safeAfter).toLocaleTimeString(locale, {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  }),
-                })}
+            {/* Primary: the number, the verdict, the one action to take. */}
+            <div className="flex flex-col items-center gap-5">
+              <p
+                className="font-display font-medium leading-none tracking-[-0.04em] tabular-nums"
+                style={{
+                  color,
+                  fontSize: "clamp(7rem, 34vw, 13rem)",
+                }}
+              >
+                {Math.round(uv)}
               </p>
-            )}
-            <UvScaleBar uv={uv} />
-            <ReapplyTimer key={settingsVersion} uv={uv} />
-            {updatedAt && (
-              <p className="text-xs text-muted">
-                {t("updated", {
-                  time: new Date(updatedAt).toLocaleTimeString(locale, {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  }),
-                })}
+              <p
+                className="font-display text-4xl italic -mt-3"
+                style={{ color }}
+              >
+                {t(`riskLevels.${level}`)}
               </p>
-            )}
-            <ShareButton
-              uv={uv}
-              riskLabel={t(`riskLevels.${level}`)}
-              place={coords?.label ?? ""}
-            />
+              <p className="max-w-[26ch] text-center text-ink text-lg leading-snug">
+                {t(`actions.${level}`)}
+              </p>
+            </div>
+
+            {/* Secondary: today's forecast — where we are on the scale, and what's next. */}
+            <div className="flex flex-col items-center gap-1.5">
+              <UvScaleBar uv={uv} />
+              {safeAfter && (
+                <p className="text-xs text-brand-ink">
+                  {t("safeAfter", {
+                    time: new Date(safeAfter).toLocaleTimeString(locale, {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    }),
+                  })}
+                </p>
+              )}
+            </div>
+
+            {/* Personal protection module — always a distinct card, even
+                before a skin type is set, so the feature is discoverable
+                rather than silently absent. */}
+            <ReapplyTimer key={settingsVersion} uv={uv} onOpenSettings={() => setShowSettings(true)} />
+
+            {/* Utility: quiet metadata, smallest visual weight on the page. */}
+            <div className="flex items-center gap-3 text-xs text-muted">
+              {updatedAt && (
+                <span>
+                  {t("updated", {
+                    time: new Date(updatedAt).toLocaleTimeString(locale, {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    }),
+                  })}
+                </span>
+              )}
+              <span aria-hidden>·</span>
+              <ShareButton
+                uv={uv}
+                riskLabel={t(`riskLevels.${level}`)}
+                place={coords?.label ?? ""}
+              />
+            </div>
           </div>
         )}
       </div>

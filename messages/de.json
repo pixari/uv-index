@@ -70,7 +70,9 @@
     "overdue": "Zeit, den Sonnenschutz zu erneuern",
     "reapplied": "Erledigt, Timer neu starten",
     "cancel": "Abbrechen",
-    "burnEstimate": "Mit deinem Hauttyp: Sonnenbrandrisiko in etwa {minutes} Min. ohne Schutz"
+    "burnEstimate": "Mit deinem Hauttyp: Sonnenbrandrisiko in etwa {minutes} Min. ohne Schutz",
+    "setupPrompt": "Personalisierter Erneuerungs-Timer",
+    "setupCta": "Hauttyp festlegen →"
   },
   "dataSources": {
     "title": "Daten & Datenschutz",
