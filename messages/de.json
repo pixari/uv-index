@@ -104,7 +104,7 @@
     "metaDescription": "Wie der UV-Index wirklich funktioniert, die Wissenschaft des Sonnenschutzes und was LSF wirklich bedeutet — mit überprüfbaren Quellen.",
     "back": "← Zurück zur Startseite",
     "chart": {
-      "title": "Der heutige UV-Verlauf",
+      "title": "UV-Verlauf der nächsten 24 Stunden",
       "subtitle": "In {place}, Stunde für Stunde"
     },
     "methodology": {

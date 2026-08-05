@@ -33,17 +33,13 @@ export async function GET(req: NextRequest) {
     data: { instant: { details: { ultraviolet_index_clear_sky?: number } } };
   }> = data?.properties?.timeseries ?? [];
 
-  const now = new Date();
-  const startOfDay = new Date(now);
-  startOfDay.setHours(0, 0, 0, 0);
-  const endOfDay = new Date(startOfDay);
-  endOfDay.setDate(endOfDay.getDate() + 1);
-
+  // MET's forecast timeseries only looks forward from "now" — it never
+  // includes hours already elapsed today. Filtering to the calendar day
+  // would return an empty/flat curve for anyone checking in the evening
+  // (only leftover nighttime hours, all UV 0). Taking the next 24 hourly
+  // entries instead always shows a real curve, including tomorrow's rise.
   const today = timeseries
-    .filter((e) => {
-      const t = new Date(e.time).getTime();
-      return t >= startOfDay.getTime() && t < endOfDay.getTime();
-    })
+    .slice(0, 24)
     .map((e) => ({
       time: e.time,
       uv: e.data?.instant?.details?.ultraviolet_index_clear_sky ?? null,

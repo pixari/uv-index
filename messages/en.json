@@ -104,7 +104,7 @@
     "metaDescription": "How the UV index actually works, the science of sun protection, and what SPF really means — with verifiable sources.",
     "back": "← Back to home",
     "chart": {
-      "title": "Today's UV curve",
+      "title": "UV over the next 24 hours",
       "subtitle": "In {place}, hour by hour"
     },
     "methodology": {
