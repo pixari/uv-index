@@ -32,7 +32,10 @@
     "title": "Location",
     "useGps": "Use my location",
     "search": "Search for a city",
-    "saved": "Saved"
+    "saved": "Saved",
+    "saveCurrent": "Save {place} to favorites",
+    "removeSaved": "Remove from favorites",
+    "toggleSaved": "Save or remove from favorites"
   },
   "science": {
     "title": "Why it matters",

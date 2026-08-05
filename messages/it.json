@@ -32,7 +32,10 @@
     "title": "Località",
     "useGps": "Usa la mia posizione",
     "search": "Cerca una città",
-    "saved": "Salvate"
+    "saved": "Salvate",
+    "saveCurrent": "Salva {place} tra le preferite",
+    "removeSaved": "Rimuovi dalle preferite",
+    "toggleSaved": "Salva o rimuovi dalle preferite"
   },
   "science": {
     "title": "Perché è importante",

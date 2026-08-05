@@ -249,6 +249,7 @@ export default function HomeClient() {
         onOpenChange={setShowLocation}
         onUseGps={useGps}
         onSelect={selectPlace}
+        currentPlace={coords}
       />
       <ScienceSheet open={showScience} onOpenChange={setShowScience} />
       <SettingsSheet
