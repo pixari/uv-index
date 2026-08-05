@@ -52,6 +52,15 @@
       "5": "Brown — very rarely burns, tans deeply",
       "6": "Deeply pigmented — almost never burns"
     },
+    "skinTypeExamples": {
+      "1": "Very fair skin and eyes, frequent freckles, red or light blond hair",
+      "2": "Fair skin, light or brown eyes, blond to light brown hair",
+      "3": "Fair-to-medium skin, brown eyes and hair",
+      "4": "Olive skin, dark eyes and hair, tans without burning easily",
+      "5": "Brown skin, almost never burns even after long exposure",
+      "6": "Very dark or black skin, burns are extremely rare"
+    },
+    "skinTypeWhy": "This is the Fitzpatrick scale, the dermatological standard used to estimate how long unprotected skin can tolerate a given UV index before burning. It's not an aesthetic judgment — the fairer the type, the less time the sun needs to damage skin.",
     "dataSourcesLink": "How we use your data"
   },
   "install": {
@@ -72,7 +81,10 @@
     "cancel": "Cancel",
     "burnEstimate": "With your skin type, burn risk in about {minutes} min without protection",
     "setupPrompt": "Personalized reapplication timer",
-    "setupCta": "Set your skin type →"
+    "setupCta": "Set your skin type →",
+    "spfLabel": "Which SPF did you use?",
+    "spfInUse": "SPF {spf}",
+    "spfNote": "The interval stays 2 hours with any SPF — amount and frequency matter more than the number →"
   },
   "dataSources": {
     "title": "Data & privacy",

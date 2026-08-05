@@ -52,6 +52,15 @@
       "5": "Scura — scotta molto raramente, abbronzatura intensa",
       "6": "Molto scura — non scotta quasi mai"
     },
+    "skinTypeExamples": {
+      "1": "Pelle e occhi chiarissimi, lentiggini frequenti, capelli rossi o biondo chiaro",
+      "2": "Pelle chiara, occhi chiari o castani, capelli biondi o castano chiaro",
+      "3": "Pelle chiaro-media, occhi e capelli castani",
+      "4": "Pelle olivastra, occhi e capelli scuri, si abbronza senza quasi mai scottarsi",
+      "5": "Pelle bruna, non scotta quasi mai anche con esposizioni lunghe",
+      "6": "Pelle molto scura o nera, scottature rarissime"
+    },
+    "skinTypeWhy": "È la scala di Fitzpatrick, lo standard dermatologico usato per stimare in quanto tempo la pelle non protetta rischia di scottarsi a un dato indice UV. Non è un giudizio estetico: più chiaro è il fototipo, meno tempo serve al sole per danneggiare la pelle.",
     "dataSourcesLink": "Come uso i tuoi dati"
   },
   "install": {
@@ -72,7 +81,10 @@
     "cancel": "Annulla",
     "burnEstimate": "Con il tuo fototipo, rischio scottatura in circa {minutes} min senza protezione",
     "setupPrompt": "Timer di riapplicazione personalizzato",
-    "setupCta": "Imposta il tuo fototipo →"
+    "setupCta": "Imposta il tuo fototipo →",
+    "spfLabel": "Con che SPF ti sei protetto?",
+    "spfInUse": "SPF {spf}",
+    "spfNote": "L'intervallo resta 2 ore con qualsiasi SPF: contano di più la quantità e la frequenza che il numero →"
   },
   "dataSources": {
     "title": "Dati e privacy",

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Fraunces } from "next/font/google";
+import { Geist } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -10,12 +10,6 @@ import "./globals.css";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
-});
-
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
-  subsets: ["latin"],
-  axes: ["opsz", "SOFT", "WONK"],
 });
 
 const SITE_URL = "https://uvindex.pixari.dev";
@@ -91,9 +85,9 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${geistSans.variable} ${fraunces.variable} h-full antialiased`}
+      className={`${geistSans.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-bg text-ink font-sans">
+      <body className="h-full overflow-hidden bg-bg text-ink font-sans">
         <Script
           defer
           src="https://analytics.pixari.dev/script.js"

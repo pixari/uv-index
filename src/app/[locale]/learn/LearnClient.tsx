@@ -73,7 +73,7 @@ export default function LearnClient() {
         </p>
       </article>
 
-      <article className="mb-14">
+      <article id="spf" className="mb-14 scroll-mt-20">
         <h2 className="font-display text-2xl mb-4">{t("spf.title")}</h2>
         <div className="space-y-4 text-ink leading-relaxed">
           <p>{t("spf.p1")}</p>

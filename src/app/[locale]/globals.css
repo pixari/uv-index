@@ -5,8 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --bg: oklch(1 0 0);
-  --surface: oklch(0.97 0.005 230);
+  --bg: oklch(0.975 0.004 230);
+  --surface: oklch(0.94 0.006 230);
   --ink: oklch(0.18 0.02 230);
   --muted: oklch(0.97 0 0);
   --brand: oklch(0.48 0.15 230);
@@ -58,7 +58,7 @@
   --color-brand: var(--brand);
   --color-brand-ink: var(--brand-ink);
   --font-sans: var(--font-sans);
-  --font-display: var(--font-fraunces);
+  --font-display: var(--font-sans);
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);

@@ -103,8 +103,9 @@ export default function HomeClient() {
   const color = level ? RISK_TEXT_COLOR[level] : "var(--ink)";
 
   return (
-    <main className="flex min-h-dvh flex-col items-center px-6 py-8">
-      <div className="flex w-full max-w-xs items-center justify-between">
+    <div className="flex h-dvh flex-col overflow-hidden">
+      {/* App bar */}
+      <header className="flex shrink-0 items-center justify-between border-b border-border/60 bg-surface/80 px-4 py-3 shadow-sm backdrop-blur-sm">
         <Button
           variant="ghost"
           className="h-auto gap-1.5 px-2 py-1.5 text-sm text-muted-foreground hover:text-brand-ink"
@@ -147,99 +148,123 @@ export default function HomeClient() {
             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" />
           </svg>
         </Button>
-      </div>
+      </header>
 
-      <div className="flex flex-1 flex-col items-center justify-center gap-5 py-10">
-        {uv === null && !error && (
-          <p className="text-muted-foreground">{t("loading")}</p>
-        )}
-        {error && (
-          <button
-            onClick={useGps}
-            className="text-muted-foreground underline underline-offset-4 hover:text-brand-ink transition-colors"
-          >
-            {t("locationPrompt")}
-          </button>
-        )}
-        {uv !== null && level && (
-          <div
-            className="flex flex-col items-center gap-8 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
-            style={{
-              opacity: revealed ? 1 : 0,
-              transform: revealed ? "translateY(0) scale(1)" : "translateY(8px) scale(0.98)",
-            }}
-          >
-            {/* Primary: the number, the verdict, the one action to take. */}
-            <div className="flex flex-col items-center gap-5">
-              <p
-                className="font-display font-medium leading-none tracking-[-0.04em] tabular-nums"
-                style={{
-                  color,
-                  fontSize: "clamp(7rem, 34vw, 13rem)",
-                }}
-              >
-                {Math.round(uv)}
-              </p>
-              <p
-                className="font-display text-4xl italic -mt-3"
-                style={{ color }}
-              >
-                {t(`riskLevels.${level}`)}
-              </p>
-              <p className="max-w-[26ch] text-center text-ink text-lg leading-snug">
+      {/* Scrollable content — only scrolls if it genuinely overflows a
+          small viewport; the shell itself never rubber-bands past content. */}
+      <main className="flex flex-1 flex-col items-center overflow-y-auto px-6 py-8">
+        <div className="flex w-full flex-1 flex-col items-center justify-center gap-6">
+          {uv === null && !error && (
+            <p className="text-muted-foreground">{t("loading")}</p>
+          )}
+          {error && (
+            <button
+              onClick={useGps}
+              className="text-muted-foreground underline underline-offset-4 hover:text-brand-ink transition-colors"
+            >
+              {t("locationPrompt")}
+            </button>
+          )}
+          {uv !== null && level && (
+            <div
+              className="flex w-full flex-col items-center gap-7 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+              style={{
+                opacity: revealed ? 1 : 0,
+                transform: revealed
+                  ? "translateY(0) scale(1)"
+                  : "translateY(8px) scale(0.98)",
+              }}
+            >
+              {/* Primary: the number sits on a soft colored glow — real
+                  depth, not just flat colored text on flat white. */}
+              <div className="relative flex flex-col items-center gap-3 py-2">
+                <div
+                  className="pointer-events-none absolute inset-0 -z-10 rounded-full blur-3xl"
+                  style={{
+                    background: color,
+                    opacity: 0.16,
+                  }}
+                  aria-hidden
+                />
+                <p
+                  className="font-sans font-black leading-none tracking-[-0.04em] tabular-nums"
+                  style={{
+                    color,
+                    fontSize: "clamp(6.5rem, 32vw, 12rem)",
+                  }}
+                >
+                  {Math.round(uv)}
+                </p>
+                <p
+                  className="text-2xl font-bold tracking-tight"
+                  style={{ color }}
+                >
+                  {t(`riskLevels.${level}`)}
+                </p>
+              </div>
+
+              <p className="max-w-[26ch] text-center text-ink text-lg font-medium leading-snug">
                 {t(`actions.${level}`)}
               </p>
-            </div>
 
-            {/* Secondary: today's forecast — where we are on the scale, and what's next. */}
-            <div className="flex flex-col items-center gap-1.5">
-              <UvScaleBar uv={uv} />
-              {safeAfter && (
-                <p className="text-xs text-brand-ink">
-                  {t("safeAfter", {
-                    time: new Date(safeAfter).toLocaleTimeString(locale, {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    }),
-                  })}
-                </p>
-              )}
-            </div>
+              {/* Secondary: today's forecast card — elevated, distinct
+                  surface from the page background. */}
+              <div className="w-full max-w-xs rounded-2xl bg-card p-4 shadow-md ring-1 ring-foreground/5">
+                <UvScaleBar uv={uv} />
+                {safeAfter && (
+                  <p className="mt-2 text-center text-xs font-medium text-brand-ink">
+                    {t("safeAfter", {
+                      time: new Date(safeAfter).toLocaleTimeString(locale, {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      }),
+                    })}
+                  </p>
+                )}
+              </div>
 
-            {/* Personal protection module — always a distinct card, even
-                before a skin type is set, so the feature is discoverable
-                rather than silently absent. */}
-            <ReapplyTimer key={settingsVersion} uv={uv} onOpenSettings={() => setShowSettings(true)} />
-
-            {/* Utility: quiet metadata, smallest visual weight on the page. */}
-            <div className="flex items-center gap-3 text-xs text-muted-foreground">
-              {updatedAt && (
-                <span>
-                  {t("updated", {
-                    time: new Date(updatedAt).toLocaleTimeString(locale, {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    }),
-                  })}
-                </span>
-              )}
-              <span aria-hidden>·</span>
-              <ShareButton
+              {/* Personal protection module — always a distinct card, even
+                  before a skin type is set, so the feature is discoverable
+                  rather than silently absent. */}
+              <ReapplyTimer
+                key={settingsVersion}
                 uv={uv}
-                riskLabel={t(`riskLevels.${level}`)}
-                place={coords?.label ?? ""}
+                onOpenSettings={() => setShowSettings(true)}
               />
-            </div>
-          </div>
-        )}
-      </div>
 
-      <button
-        onClick={() => setShowScience(true)}
-        className="text-sm text-brand-ink underline-offset-4 hover:underline"
-      >
-        {t("learnMore")}
-      </button>
+              {/* Utility: quiet metadata, smallest visual weight on the page. */}
+              <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                {updatedAt && (
+                  <span>
+                    {t("updated", {
+                      time: new Date(updatedAt).toLocaleTimeString(locale, {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      }),
+                    })}
+                  </span>
+                )}
+                <span aria-hidden>·</span>
+                <ShareButton
+                  uv={uv}
+                  riskLabel={t(`riskLevels.${level}`)}
+                  place={coords?.label ?? ""}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      </main>
+
+      {/* Footer bar */}
+      <footer className="flex shrink-0 items-center justify-center border-t border-border/60 bg-surface/80 py-3 backdrop-blur-sm">
+        <button
+          onClick={() => setShowScience(true)}
+          className="text-sm font-medium text-brand-ink underline-offset-4 hover:underline"
+        >
+          {t("learnMore")}
+        </button>
+      </footer>
 
       <LocationSheet
         open={showLocation}
@@ -256,6 +281,6 @@ export default function HomeClient() {
         }}
       />
       <InstallPrompt />
-    </main>
+    </div>
   );
 }

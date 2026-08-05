@@ -94,15 +94,20 @@ export default function SettingsSheet({
                 {t("skinTypeHint")}
               </p>
 
-              <div className="flex flex-col items-center gap-4 rounded-2xl border border-border p-4">
+              <div className="flex flex-col items-center gap-4 rounded-2xl bg-card p-4 shadow-md ring-1 ring-foreground/5">
                 <div
                   className="h-14 w-14 rounded-full border border-black/10 shadow-inner transition-colors"
                   style={{ backgroundColor: SKIN_TONE_SWATCH[displayedType as SkinType] }}
                   aria-hidden
                 />
-                <p className="text-center text-sm font-medium text-foreground">
-                  {t(`skinTypes.${displayedType}`)}
-                </p>
+                <div className="flex flex-col items-center gap-1">
+                  <p className="text-center text-sm font-semibold text-foreground">
+                    {t(`skinTypes.${displayedType}`)}
+                  </p>
+                  <p className="max-w-[30ch] text-center text-xs leading-snug text-muted-foreground">
+                    {t(`skinTypeExamples.${displayedType}`)}
+                  </p>
+                </div>
                 <Slider
                   value={[displayedType]}
                   min={1}
@@ -113,15 +118,28 @@ export default function SettingsSheet({
                 />
                 <div className="flex w-full max-w-[220px] justify-between px-0.5">
                   {SKIN_TYPES.map((n) => (
-                    <span
+                    <button
                       key={n}
-                      className="h-2 w-2 rounded-full"
-                      style={{ backgroundColor: SKIN_TONE_SWATCH[n] }}
-                      aria-hidden
+                      type="button"
+                      aria-label={t(`skinTypes.${n}`)}
+                      onClick={() => chooseSkinType(n)}
+                      className="h-4 w-4 rounded-full transition-transform"
+                      style={{
+                        backgroundColor: SKIN_TONE_SWATCH[n],
+                        outline:
+                          n === displayedType
+                            ? "2px solid var(--brand)"
+                            : "2px solid transparent",
+                        outlineOffset: 2,
+                      }}
                     />
                   ))}
                 </div>
               </div>
+
+              <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+                {t("skinTypeWhy")}
+              </p>
             </div>
 
             <Button
