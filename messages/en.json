@@ -22,7 +22,8 @@
       "veryHigh": "Avoid sun 11am-4pm, protection required",
       "extreme": "Stay indoors 11am-4pm if possible"
     },
-    "learnMore": "Why?"
+    "learnMore": "Why?",
+    "updated": "Updated at {time}"
   },
   "location": {
     "title": "Location",

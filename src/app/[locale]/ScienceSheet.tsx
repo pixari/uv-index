@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 
 const SOURCES = [
@@ -27,20 +28,42 @@ const SOURCES = [
 
 export default function ScienceSheet({ onClose }: { onClose: () => void }) {
   const t = useTranslations("science");
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    requestAnimationFrame(() => setOpen(true));
+  }, []);
+
+  function close() {
+    setOpen(false);
+    setTimeout(onClose, 300);
+  }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end bg-black/60">
-      <div className="w-full rounded-t-2xl bg-zinc-900 p-6 pb-10">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold">{t("title")}</h2>
-          <button onClick={onClose} className="text-zinc-400">
+    <div
+      className="fixed inset-0 z-50 flex items-end justify-center transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+      style={{ backgroundColor: open ? "rgb(0 0 0 / 0.3)" : "rgb(0 0 0 / 0)" }}
+      onClick={close}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-md rounded-t-3xl bg-bg p-6 pb-10 shadow-[0_-8px_30px_rgb(0_0_0_/_0.12)] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+        style={{ transform: open ? "translateY(0)" : "translateY(100%)" }}
+      >
+        <div className="mb-5 flex items-center justify-between">
+          <h2 className="font-display text-xl">{t("title")}</h2>
+          <button
+            onClick={close}
+            className="text-muted hover:text-ink transition-colors"
+            aria-label="Close"
+          >
             ✕
           </button>
         </div>
 
-        <p className="mb-6 text-zinc-300">{t("intro")}</p>
+        <p className="mb-6 text-ink leading-relaxed">{t("intro")}</p>
 
-        <h3 className="mb-2 text-sm font-medium text-zinc-500">
+        <h3 className="mb-2 text-sm font-medium text-muted">
           {t("sources")}
         </h3>
         <ul className="space-y-3">
@@ -50,12 +73,12 @@ export default function ScienceSheet({ onClose }: { onClose: () => void }) {
                 href={s.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block rounded-lg border border-zinc-800 px-4 py-3 hover:bg-zinc-800"
+                className="block rounded-lg border border-black/10 px-4 py-3 hover:bg-surface transition-colors"
               >
-                <span className="block text-sm font-medium">{s.name}</span>
-                <span className="block text-sm text-zinc-400">
-                  {s.title}
+                <span className="block text-sm font-medium text-ink">
+                  {s.name}
                 </span>
+                <span className="block text-sm text-muted">{s.title}</span>
               </a>
             </li>
           ))}

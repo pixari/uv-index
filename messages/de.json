@@ -22,7 +22,8 @@
       "veryHigh": "Sonne 11-16 Uhr meiden, Schutz erforderlich",
       "extreme": "11-16 Uhr wenn möglich drinnen bleiben"
     },
-    "learnMore": "Warum?"
+    "learnMore": "Warum?",
+    "updated": "Aktualisiert um {time}"
   },
   "location": {
     "title": "Standort",

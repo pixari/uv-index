@@ -22,7 +22,8 @@
       "veryHigh": "Evita il sole 11-16, protezione obbligatoria",
       "extreme": "Resta al chiuso 11-16 se possibile"
     },
-    "learnMore": "Perché?"
+    "learnMore": "Perché?",
+    "updated": "Aggiornato alle {time}"
   },
   "location": {
     "title": "Località",
