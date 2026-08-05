@@ -61,5 +61,13 @@
     "share": "Condividi",
     "copied": "Link copiato",
     "text": "Indice UV a {place}: {uv} ({riskLabel})"
+  },
+  "reapply": {
+    "start": "Ho applicato la protezione ora",
+    "countdown": "Riapplica tra {time}",
+    "overdue": "È ora di riapplicare la protezione",
+    "reapplied": "Fatto, riparti il timer",
+    "cancel": "Annulla",
+    "burnEstimate": "Con il tuo fototipo, rischio scottatura in circa {minutes} min senza protezione"
   }
 }

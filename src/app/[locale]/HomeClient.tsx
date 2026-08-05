@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { uvLevel, RISK_TEXT_COLOR } from "@/lib/uvLevel";
 import InstallPrompt from "./InstallPrompt";
 import LocationSheet, { type Place } from "./LocationSheet";
+import ReapplyTimer from "./ReapplyTimer";
 import ScienceSheet from "./ScienceSheet";
 import SettingsSheet from "./SettingsSheet";
 import ShareButton from "./ShareButton";
@@ -26,6 +27,7 @@ export default function HomeClient() {
   const [showScience, setShowScience] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [revealed, setRevealed] = useState(false);
+  const [settingsVersion, setSettingsVersion] = useState(0);
 
   // Restore last-used place, or fall back to GPS prompt.
   useEffect(() => {
@@ -192,6 +194,7 @@ export default function HomeClient() {
               </p>
             )}
             <UvScaleBar uv={uv} />
+            <ReapplyTimer key={settingsVersion} uv={uv} />
             {updatedAt && (
               <p className="text-xs text-muted">
                 {t("updated", {
@@ -227,7 +230,12 @@ export default function HomeClient() {
       )}
       {showScience && <ScienceSheet onClose={() => setShowScience(false)} />}
       {showSettings && (
-        <SettingsSheet onClose={() => setShowSettings(false)} />
+        <SettingsSheet
+          onClose={() => {
+            setShowSettings(false);
+            setSettingsVersion((v) => v + 1);
+          }}
+        />
       )}
       <InstallPrompt />
     </main>

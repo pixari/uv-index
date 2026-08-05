@@ -61,5 +61,13 @@
     "share": "Teilen",
     "copied": "Link kopiert",
     "text": "UV-Index in {place}: {uv} ({riskLabel})"
+  },
+  "reapply": {
+    "start": "Ich habe gerade Sonnencreme aufgetragen",
+    "countdown": "Erneut auftragen in {time}",
+    "overdue": "Zeit, den Sonnenschutz zu erneuern",
+    "reapplied": "Erledigt, Timer neu starten",
+    "cancel": "Abbrechen",
+    "burnEstimate": "Mit deinem Hauttyp: Sonnenbrandrisiko in etwa {minutes} Min. ohne Schutz"
   }
 }

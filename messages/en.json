@@ -61,5 +61,13 @@
     "share": "Share",
     "copied": "Link copied",
     "text": "UV index in {place}: {uv} ({riskLabel})"
+  },
+  "reapply": {
+    "start": "I just applied sunscreen",
+    "countdown": "Reapply in {time}",
+    "overdue": "Time to reapply sunscreen",
+    "reapplied": "Done, restart the timer",
+    "cancel": "Cancel",
+    "burnEstimate": "With your skin type, burn risk in about {minutes} min without protection"
   }
 }
