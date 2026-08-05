@@ -50,5 +50,10 @@
       "5": "Brown — very rarely burns, tans deeply",
       "6": "Deeply pigmented — almost never burns"
     }
+  },
+  "install": {
+    "prompt": "Install the app for quick access",
+    "install": "Install",
+    "dismiss": "No thanks"
   }
 }

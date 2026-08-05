@@ -50,5 +50,10 @@
       "5": "Scura — scotta molto raramente, abbronzatura intensa",
       "6": "Molto scura — non scotta quasi mai"
     }
+  },
+  "install": {
+    "prompt": "Installa l'app per un accesso rapido",
+    "install": "Installa",
+    "dismiss": "No grazie"
   }
 }

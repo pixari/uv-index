@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { uvLevel, RISK_TEXT_COLOR } from "@/lib/uvLevel";
+import InstallPrompt from "./InstallPrompt";
 import LocationSheet, { type Place } from "./LocationSheet";
 import ScienceSheet from "./ScienceSheet";
 import SettingsSheet from "./SettingsSheet";
@@ -210,6 +211,7 @@ export default function HomeClient() {
       {showSettings && (
         <SettingsSheet onClose={() => setShowSettings(false)} />
       )}
+      <InstallPrompt />
     </main>
   );
 }

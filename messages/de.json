@@ -50,5 +50,10 @@
       "5": "Braun — verbrennt sehr selten, bräunt stark",
       "6": "Sehr dunkel — verbrennt fast nie"
     }
+  },
+  "install": {
+    "prompt": "App installieren für schnellen Zugriff",
+    "install": "Installieren",
+    "dismiss": "Nein danke"
   }
 }
