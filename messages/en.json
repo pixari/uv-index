@@ -1,8 +1,13 @@
 {
+  "meta": {
+    "title": "Real-time UV Index — protect yourself from the sun",
+    "description": "Real-time UV index for your city: risk level, recommended action, and the science of sun exposure, with WHO/IARC sources. Free, fast, mobile-first."
+  },
   "home": {
     "title": "UV Index",
     "loading": "Loading...",
     "locationPrompt": "Enable location",
+    "currentLocation": "My location",
     "riskLevels": {
       "low": "Low",
       "moderate": "Moderate",

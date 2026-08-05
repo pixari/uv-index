@@ -49,7 +49,7 @@ export default function HomeClient() {
         setCoords({
           lat: pos.coords.latitude,
           lon: pos.coords.longitude,
-          label: t("locationPrompt"),
+          label: t("currentLocation"),
         });
         setShowLocation(false);
       },

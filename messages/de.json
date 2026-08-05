@@ -1,8 +1,13 @@
 {
+  "meta": {
+    "title": "UV-Index in Echtzeit — schütze dich vor der Sonne",
+    "description": "Echtzeit-UV-Index für deinen Standort: Risikostufe, empfohlene Maßnahme und die Wissenschaft der Sonnenexposition, mit WHO/IARC-Quellen. Kostenlos, schnell, mobile-first."
+  },
   "home": {
     "title": "UV-Index",
     "loading": "Lädt...",
     "locationPrompt": "Standort aktivieren",
+    "currentLocation": "Mein Standort",
     "riskLevels": {
       "low": "Niedrig",
       "moderate": "Mäßig",

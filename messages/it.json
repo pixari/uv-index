@@ -1,8 +1,13 @@
 {
+  "meta": {
+    "title": "Indice UV in tempo reale — proteggiti dal sole",
+    "description": "Indice UV in tempo reale per la tua città: livello di rischio, azione consigliata e scienza dell'esposizione solare, con fonti OMS/IARC. Gratis, veloce, mobile-first."
+  },
   "home": {
     "title": "Indice UV",
     "loading": "Carico...",
     "locationPrompt": "Attiva la posizione",
+    "currentLocation": "La mia posizione",
     "riskLevels": {
       "low": "Basso",
       "moderate": "Moderato",
