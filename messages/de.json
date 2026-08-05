@@ -23,6 +23,7 @@
       "extreme": "11-16 Uhr wenn möglich drinnen bleiben"
     },
     "learnMore": "Warum?",
+    "scaleLabel": "Heutige UV-Skala",
     "updated": "Aktualisiert um {time}",
     "safeAfter": "Niedriges Risiko ab {time}",
     "settingsLabel": "Einstellungen"
@@ -74,6 +75,7 @@
     "text": "UV-Index in {place}: {uv} ({riskLabel})"
   },
   "reapply": {
+    "title": "Sonnenschutz",
     "start": "Ich habe gerade Sonnencreme aufgetragen",
     "countdown": "Erneut auftragen in {time}",
     "overdue": "Zeit, den Sonnenschutz zu erneuern",

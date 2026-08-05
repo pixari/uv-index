@@ -23,6 +23,7 @@
       "extreme": "Resta al chiuso 11-16 se possibile"
     },
     "learnMore": "Perché?",
+    "scaleLabel": "Scala UV di oggi",
     "updated": "Aggiornato alle {time}",
     "safeAfter": "Rischio basso dopo le {time}",
     "settingsLabel": "Impostazioni"
@@ -74,6 +75,7 @@
     "text": "Indice UV a {place}: {uv} ({riskLabel})"
   },
   "reapply": {
+    "title": "Protezione solare",
     "start": "Ho applicato la protezione ora",
     "countdown": "Riapplica tra {time}",
     "overdue": "È ora di riapplicare la protezione",

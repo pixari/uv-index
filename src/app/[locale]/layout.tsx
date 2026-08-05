@@ -1,16 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Geist } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import Script from "next/script";
 import { routing } from "@/i18n/routing";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
 const SITE_URL = "https://uvindex.pixari.dev";
 
@@ -83,10 +77,7 @@ export default async function LocaleLayout({
   }
 
   return (
-    <html
-      lang={locale}
-      className={`${geistSans.variable} h-full antialiased`}
-    >
+    <html lang={locale} className="h-full antialiased">
       <body className="h-full overflow-hidden bg-bg text-ink font-sans">
         <Script
           defer

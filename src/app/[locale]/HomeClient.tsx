@@ -191,10 +191,13 @@ export default function HomeClient() {
 
               {/* Secondary: today's forecast — frosted glass, not a white
                   card; depth comes from blur + translucency here. */}
-              <div className="w-full max-w-xs rounded-3xl bg-white/12 p-4 shadow-lg ring-1 ring-white/15 backdrop-blur-xl">
+              <div className="flex w-full max-w-xs flex-col gap-3 rounded-3xl bg-white/12 px-5 py-5 shadow-lg ring-1 ring-white/15 backdrop-blur-xl">
+                <span className="text-xs font-semibold uppercase tracking-wide text-white/60">
+                  {t("scaleLabel")}
+                </span>
                 <UvScaleBar uv={uv} />
                 {safeAfter && (
-                  <p className="mt-2 text-center text-xs font-medium text-white/80">
+                  <p className="text-center text-xs font-medium text-white/80">
                     {t("safeAfter", {
                       time: new Date(safeAfter).toLocaleTimeString(locale, {
                         hour: "2-digit",

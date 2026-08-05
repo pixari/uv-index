@@ -23,6 +23,7 @@
       "extreme": "Stay indoors 11am-4pm if possible"
     },
     "learnMore": "Why?",
+    "scaleLabel": "Today's UV scale",
     "updated": "Updated at {time}",
     "safeAfter": "Low risk after {time}",
     "settingsLabel": "Settings"
@@ -74,6 +75,7 @@
     "text": "UV index in {place}: {uv} ({riskLabel})"
   },
   "reapply": {
+    "title": "Sun protection",
     "start": "I just applied sunscreen",
     "countdown": "Reapply in {time}",
     "overdue": "Time to reapply sunscreen",

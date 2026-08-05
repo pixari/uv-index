@@ -22,6 +22,8 @@ function spfLabel(spf: Spf) {
 const GLASS =
   "w-full max-w-xs rounded-3xl bg-white/12 shadow-lg ring-1 ring-white/15 backdrop-blur-xl";
 
+const EYEBROW = "text-xs font-semibold uppercase tracking-wide text-white/60";
+
 export default function ReapplyTimer({
   uv,
   onOpenSettings,
@@ -73,7 +75,7 @@ export default function ReapplyTimer({
     return (
       <button
         onClick={onOpenSettings}
-        className={`${GLASS} flex flex-col items-center gap-1 border border-dashed border-white/30 px-4 py-3.5 text-center transition-colors hover:bg-white/18`}
+        className={`${GLASS} flex flex-col items-center gap-1.5 border border-dashed border-white/30 px-5 py-5 text-center transition-colors hover:bg-white/18`}
       >
         <span className="text-sm text-white/90">{t("setupPrompt")}</span>
         <span className="text-xs font-medium text-white">{t("setupCta")}</span>
@@ -89,8 +91,9 @@ export default function ReapplyTimer({
     const timeLabel = h > 0 ? `${h}h ${m}min` : `${m}min`;
 
     return (
-      <div className={`${GLASS} flex flex-col items-center gap-1.5 px-4 py-3.5 text-center`}>
-        <p className="text-sm font-medium text-white">
+      <div className={`${GLASS} flex flex-col items-center gap-2 px-5 py-5 text-center`}>
+        <span className={EYEBROW}>{t("title")}</span>
+        <p className="text-lg font-medium text-white">
           {overdue ? t("overdue") : t("countdown", { time: timeLabel })}
         </p>
         {spf && (
@@ -100,7 +103,7 @@ export default function ReapplyTimer({
         )}
         <button
           onClick={overdue ? start : reset}
-          className="text-xs font-medium text-white/70 underline-offset-2 hover:text-white hover:underline"
+          className="mt-1 text-xs font-medium text-white/70 underline-offset-2 hover:text-white hover:underline"
         >
           {overdue ? t("reapplied") : t("cancel")}
         </button>
@@ -111,14 +114,17 @@ export default function ReapplyTimer({
   // Skin type set, no active timer — burn-time estimate, SPF choice, start.
   const burn = burnMinutes(skinType, uv);
   return (
-    <div className={`${GLASS} flex flex-col items-center gap-3 px-4 py-3.5 text-center`}>
-      {burn !== null && (
-        <p className="text-xs text-white/70">
-          {t("burnEstimate", { minutes: burn })}
-        </p>
-      )}
+    <div className={`${GLASS} flex w-full max-w-xs flex-col gap-4 px-5 py-5`}>
+      <div className="flex flex-col items-center gap-1 text-center">
+        <span className={EYEBROW}>{t("title")}</span>
+        {burn !== null && (
+          <p className="text-sm text-white/85">
+            {t("burnEstimate", { minutes: burn })}
+          </p>
+        )}
+      </div>
 
-      <div className="flex flex-col items-center gap-1.5">
+      <div className="flex items-center justify-between gap-3 border-t border-white/15 pt-4">
         <span className="text-xs font-medium text-white/80">
           {t("spfLabel")}
         </span>
@@ -140,17 +146,18 @@ export default function ReapplyTimer({
             </button>
           ))}
         </div>
-        <Link
-          href="/learn#spf"
-          className="max-w-[22ch] text-[11px] leading-snug text-white/65 underline-offset-2 hover:text-white/85 hover:underline"
-        >
-          {t("spfNote")}
-        </Link>
       </div>
+
+      <Link
+        href="/learn#spf"
+        className="text-center text-[11px] leading-snug text-white/60 underline-offset-2 hover:text-white/85 hover:underline"
+      >
+        {t("spfNote")}
+      </Link>
 
       <button
         onClick={start}
-        className="rounded-full bg-white px-6 py-2.5 text-sm font-semibold text-ink transition-transform active:scale-[0.97]"
+        className="rounded-full bg-white py-2.5 text-sm font-semibold text-ink transition-transform active:scale-[0.97]"
       >
         {t("start")}
       </button>
