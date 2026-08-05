@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 const SOURCES = [
   {
@@ -83,6 +84,13 @@ export default function ScienceSheet({ onClose }: { onClose: () => void }) {
             </li>
           ))}
         </ul>
+
+        <Link
+          href="/learn"
+          className="mt-6 block text-sm text-brand-ink underline-offset-4 hover:underline"
+        >
+          {t("learnMoreLink")}
+        </Link>
       </div>
     </div>
   );

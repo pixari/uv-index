@@ -36,7 +36,8 @@
   "science": {
     "title": "Why it matters",
     "intro": "UV radiation is classified as a Group 1 carcinogen by IARC (International Agency for Research on Cancer, WHO) — the same category as asbestos.",
-    "sources": "Sources"
+    "sources": "Sources",
+    "learnMoreLink": "Learn more: how the UV index and SPF actually work →"
   },
   "settings": {
     "title": "Settings",
@@ -81,5 +82,28 @@
       "bigDataCloud": "Place name when you use GPS"
     },
     "analyticsNote": "We use Umami, a cookie-free analytics tool that doesn't collect personal data — just aggregate stats on how many people use the app."
+  },
+  "learn": {
+    "title": "Learn more",
+    "metaDescription": "How the UV index actually works, the science of sun protection, and what SPF really means — with verifiable sources.",
+    "back": "← Back to home",
+    "chart": {
+      "title": "Today's UV curve",
+      "subtitle": "In {place}, hour by hour"
+    },
+    "methodology": {
+      "title": "How the UV index works",
+      "p1": "The UV Index was developed by WHO, the World Meteorological Organization, UNEP, and ICNIRP as a standardized international scale, designed to communicate the intensity of UV radiation at ground level without requiring technical knowledge — before its adoption, every country used different, incomparable scales.",
+      "p2": "Actual intensity depends on several factors together: the sun's height in the sky (highest at solar noon and in summer), latitude (stronger near the equator), altitude (increases roughly 10% per 1000 meters, since there's less filtering atmosphere), the thickness of the ozone layer, and cloud cover — this last one is deceptive: even under overcast skies, most UV still gets through, and a common mistake is assuming cloudy weather makes protection unnecessary.",
+      "p3": "The number shown in this app is calculated in real time by combining these factors with weather models — that's why it changes hour by hour, peaking near solar noon and dropping close to zero at dawn and dusk, as you can see in the chart above.",
+      "source": "Source:"
+    },
+    "spf": {
+      "title": "How SPF actually works",
+      "p1": "SPF (Sun Protection Factor) measures how much longer protected skin takes to burn compared to unprotected skin, under lab conditions using a thick, generously applied layer (2 mg per cm²) — in practice, almost no one applies that much, so real-world protection is usually lower than the labeled number.",
+      "p2": "The relationship between SPF and protection isn't linear: SPF30 blocks about 97% of UVB rays, SPF50 about 98% — a small numerical gap that misleads many people into assuming SPF50 offers roughly double the protection of SPF30. It doesn't. What actually makes the difference is reapplying often and using enough of it, not chasing an ever-higher number.",
+      "p3": "SPF only measures protection against UVB rays, the ones that cause visible sunburn. A \"broad spectrum\" label means the product also protects against UVA rays, which penetrate deeper and contribute to skin aging and cancer risk even without causing a visible burn — checking for \"broad spectrum\" matters as much as the SPF number itself.",
+      "source": "Source:"
+    }
   }
 }

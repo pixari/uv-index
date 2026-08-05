@@ -36,7 +36,8 @@
   "science": {
     "title": "Warum es wichtig ist",
     "intro": "UV-Strahlung wird von der IARC (Internationale Agentur für Krebsforschung, WHO) als Karzinogen der Gruppe 1 eingestuft — dieselbe Kategorie wie Asbest.",
-    "sources": "Quellen"
+    "sources": "Quellen",
+    "learnMoreLink": "Mehr erfahren: wie UV-Index und LSF wirklich funktionieren →"
   },
   "settings": {
     "title": "Einstellungen",
@@ -81,5 +82,28 @@
       "bigDataCloud": "Ortsname bei Verwendung des GPS"
     },
     "analyticsNote": "Wir verwenden Umami, ein cookie-freies Analyse-Tool, das keine personenbezogenen Daten sammelt — nur aggregierte Statistiken zur Nutzung der App."
+  },
+  "learn": {
+    "title": "Mehr erfahren",
+    "metaDescription": "Wie der UV-Index wirklich funktioniert, die Wissenschaft des Sonnenschutzes und was LSF wirklich bedeutet — mit überprüfbaren Quellen.",
+    "back": "← Zurück zur Startseite",
+    "chart": {
+      "title": "Der heutige UV-Verlauf",
+      "subtitle": "In {place}, Stunde für Stunde"
+    },
+    "methodology": {
+      "title": "Wie der UV-Index funktioniert",
+      "p1": "Der UV-Index wurde von der WHO, der Weltorganisation für Meteorologie, UNEP und ICNIRP als standardisierte internationale Skala entwickelt, um die Intensität der UV-Strahlung am Boden verständlich zu kommunizieren, ohne Fachwissen zu erfordern — vor seiner Einführung nutzte jedes Land unterschiedliche, nicht vergleichbare Skalen.",
+      "p2": "Die tatsächliche Intensität hängt von mehreren Faktoren zusammen ab: dem Sonnenstand am Himmel (am höchsten zur Sonnenmittagszeit und im Sommer), dem Breitengrad (stärker in Äquatornähe), der Höhenlage (steigt um etwa 10% pro 1000 Meter, da weniger filternde Atmosphäre vorhanden ist), der Dicke der Ozonschicht und der Bewölkung — Letzteres täuscht leicht: Auch bei bedecktem Himmel kommt der Großteil der UV-Strahlung durch, ein verbreiteter Irrtum ist zu glauben, bewölktes Wetter mache Schutz überflüssig.",
+      "p3": "Die in dieser App angezeigte Zahl wird in Echtzeit berechnet, indem diese Faktoren mit Wettermodellen kombiniert werden — deshalb ändert sie sich stündlich, mit einem Höhepunkt nahe der Sonnenmittagszeit und Werten nahe Null bei Sonnenauf- und -untergang, wie im obigen Diagramm zu sehen ist.",
+      "source": "Quelle:"
+    },
+    "spf": {
+      "title": "Wie LSF wirklich funktioniert",
+      "p1": "Der LSF (Lichtschutzfaktor) misst, wie viel länger geschützte Haut braucht, um zu verbrennen, im Vergleich zu ungeschützter Haut — unter Laborbedingungen mit einer dick und großzügig aufgetragenen Schicht (2 mg pro cm²). In der Praxis trägt fast niemand so viel auf, weshalb der reale Schutz meist geringer ist als die angegebene Zahl.",
+      "p2": "Der Zusammenhang zwischen LSF und Schutz ist nicht linear: LSF30 blockiert etwa 97% der UVB-Strahlen, LSF50 etwa 98% — ein kleiner zahlenmäßiger Unterschied, der viele Menschen fälschlich glauben lässt, LSF50 biete etwa doppelt so viel Schutz wie LSF30. Das stimmt nicht. Was wirklich den Unterschied macht, ist häufiges Nachcremen und ausreichende Menge, nicht die Jagd nach einer immer höheren Zahl.",
+      "p3": "LSF misst nur den Schutz vor UVB-Strahlen, die sichtbaren Sonnenbrand verursachen. Die Kennzeichnung \"Breitband\" (broad spectrum) bedeutet, dass das Produkt auch vor UVA-Strahlen schützt, die tiefer eindringen und zu Hautalterung und Krebsrisiko beitragen, auch ohne sichtbaren Sonnenbrand zu verursachen — auf \"Breitband\" zu achten ist genauso wichtig wie die LSF-Zahl selbst.",
+      "source": "Quelle:"
+    }
   }
 }

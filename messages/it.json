@@ -36,7 +36,8 @@
   "science": {
     "title": "Perché è importante",
     "intro": "L'esposizione ai raggi UV è classificata come cancerogena di Gruppo 1 dalla IARC (Agenzia Internazionale per la Ricerca sul Cancro, OMS) — lo stesso livello dell'amianto.",
-    "sources": "Fonti"
+    "sources": "Fonti",
+    "learnMoreLink": "Approfondisci: come funziona l'indice UV e l'SPF →"
   },
   "settings": {
     "title": "Impostazioni",
@@ -81,5 +82,28 @@
       "bigDataCloud": "Nome del luogo quando usi il GPS"
     },
     "analyticsNote": "Usiamo Umami, uno strumento di analisi che non usa cookie e non raccoglie dati personali — solo statistiche aggregate su quante persone usano l'app."
+  },
+  "learn": {
+    "title": "Approfondimenti",
+    "metaDescription": "Come funziona davvero l'indice UV, la scienza della protezione solare e cosa significa SPF — con fonti verificabili.",
+    "back": "← Torna alla home",
+    "chart": {
+      "title": "L'andamento UV di oggi",
+      "subtitle": "A {place}, ora per ora"
+    },
+    "methodology": {
+      "title": "Come funziona l'indice UV",
+      "p1": "L'indice UV è stato sviluppato da OMS, Organizzazione Meteorologica Mondiale, UNEP e ICNIRP come scala internazionale standardizzata, pensata per comunicare l'intensità dei raggi UV al suolo in modo comprensibile senza conoscenze tecniche — prima della sua adozione, ogni paese usava scale diverse e non confrontabili.",
+      "p2": "L'intensità reale dipende da diversi fattori insieme: l'altezza del sole nel cielo (massima a mezzogiorno solare e in estate), la latitudine (più forte vicino all'equatore), l'altitudine (aumenta di circa il 10% ogni 1000 metri, perché l'atmosfera che filtra i raggi è più sottile), lo spessore dello strato di ozono, e la copertura nuvolosa — quest'ultima è ingannevole: anche con cielo nuvoloso passa gran parte dei raggi UV, un errore comune è pensare che il cielo coperto renda inutile la protezione.",
+      "p3": "Il numero che vedi in questa app è calcolato in tempo reale combinando questi fattori con modelli meteorologici — per questo cambia ora per ora, con un picco vicino al mezzogiorno solare e valori vicini a zero all'alba e al tramonto, come puoi vedere nel grafico qui sopra.",
+      "source": "Fonte:"
+    },
+    "spf": {
+      "title": "Come funziona davvero l'SPF",
+      "p1": "L'SPF (Sun Protection Factor) misura di quanto tempo in più la pelle protetta impiega a scottarsi rispetto alla pelle non protetta, in condizioni di laboratorio con uno strato di crema molto spesso (2 mg per cm²) — nella pratica quasi nessuno applica una quantità così generosa, quindi la protezione reale è quasi sempre inferiore a quella dichiarata.",
+      "p2": "Il rapporto tra SPF e protezione non è lineare: l'SPF30 blocca circa il 97% dei raggi UVB, l'SPF50 circa il 98% — una differenza minima che però illude molte persone a pensare che l'SPF50 protegga il doppio dell'SPF30. Non è così. Quello che fa davvero la differenza è riapplicare spesso e usarne a sufficienza, non rincorrere un numero sempre più alto.",
+      "p3": "L'SPF misura solo la protezione dai raggi UVB, quelli che causano le scottature visibili. La dicitura \"ad ampio spettro\" (broad spectrum) indica che il prodotto protegge anche dai raggi UVA, che penetrano più in profondità e contribuiscono a invecchiamento cutaneo e rischio di cancro anche senza causare scottature evidenti — controllare la dicitura \"ampio spettro\" conta quanto il numero SPF stesso.",
+      "source": "Fonte:"
+    }
   }
 }
