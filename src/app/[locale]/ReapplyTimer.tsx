@@ -3,8 +3,6 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import {
   getReapplyStartedAt,
   startReapplyTimer,
@@ -20,6 +18,9 @@ import { getStoredSkinType, burnMinutes, type SkinType } from "@/lib/skinType";
 function spfLabel(spf: Spf) {
   return spf > 50 ? "50+" : String(spf);
 }
+
+const GLASS =
+  "w-full max-w-xs rounded-3xl bg-white/12 shadow-lg ring-1 ring-white/15 backdrop-blur-xl";
 
 export default function ReapplyTimer({
   uv,
@@ -70,13 +71,13 @@ export default function ReapplyTimer({
   // No skin type set yet — a discoverable prompt, not silent absence.
   if (!skinType) {
     return (
-      <Card
-        className="w-full max-w-xs cursor-pointer items-center gap-1 border-dashed px-4 py-3.5 text-center ring-black/15 hover:bg-surface transition-colors"
+      <button
         onClick={onOpenSettings}
+        className={`${GLASS} flex flex-col items-center gap-1 border border-dashed border-white/30 px-4 py-3.5 text-center transition-colors hover:bg-white/18`}
       >
-        <span className="text-sm text-foreground">{t("setupPrompt")}</span>
-        <span className="text-xs text-brand-ink">{t("setupCta")}</span>
-      </Card>
+        <span className="text-sm text-white/90">{t("setupPrompt")}</span>
+        <span className="text-xs font-medium text-white">{t("setupCta")}</span>
+      </button>
     );
   }
 
@@ -88,45 +89,37 @@ export default function ReapplyTimer({
     const timeLabel = h > 0 ? `${h}h ${m}min` : `${m}min`;
 
     return (
-      <Card className="w-full max-w-xs items-center gap-1.5 px-4 py-3.5 text-center shadow-md ring-1 ring-foreground/5">
-        <p
-          className={
-            overdue
-              ? "text-sm font-medium text-brand-ink"
-              : "text-sm text-foreground"
-          }
-        >
+      <div className={`${GLASS} flex flex-col items-center gap-1.5 px-4 py-3.5 text-center`}>
+        <p className="text-sm font-medium text-white">
           {overdue ? t("overdue") : t("countdown", { time: timeLabel })}
         </p>
         {spf && (
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-white/70">
             {t("spfInUse", { spf: spfLabel(spf) })}
           </p>
         )}
-        <Button
-          variant="link"
-          size="sm"
-          className="h-auto p-0 text-xs text-muted-foreground"
+        <button
           onClick={overdue ? start : reset}
+          className="text-xs font-medium text-white/70 underline-offset-2 hover:text-white hover:underline"
         >
           {overdue ? t("reapplied") : t("cancel")}
-        </Button>
-      </Card>
+        </button>
+      </div>
     );
   }
 
   // Skin type set, no active timer — burn-time estimate, SPF choice, start.
   const burn = burnMinutes(skinType, uv);
   return (
-    <Card className="w-full max-w-xs items-center gap-3 px-4 py-3.5 text-center shadow-md ring-1 ring-foreground/5">
+    <div className={`${GLASS} flex flex-col items-center gap-3 px-4 py-3.5 text-center`}>
       {burn !== null && (
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-white/70">
           {t("burnEstimate", { minutes: burn })}
         </p>
       )}
 
       <div className="flex flex-col items-center gap-1.5">
-        <span className="text-xs font-medium text-muted-foreground">
+        <span className="text-xs font-medium text-white/80">
           {t("spfLabel")}
         </span>
         <div className="flex gap-1.5">
@@ -138,8 +131,8 @@ export default function ReapplyTimer({
               className={
                 "flex h-8 w-11 items-center justify-center rounded-full text-xs font-semibold transition-colors " +
                 (pendingSpf === option
-                  ? "bg-brand text-primary-foreground"
-                  : "bg-muted-foreground/10 text-foreground hover:bg-muted-foreground/20")
+                  ? "bg-white text-ink"
+                  : "bg-white/15 text-white hover:bg-white/25")
               }
               aria-pressed={pendingSpf === option}
             >
@@ -149,13 +142,18 @@ export default function ReapplyTimer({
         </div>
         <Link
           href="/learn#spf"
-          className="max-w-[22ch] text-[11px] leading-snug text-muted-foreground underline-offset-2 hover:underline"
+          className="max-w-[22ch] text-[11px] leading-snug text-white/65 underline-offset-2 hover:text-white/85 hover:underline"
         >
           {t("spfNote")}
         </Link>
       </div>
 
-      <Button onClick={start}>{t("start")}</Button>
-    </Card>
+      <button
+        onClick={start}
+        className="rounded-full bg-white px-6 py-2.5 text-sm font-semibold text-ink transition-transform active:scale-[0.97]"
+      >
+        {t("start")}
+      </button>
+    </div>
   );
 }

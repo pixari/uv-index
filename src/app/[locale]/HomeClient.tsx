@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { uvLevel, RISK_TEXT_COLOR } from "@/lib/uvLevel";
-import { Button } from "@/components/ui/button";
+import { uvLevel, skyGradientCss } from "@/lib/uvLevel";
 import InstallPrompt from "./InstallPrompt";
 import LocationSheet, { type Place } from "./LocationSheet";
 import ReapplyTimer from "./ReapplyTimer";
@@ -100,16 +99,17 @@ export default function HomeClient() {
   }
 
   const level = uv !== null ? uvLevel(uv) : null;
-  const color = level ? RISK_TEXT_COLOR[level] : "var(--ink)";
 
   return (
-    <div className="flex h-dvh flex-col overflow-hidden">
-      {/* App bar */}
-      <header className="flex shrink-0 items-center justify-between border-b border-border/60 bg-surface/80 px-4 py-3 shadow-sm backdrop-blur-sm">
-        <Button
-          variant="ghost"
-          className="h-auto gap-1.5 px-2 py-1.5 text-sm text-muted-foreground hover:text-brand-ink"
+    <div
+      className="flex h-dvh flex-col overflow-hidden transition-[background] duration-700 ease-out"
+      style={{ background: skyGradientCss(level) }}
+    >
+      {/* App bar — transparent, blends into the sky */}
+      <header className="flex shrink-0 items-center justify-between px-4 pt-[max(0.75rem,env(safe-area-inset-top))] pb-3">
+        <button
           onClick={() => setShowLocation(true)}
+          className="flex items-center gap-1.5 rounded-full px-2 py-1.5 text-sm font-medium text-white/90 transition-colors hover:text-white"
         >
           <svg
             width="14"
@@ -125,14 +125,12 @@ export default function HomeClient() {
             <circle cx="12" cy="10" r="3" />
           </svg>
           {coords?.label ?? t("locationPrompt")}
-        </Button>
+        </button>
 
-        <Button
-          variant="ghost"
-          size="icon"
-          aria-label={t("settingsLabel")}
-          className="text-muted-foreground hover:text-brand-ink"
+        <button
           onClick={() => setShowSettings(true)}
+          aria-label={t("settingsLabel")}
+          className="rounded-full p-2 text-white/80 transition-colors hover:text-white"
         >
           <svg
             width="17"
@@ -147,20 +145,18 @@ export default function HomeClient() {
             <circle cx="12" cy="12" r="3" />
             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" />
           </svg>
-        </Button>
+        </button>
       </header>
 
-      {/* Scrollable content — only scrolls if it genuinely overflows a
-          small viewport; the shell itself never rubber-bands past content. */}
-      <main className="flex flex-1 flex-col items-center overflow-y-auto px-6 py-8">
+      <main className="flex flex-1 flex-col items-center overflow-y-auto px-6 pb-8">
         <div className="flex w-full flex-1 flex-col items-center justify-center gap-6">
           {uv === null && !error && (
-            <p className="text-muted-foreground">{t("loading")}</p>
+            <p className="text-white/70">{t("loading")}</p>
           )}
           {error && (
             <button
               onClick={useGps}
-              className="text-muted-foreground underline underline-offset-4 hover:text-brand-ink transition-colors"
+              className="text-white/70 underline underline-offset-4 hover:text-white transition-colors"
             >
               {t("locationPrompt")}
             </button>
@@ -175,44 +171,30 @@ export default function HomeClient() {
                   : "translateY(8px) scale(0.98)",
               }}
             >
-              {/* Primary: the number sits on a soft colored glow — real
-                  depth, not just flat colored text on flat white. */}
-              <div className="relative flex flex-col items-center gap-3 py-2">
-                <div
-                  className="pointer-events-none absolute inset-0 -z-10 rounded-full blur-3xl"
-                  style={{
-                    background: color,
-                    opacity: 0.16,
-                  }}
-                  aria-hidden
-                />
+              {/* Primary: thin, huge, white — the gradient carries the
+                  color, the number doesn't need to. */}
+              <div className="flex flex-col items-center gap-1 py-2">
                 <p
-                  className="font-sans font-black leading-none tracking-[-0.04em] tabular-nums"
-                  style={{
-                    color,
-                    fontSize: "clamp(6.5rem, 32vw, 12rem)",
-                  }}
+                  className="font-sans font-thin leading-none tracking-[-0.03em] tabular-nums text-white"
+                  style={{ fontSize: "clamp(6.5rem, 32vw, 12rem)" }}
                 >
                   {Math.round(uv)}
                 </p>
-                <p
-                  className="text-2xl font-bold tracking-tight"
-                  style={{ color }}
-                >
+                <p className="text-2xl font-medium text-white">
                   {t(`riskLevels.${level}`)}
                 </p>
               </div>
 
-              <p className="max-w-[26ch] text-center text-ink text-lg font-medium leading-snug">
+              <p className="max-w-[26ch] text-center text-white/85 text-lg font-medium leading-snug">
                 {t(`actions.${level}`)}
               </p>
 
-              {/* Secondary: today's forecast card — elevated, distinct
-                  surface from the page background. */}
-              <div className="w-full max-w-xs rounded-2xl bg-card p-4 shadow-md ring-1 ring-foreground/5">
+              {/* Secondary: today's forecast — frosted glass, not a white
+                  card; depth comes from blur + translucency here. */}
+              <div className="w-full max-w-xs rounded-3xl bg-white/12 p-4 shadow-lg ring-1 ring-white/15 backdrop-blur-xl">
                 <UvScaleBar uv={uv} />
                 {safeAfter && (
-                  <p className="mt-2 text-center text-xs font-medium text-brand-ink">
+                  <p className="mt-2 text-center text-xs font-medium text-white/80">
                     {t("safeAfter", {
                       time: new Date(safeAfter).toLocaleTimeString(locale, {
                         hour: "2-digit",
@@ -223,17 +205,13 @@ export default function HomeClient() {
                 )}
               </div>
 
-              {/* Personal protection module — always a distinct card, even
-                  before a skin type is set, so the feature is discoverable
-                  rather than silently absent. */}
               <ReapplyTimer
                 key={settingsVersion}
                 uv={uv}
                 onOpenSettings={() => setShowSettings(true)}
               />
 
-              {/* Utility: quiet metadata, smallest visual weight on the page. */}
-              <div className="flex items-center gap-3 text-xs text-muted-foreground">
+              <div className="flex items-center gap-3 text-xs text-white/55">
                 {updatedAt && (
                   <span>
                     {t("updated", {
@@ -254,17 +232,14 @@ export default function HomeClient() {
             </div>
           )}
         </div>
-      </main>
 
-      {/* Footer bar */}
-      <footer className="flex shrink-0 items-center justify-center border-t border-border/60 bg-surface/80 py-3 backdrop-blur-sm">
         <button
           onClick={() => setShowScience(true)}
-          className="text-sm font-medium text-brand-ink underline-offset-4 hover:underline"
+          className="mt-2 shrink-0 pb-[max(0.5rem,env(safe-area-inset-bottom))] text-sm font-medium text-white/75 underline-offset-4 hover:text-white hover:underline"
         >
           {t("learnMore")}
         </button>
-      </footer>
+      </main>
 
       <LocationSheet
         open={showLocation}

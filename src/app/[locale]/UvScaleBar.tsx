@@ -21,15 +21,15 @@ export default function UvScaleBar({ uv }: { uv: number }) {
     <div className="w-full max-w-xs">
       <div className="relative h-1.5 rounded-full overflow-visible">
         <div
-          className="h-full w-full rounded-full"
+          className="h-full w-full rounded-full opacity-90"
           style={{ background: `linear-gradient(to right, ${gradient})` }}
         />
         <div
-          className="absolute top-1/2 h-3 w-3 -translate-y-1/2 -translate-x-1/2 rounded-full bg-bg border-2 border-ink shadow-sm transition-[left] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+          className="absolute top-1/2 h-3.5 w-3.5 -translate-y-1/2 -translate-x-1/2 rounded-full bg-white shadow-[0_0_0_3px_rgba(255,255,255,0.25)] transition-[left] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
           style={{ left: `${markerPct}%` }}
         />
       </div>
-      <div className="mt-1.5 flex justify-between text-xs text-muted-foreground tabular-nums">
+      <div className="mt-1.5 flex justify-between text-xs text-white/60 tabular-nums">
         <span>0</span>
         <span>{UV_SCALE_MAX}+</span>
       </div>
