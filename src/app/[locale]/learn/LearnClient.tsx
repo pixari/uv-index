@@ -30,7 +30,7 @@ export default function LearnClient() {
     <main className="mx-auto max-w-xl px-6 py-10">
       <Link
         href="/"
-        className="mb-8 inline-block text-sm text-muted hover:text-brand-ink transition-colors"
+        className="mb-8 inline-block text-sm text-muted-foreground hover:text-brand-ink transition-colors"
       >
         {t("back")}
       </Link>
@@ -45,7 +45,7 @@ export default function LearnClient() {
             {t("chart.title")}
           </h2>
           {place && (
-            <p className="mb-4 text-sm text-muted">
+            <p className="mb-4 text-sm text-muted-foreground">
               {t("chart.subtitle", { place })}
             </p>
           )}
@@ -60,7 +60,7 @@ export default function LearnClient() {
           <p>{t("methodology.p2")}</p>
           <p>{t("methodology.p3")}</p>
         </div>
-        <p className="mt-4 text-sm text-muted">
+        <p className="mt-4 text-sm text-muted-foreground">
           {t("methodology.source")}{" "}
           <a
             href="https://www.who.int/publications/i/item/9241590076"
@@ -80,7 +80,7 @@ export default function LearnClient() {
           <p>{t("spf.p2")}</p>
           <p>{t("spf.p3")}</p>
         </div>
-        <p className="mt-4 text-sm text-muted">
+        <p className="mt-4 text-sm text-muted-foreground">
           {t("spf.source")}{" "}
           <a
             href="https://www.aad.org/media/stats-sunscreen"

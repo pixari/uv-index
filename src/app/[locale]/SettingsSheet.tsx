@@ -4,10 +4,19 @@ import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { Slider } from "@/components/ui/slider";
 import {
   SKIN_TYPES,
   getStoredSkinType,
   setStoredSkinType,
+  SKIN_TONE_SWATCH,
   type SkinType,
 } from "@/lib/skinType";
 import DataSourcesSheet from "./DataSourcesSheet";
@@ -18,112 +27,118 @@ const LOCALE_LABEL: Record<string, string> = {
   de: "Deutsch",
 };
 
-export default function SettingsSheet({ onClose }: { onClose: () => void }) {
+export default function SettingsSheet({
+  open,
+  onOpenChange,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
   const t = useTranslations("settings");
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
-  const [open, setOpen] = useState(false);
   const [skinType, setSkinType] = useState<SkinType | null>(null);
   const [showDataSources, setShowDataSources] = useState(false);
 
   useEffect(() => {
-    requestAnimationFrame(() => setOpen(true));
     setSkinType(getStoredSkinType());
   }, []);
-
-  function close() {
-    setOpen(false);
-    setTimeout(onClose, 300);
-  }
 
   function changeLocale(next: string) {
     router.replace(pathname, { locale: next });
   }
 
-  function chooseSkinType(type: SkinType) {
+  function chooseSkinType(value: number | readonly number[]) {
+    const type = (Array.isArray(value) ? value[0] : value) as SkinType;
     setSkinType(type);
     setStoredSkinType(type);
   }
 
+  const displayedType = skinType ?? 3;
+
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-end justify-center transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
-      style={{ backgroundColor: open ? "rgb(0 0 0 / 0.3)" : "rgb(0 0 0 / 0)" }}
-      onClick={close}
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-md rounded-t-3xl bg-bg p-6 pb-10 shadow-[0_-8px_30px_rgb(0_0_0_/_0.12)] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
-        style={{ transform: open ? "translateY(0)" : "translateY(100%)" }}
-      >
-        <div className="mb-5 flex items-center justify-between">
-          <h2 className="font-display text-xl">{t("title")}</h2>
-          <button
-            onClick={close}
-            className="text-muted hover:text-ink transition-colors"
-            aria-label="Close"
-          >
-            ✕
-          </button>
-        </div>
+    <>
+      <Sheet open={open} onOpenChange={onOpenChange}>
+        <SheetContent side="bottom" className="rounded-t-3xl pb-8">
+          <SheetHeader>
+            <SheetTitle className="font-display text-xl">
+              {t("title")}
+            </SheetTitle>
+          </SheetHeader>
 
-        <h3 className="mb-2 text-sm font-medium text-muted">
-          {t("language")}
-        </h3>
-        <div className="mb-6 flex gap-2">
-          {routing.locales.map((l) => (
-            <button
-              key={l}
-              onClick={() => changeLocale(l)}
-              className={`flex-1 rounded-xl border py-2.5 text-sm transition-colors ${
-                l === locale
-                  ? "border-brand bg-brand text-white"
-                  : "border-black/10 text-ink hover:bg-surface"
-              }`}
+          <div className="flex flex-col gap-6 px-4">
+            <div>
+              <h3 className="mb-2 text-sm font-medium text-muted-foreground">
+                {t("language")}
+              </h3>
+              <div className="flex gap-2">
+                {routing.locales.map((l) => (
+                  <Button
+                    key={l}
+                    variant={l === locale ? "default" : "outline"}
+                    className="flex-1"
+                    onClick={() => changeLocale(l)}
+                  >
+                    {LOCALE_LABEL[l] ?? l}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h3 className="mb-1 text-sm font-medium text-muted-foreground">
+                {t("skinType")}
+              </h3>
+              <p className="mb-4 text-sm text-muted-foreground">
+                {t("skinTypeHint")}
+              </p>
+
+              <div className="flex flex-col items-center gap-4 rounded-2xl border border-border p-4">
+                <div
+                  className="h-14 w-14 rounded-full border border-black/10 shadow-inner transition-colors"
+                  style={{ backgroundColor: SKIN_TONE_SWATCH[displayedType as SkinType] }}
+                  aria-hidden
+                />
+                <p className="text-center text-sm font-medium text-foreground">
+                  {t(`skinTypes.${displayedType}`)}
+                </p>
+                <Slider
+                  value={[displayedType]}
+                  min={1}
+                  max={6}
+                  step={1}
+                  onValueChange={chooseSkinType}
+                  className="w-full max-w-[220px]"
+                />
+                <div className="flex w-full max-w-[220px] justify-between px-0.5">
+                  {SKIN_TYPES.map((n) => (
+                    <span
+                      key={n}
+                      className="h-2 w-2 rounded-full"
+                      style={{ backgroundColor: SKIN_TONE_SWATCH[n] }}
+                      aria-hidden
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <Button
+              variant="link"
+              className="h-auto justify-start p-0 text-brand-ink"
+              onClick={() => setShowDataSources(true)}
             >
-              {LOCALE_LABEL[l] ?? l}
-            </button>
-          ))}
-        </div>
+              {t("dataSourcesLink")}
+            </Button>
+          </div>
+        </SheetContent>
+      </Sheet>
 
-        <h3 className="mb-2 text-sm font-medium text-muted">
-          {t("skinType")}
-        </h3>
-        <p className="mb-3 text-sm text-muted">{t("skinTypeHint")}</p>
-        <div className="mb-2 grid grid-cols-6 gap-2">
-          {SKIN_TYPES.map((type) => (
-            <button
-              key={type}
-              onClick={() => chooseSkinType(type)}
-              aria-label={t(`skinTypes.${type}`)}
-              className={`aspect-square rounded-xl border text-sm font-medium transition-colors ${
-                type === skinType
-                  ? "border-brand bg-brand text-white"
-                  : "border-black/10 text-ink hover:bg-surface"
-              }`}
-            >
-              {type}
-            </button>
-          ))}
-        </div>
-        {skinType && (
-          <p className="mb-6 text-sm text-muted">
-            {t(`skinTypes.${skinType}`)}
-          </p>
-        )}
-
-        <button
-          onClick={() => setShowDataSources(true)}
-          className="text-sm text-brand-ink underline-offset-4 hover:underline"
-        >
-          {t("dataSourcesLink")}
-        </button>
-      </div>
-
-      {showDataSources && (
-        <DataSourcesSheet onClose={() => setShowDataSources(false)} />
-      )}
-    </div>
+      <DataSourcesSheet
+        open={showDataSources}
+        onOpenChange={setShowDataSources}
+      />
+    </>
   );
 }

@@ -54,7 +54,7 @@ export default function InstallPrompt() {
       <div className="flex shrink-0 items-center gap-3">
         <button
           onClick={dismiss}
-          className="text-sm text-muted hover:text-ink transition-colors"
+          className="text-sm text-muted-foreground hover:text-ink transition-colors"
         >
           {t("dismiss")}
         </button>

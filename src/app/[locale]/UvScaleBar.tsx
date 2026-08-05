@@ -29,7 +29,7 @@ export default function UvScaleBar({ uv }: { uv: number }) {
           style={{ left: `${markerPct}%` }}
         />
       </div>
-      <div className="mt-1.5 flex justify-between text-xs text-muted tabular-nums">
+      <div className="mt-1.5 flex justify-between text-xs text-muted-foreground tabular-nums">
         <span>0</span>
         <span>{UV_SCALE_MAX}+</span>
       </div>

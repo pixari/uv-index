@@ -40,7 +40,7 @@ export default function ShareButton({
   return (
     <button
       onClick={share}
-      className="flex items-center gap-1.5 text-xs text-muted hover:text-brand-ink transition-colors"
+      className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-brand-ink transition-colors"
     >
       <svg
         width="13"

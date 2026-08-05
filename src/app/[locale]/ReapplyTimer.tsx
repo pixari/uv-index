@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import {
   getReapplyStartedAt,
   startReapplyTimer,
@@ -54,13 +56,13 @@ export default function ReapplyTimer({
   // No skin type set yet — a discoverable prompt, not silent absence.
   if (!skinType) {
     return (
-      <button
+      <Card
+        className="w-full max-w-xs cursor-pointer items-center gap-1 border-dashed px-4 py-3.5 text-center shadow-none ring-black/15 hover:bg-surface transition-colors"
         onClick={onOpenSettings}
-        className="flex w-full max-w-xs flex-col items-center gap-1 rounded-2xl border border-dashed border-black/15 px-4 py-3.5 text-center hover:bg-surface transition-colors"
       >
-        <span className="text-sm text-ink">{t("setupPrompt")}</span>
+        <span className="text-sm text-foreground">{t("setupPrompt")}</span>
         <span className="text-xs text-brand-ink">{t("setupCta")}</span>
-      </button>
+      </Card>
     );
   }
 
@@ -72,39 +74,38 @@ export default function ReapplyTimer({
     const timeLabel = h > 0 ? `${h}h ${m}min` : `${m}min`;
 
     return (
-      <div className="flex w-full max-w-xs flex-col items-center gap-1.5 rounded-2xl border border-black/10 px-4 py-3.5 text-center">
+      <Card className="w-full max-w-xs items-center gap-1.5 px-4 py-3.5 text-center shadow-none ring-black/10">
         <p
           className={
             overdue
               ? "text-sm font-medium text-brand-ink"
-              : "text-sm text-ink"
+              : "text-sm text-foreground"
           }
         >
           {overdue ? t("overdue") : t("countdown", { time: timeLabel })}
         </p>
-        <button
+        <Button
+          variant="link"
+          size="sm"
+          className="h-auto p-0 text-xs text-muted-foreground"
           onClick={overdue ? start : reset}
-          className="text-xs text-muted underline underline-offset-4 hover:text-brand-ink transition-colors"
         >
           {overdue ? t("reapplied") : t("cancel")}
-        </button>
-      </div>
+        </Button>
+      </Card>
     );
   }
 
   // Skin type set, no active timer — burn-time estimate + start button.
   const burn = burnMinutes(skinType, uv);
   return (
-    <div className="flex w-full max-w-xs flex-col items-center gap-2 rounded-2xl border border-black/10 px-4 py-3.5 text-center">
+    <Card className="w-full max-w-xs items-center gap-2 px-4 py-3.5 text-center shadow-none ring-black/10">
       {burn !== null && (
-        <p className="text-xs text-muted">{t("burnEstimate", { minutes: burn })}</p>
+        <p className="text-xs text-muted-foreground">
+          {t("burnEstimate", { minutes: burn })}
+        </p>
       )}
-      <button
-        onClick={start}
-        className="rounded-full bg-brand px-4 py-2 text-sm font-medium text-white hover:opacity-90 transition-opacity"
-      >
-        {t("start")}
-      </button>
-    </div>
+      <Button onClick={start}>{t("start")}</Button>
+    </Card>
   );
 }

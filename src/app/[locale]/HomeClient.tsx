@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { uvLevel, RISK_TEXT_COLOR } from "@/lib/uvLevel";
+import { Button } from "@/components/ui/button";
 import InstallPrompt from "./InstallPrompt";
 import LocationSheet, { type Place } from "./LocationSheet";
 import ReapplyTimer from "./ReapplyTimer";
@@ -104,9 +105,10 @@ export default function HomeClient() {
   return (
     <main className="flex min-h-dvh flex-col items-center px-6 py-8">
       <div className="flex w-full max-w-xs items-center justify-between">
-        <button
+        <Button
+          variant="ghost"
+          className="h-auto gap-1.5 px-2 py-1.5 text-sm text-muted-foreground hover:text-brand-ink"
           onClick={() => setShowLocation(true)}
-          className="flex items-center gap-1.5 text-sm text-muted hover:text-brand-ink transition-colors"
         >
           <svg
             width="14"
@@ -122,12 +124,14 @@ export default function HomeClient() {
             <circle cx="12" cy="10" r="3" />
           </svg>
           {coords?.label ?? t("locationPrompt")}
-        </button>
+        </Button>
 
-        <button
-          onClick={() => setShowSettings(true)}
+        <Button
+          variant="ghost"
+          size="icon"
           aria-label={t("settingsLabel")}
-          className="text-muted hover:text-brand-ink transition-colors"
+          className="text-muted-foreground hover:text-brand-ink"
+          onClick={() => setShowSettings(true)}
         >
           <svg
             width="17"
@@ -142,17 +146,17 @@ export default function HomeClient() {
             <circle cx="12" cy="12" r="3" />
             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" />
           </svg>
-        </button>
+        </Button>
       </div>
 
       <div className="flex flex-1 flex-col items-center justify-center gap-5 py-10">
         {uv === null && !error && (
-          <p className="text-muted">{t("loading")}</p>
+          <p className="text-muted-foreground">{t("loading")}</p>
         )}
         {error && (
           <button
             onClick={useGps}
-            className="text-muted underline underline-offset-4 hover:text-brand-ink transition-colors"
+            className="text-muted-foreground underline underline-offset-4 hover:text-brand-ink transition-colors"
           >
             {t("locationPrompt")}
           </button>
@@ -208,7 +212,7 @@ export default function HomeClient() {
             <ReapplyTimer key={settingsVersion} uv={uv} onOpenSettings={() => setShowSettings(true)} />
 
             {/* Utility: quiet metadata, smallest visual weight on the page. */}
-            <div className="flex items-center gap-3 text-xs text-muted">
+            <div className="flex items-center gap-3 text-xs text-muted-foreground">
               {updatedAt && (
                 <span>
                   {t("updated", {
@@ -237,22 +241,20 @@ export default function HomeClient() {
         {t("learnMore")}
       </button>
 
-      {showLocation && (
-        <LocationSheet
-          onClose={() => setShowLocation(false)}
-          onUseGps={useGps}
-          onSelect={selectPlace}
-        />
-      )}
-      {showScience && <ScienceSheet onClose={() => setShowScience(false)} />}
-      {showSettings && (
-        <SettingsSheet
-          onClose={() => {
-            setShowSettings(false);
-            setSettingsVersion((v) => v + 1);
-          }}
-        />
-      )}
+      <LocationSheet
+        open={showLocation}
+        onOpenChange={setShowLocation}
+        onUseGps={useGps}
+        onSelect={selectPlace}
+      />
+      <ScienceSheet open={showScience} onOpenChange={setShowScience} />
+      <SettingsSheet
+        open={showSettings}
+        onOpenChange={(next) => {
+          setShowSettings(next);
+          if (!next) setSettingsVersion((v) => v + 1);
+        }}
+      />
       <InstallPrompt />
     </main>
   );

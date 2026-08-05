@@ -4,6 +4,17 @@ export type SkinType = 1 | 2 | 3 | 4 | 5 | 6;
 
 export const SKIN_TYPES: SkinType[] = [1, 2, 3, 4, 5, 6];
 
+// Illustrative skin-tone swatches for the Fitzpatrick scale picker — a
+// visual aid for recognition, not a precise or exhaustive representation.
+export const SKIN_TONE_SWATCH: Record<SkinType, string> = {
+  1: "#F6D7C4",
+  2: "#EAC1A0",
+  3: "#D9A57C",
+  4: "#B67D53",
+  5: "#8B5A34",
+  6: "#4A2E1E",
+};
+
 // Base minutes to erythema (sunburn onset) at UV index 1, per Fitzpatrick
 // type — from the same dermatological literature the Fitzpatrick scale
 // itself comes from (Fitzpatrick 1988; commonly tabulated alongside it).
