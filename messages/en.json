@@ -1,0 +1,39 @@
+{
+  "home": {
+    "title": "UV Index",
+    "loading": "Loading...",
+    "locationPrompt": "Enable location",
+    "riskLevels": {
+      "low": "Low",
+      "moderate": "Moderate",
+      "high": "High",
+      "veryHigh": "Very high",
+      "extreme": "Extreme"
+    },
+    "actions": {
+      "low": "No protection needed",
+      "moderate": "Apply SPF30, seek shade at midday",
+      "high": "Apply SPF30+, wear a hat and sunglasses, avoid 12-3pm",
+      "veryHigh": "Avoid sun 11am-4pm, protection required",
+      "extreme": "Stay indoors 11am-4pm if possible"
+    },
+    "learnMore": "Why?"
+  },
+  "location": {
+    "title": "Location",
+    "useGps": "Use my location",
+    "search": "Search for a city",
+    "saved": "Saved"
+  },
+  "science": {
+    "title": "Why it matters",
+    "intro": "UV radiation is classified as a Group 1 carcinogen by IARC (International Agency for Research on Cancer, WHO) — the same category as asbestos.",
+    "sources": "Sources"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "skinType": "Skin type",
+    "units": "Units"
+  }
+}

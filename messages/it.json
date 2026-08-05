@@ -1,0 +1,39 @@
+{
+  "home": {
+    "title": "Indice UV",
+    "loading": "Carico...",
+    "locationPrompt": "Attiva la posizione",
+    "riskLevels": {
+      "low": "Basso",
+      "moderate": "Moderato",
+      "high": "Alto",
+      "veryHigh": "Molto alto",
+      "extreme": "Estremo"
+    },
+    "actions": {
+      "low": "Nessuna protezione necessaria",
+      "moderate": "Applica SPF30, cerca l'ombra a mezzogiorno",
+      "high": "Applica SPF30+, cappello e occhiali, evita 12-15",
+      "veryHigh": "Evita il sole 11-16, protezione obbligatoria",
+      "extreme": "Resta al chiuso 11-16 se possibile"
+    },
+    "learnMore": "Perché?"
+  },
+  "location": {
+    "title": "Località",
+    "useGps": "Usa la mia posizione",
+    "search": "Cerca una città",
+    "saved": "Salvate"
+  },
+  "science": {
+    "title": "Perché è importante",
+    "intro": "L'esposizione ai raggi UV è classificata come cancerogena di Gruppo 1 dalla IARC (Agenzia Internazionale per la Ricerca sul Cancro, OMS) — lo stesso livello dell'amianto.",
+    "sources": "Fonti"
+  },
+  "settings": {
+    "title": "Impostazioni",
+    "language": "Lingua",
+    "skinType": "Fototipo pelle",
+    "units": "Unità"
+  }
+}

@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# UV Index
 
-## Getting Started
+Mobile-first UV index tool. Multilingual (IT/EN/DE), GPS or manual location search,
+science-backed content on sun exposure risk.
 
-First, run the development server:
+## Stack
+
+- Next.js (App Router) + TypeScript + Tailwind
+- next-intl for i18n (`it`, `en`, `de`)
+- MET Norway Locationforecast API for UV data (no key required)
+- Open-Meteo geocoding API for location search (no key required)
+- Deployed via Docker (multi-stage, Next.js standalone output) on Coolify
+
+## Information architecture
+
+Four surfaces, not four pages — home stays the center, everything else is an overlay:
+
+1. **Home** — big number, color, one-line recommended action, current location
+2. **Location** — GPS or search, reached by tapping the location label
+3. **Perché? / Why?** — science layer with cited sources (WHO/IARC/AAD/Skin Cancer Foundation), reached by a dedicated button, not part of the main flow
+4. **Settings** — language, skin type (for future reapplication timer), units
+
+## Development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Build
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Docker
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+docker build -t uv-index .
+docker run -p 3000:3000 uv-index
+```

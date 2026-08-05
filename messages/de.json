@@ -1,0 +1,39 @@
+{
+  "home": {
+    "title": "UV-Index",
+    "loading": "Lädt...",
+    "locationPrompt": "Standort aktivieren",
+    "riskLevels": {
+      "low": "Niedrig",
+      "moderate": "Mäßig",
+      "high": "Hoch",
+      "veryHigh": "Sehr hoch",
+      "extreme": "Extrem"
+    },
+    "actions": {
+      "low": "Kein Schutz nötig",
+      "moderate": "LSF30 auftragen, Schatten am Mittag suchen",
+      "high": "LSF30+ auftragen, Hut und Sonnenbrille, 12-15 Uhr meiden",
+      "veryHigh": "Sonne 11-16 Uhr meiden, Schutz erforderlich",
+      "extreme": "11-16 Uhr wenn möglich drinnen bleiben"
+    },
+    "learnMore": "Warum?"
+  },
+  "location": {
+    "title": "Standort",
+    "useGps": "Meinen Standort verwenden",
+    "search": "Stadt suchen",
+    "saved": "Gespeichert"
+  },
+  "science": {
+    "title": "Warum es wichtig ist",
+    "intro": "UV-Strahlung wird von der IARC (Internationale Agentur für Krebsforschung, WHO) als Karzinogen der Gruppe 1 eingestuft — dieselbe Kategorie wie Asbest.",
+    "sources": "Quellen"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "language": "Sprache",
+    "skinType": "Hauttyp",
+    "units": "Einheiten"
+  }
+}
