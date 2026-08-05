@@ -50,7 +50,8 @@
       "4": "Olivastra — scotta raramente, abbronzatura buona",
       "5": "Scura — scotta molto raramente, abbronzatura intensa",
       "6": "Molto scura — non scotta quasi mai"
-    }
+    },
+    "dataSourcesLink": "Come uso i tuoi dati"
   },
   "install": {
     "prompt": "Installa l'app per un accesso rapido",
@@ -69,5 +70,16 @@
     "reapplied": "Fatto, riparti il timer",
     "cancel": "Annulla",
     "burnEstimate": "Con il tuo fototipo, rischio scottatura in circa {minutes} min senza protezione"
+  },
+  "dataSources": {
+    "title": "Dati e privacy",
+    "locationNote": "La tua posizione passa attraverso il nostro server per interrogare questi servizi, ma non la salviamo in nessun database né la colleghiamo alla tua identità.",
+    "sources": "Servizi usati",
+    "uses": {
+      "met": "Indice UV in tempo reale — gratuito, aggiornato circa ogni ora",
+      "openMeteo": "Ricerca città quando cerchi manualmente una località",
+      "bigDataCloud": "Nome del luogo quando usi il GPS"
+    },
+    "analyticsNote": "Usiamo Umami, uno strumento di analisi che non usa cookie e non raccoglie dati personali — solo statistiche aggregate su quante persone usano l'app."
   }
 }

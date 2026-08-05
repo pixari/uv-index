@@ -10,6 +10,7 @@ import {
   setStoredSkinType,
   type SkinType,
 } from "@/lib/skinType";
+import DataSourcesSheet from "./DataSourcesSheet";
 
 const LOCALE_LABEL: Record<string, string> = {
   it: "Italiano",
@@ -24,6 +25,7 @@ export default function SettingsSheet({ onClose }: { onClose: () => void }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [skinType, setSkinType] = useState<SkinType | null>(null);
+  const [showDataSources, setShowDataSources] = useState(false);
 
   useEffect(() => {
     requestAnimationFrame(() => setOpen(true));
@@ -106,9 +108,22 @@ export default function SettingsSheet({ onClose }: { onClose: () => void }) {
           ))}
         </div>
         {skinType && (
-          <p className="text-sm text-muted">{t(`skinTypes.${skinType}`)}</p>
+          <p className="mb-6 text-sm text-muted">
+            {t(`skinTypes.${skinType}`)}
+          </p>
         )}
+
+        <button
+          onClick={() => setShowDataSources(true)}
+          className="text-sm text-brand-ink underline-offset-4 hover:underline"
+        >
+          {t("dataSourcesLink")}
+        </button>
       </div>
+
+      {showDataSources && (
+        <DataSourcesSheet onClose={() => setShowDataSources(false)} />
+      )}
     </div>
   );
 }

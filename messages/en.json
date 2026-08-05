@@ -50,7 +50,8 @@
       "4": "Olive — rarely burns, tans well",
       "5": "Brown — very rarely burns, tans deeply",
       "6": "Deeply pigmented — almost never burns"
-    }
+    },
+    "dataSourcesLink": "How we use your data"
   },
   "install": {
     "prompt": "Install the app for quick access",
@@ -69,5 +70,16 @@
     "reapplied": "Done, restart the timer",
     "cancel": "Cancel",
     "burnEstimate": "With your skin type, burn risk in about {minutes} min without protection"
+  },
+  "dataSources": {
+    "title": "Data & privacy",
+    "locationNote": "Your location passes through our server to query these services, but we don't store it in any database or link it to your identity.",
+    "sources": "Services used",
+    "uses": {
+      "met": "Real-time UV index — free, updated roughly hourly",
+      "openMeteo": "City search when you manually look up a place",
+      "bigDataCloud": "Place name when you use GPS"
+    },
+    "analyticsNote": "We use Umami, a cookie-free analytics tool that doesn't collect personal data — just aggregate stats on how many people use the app."
   }
 }
