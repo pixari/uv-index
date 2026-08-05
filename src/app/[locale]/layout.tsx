@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
+import Script from "next/script";
 import { routing } from "@/i18n/routing";
 import "./globals.css";
 
@@ -81,6 +82,12 @@ export default async function LocaleLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-black text-white">
+        <Script
+          defer
+          src="https://analytics.pixari.dev/script.js"
+          data-website-id="c87465e5-3964-4abc-821b-a7e6c04484ab"
+          strategy="afterInteractive"
+        />
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>
     </html>
