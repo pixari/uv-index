@@ -55,5 +55,10 @@
     "prompt": "Install the app for quick access",
     "install": "Install",
     "dismiss": "No thanks"
+  },
+  "share": {
+    "share": "Share",
+    "copied": "Link copied",
+    "text": "UV index in {place}: {uv} ({riskLabel})"
   }
 }

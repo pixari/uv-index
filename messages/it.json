@@ -55,5 +55,10 @@
     "prompt": "Installa l'app per un accesso rapido",
     "install": "Installa",
     "dismiss": "No grazie"
+  },
+  "share": {
+    "share": "Condividi",
+    "copied": "Link copiato",
+    "text": "Indice UV a {place}: {uv} ({riskLabel})"
   }
 }

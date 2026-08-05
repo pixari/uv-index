@@ -7,6 +7,7 @@ import InstallPrompt from "./InstallPrompt";
 import LocationSheet, { type Place } from "./LocationSheet";
 import ScienceSheet from "./ScienceSheet";
 import SettingsSheet from "./SettingsSheet";
+import ShareButton from "./ShareButton";
 import UvScaleBar from "./UvScaleBar";
 
 type Coords = { lat: number; lon: number; label: string };
@@ -189,6 +190,11 @@ export default function HomeClient() {
                 })}
               </p>
             )}
+            <ShareButton
+              uv={uv}
+              riskLabel={t(`riskLevels.${level}`)}
+              place={coords?.label ?? ""}
+            />
           </div>
         )}
       </div>
