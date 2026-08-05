@@ -24,6 +24,7 @@
     },
     "learnMore": "Why?",
     "updated": "Updated at {time}",
+    "safeAfter": "Low risk after {time}",
     "settingsLabel": "Settings"
   },
   "location": {

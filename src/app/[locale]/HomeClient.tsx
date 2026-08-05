@@ -20,6 +20,7 @@ export default function HomeClient() {
   const [coords, setCoords] = useState<Coords | null>(null);
   const [uv, setUv] = useState<number | null>(null);
   const [updatedAt, setUpdatedAt] = useState<string | null>(null);
+  const [safeAfter, setSafeAfter] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showLocation, setShowLocation] = useState(false);
   const [showScience, setShowScience] = useState(false);
@@ -55,6 +56,7 @@ export default function HomeClient() {
         if (typeof d.uv === "number") {
           setUv(d.uv);
           setUpdatedAt(d.updatedAt ?? null);
+          setSafeAfter(d.safeAfter ?? null);
           requestAnimationFrame(() => setRevealed(true));
         } else {
           setError("no-data");
@@ -179,6 +181,16 @@ export default function HomeClient() {
             <p className="max-w-[26ch] text-center text-ink text-lg leading-snug">
               {t(`actions.${level}`)}
             </p>
+            {safeAfter && (
+              <p className="text-sm text-brand-ink">
+                {t("safeAfter", {
+                  time: new Date(safeAfter).toLocaleTimeString(locale, {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  }),
+                })}
+              </p>
+            )}
             <UvScaleBar uv={uv} />
             {updatedAt && (
               <p className="text-xs text-muted">

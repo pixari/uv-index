@@ -24,6 +24,7 @@
     },
     "learnMore": "Warum?",
     "updated": "Aktualisiert um {time}",
+    "safeAfter": "Niedriges Risiko ab {time}",
     "settingsLabel": "Einstellungen"
   },
   "location": {
