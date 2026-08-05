@@ -8,6 +8,7 @@
     "loading": "Loading...",
     "locationPrompt": "Enable location",
     "currentLocation": "My location",
+    "defaultProfileName": "Me",
     "riskLevels": {
       "low": "Low",
       "moderate": "Moderate",
@@ -46,6 +47,11 @@
   "settings": {
     "title": "Settings",
     "language": "Language",
+    "profiles": "People",
+    "addProfile": "Add person",
+    "newProfileNamePlaceholder": "Name",
+    "addProfileConfirm": "Add",
+    "removeProfile": "Remove {name}",
     "skinType": "Skin type",
     "skinTypeHint": "Used to calculate when to reapply protection",
     "skinTypes": {

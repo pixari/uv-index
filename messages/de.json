@@ -8,6 +8,7 @@
     "loading": "Lädt...",
     "locationPrompt": "Standort aktivieren",
     "currentLocation": "Mein Standort",
+    "defaultProfileName": "Ich",
     "riskLevels": {
       "low": "Niedrig",
       "moderate": "Mäßig",
@@ -46,6 +47,11 @@
   "settings": {
     "title": "Einstellungen",
     "language": "Sprache",
+    "profiles": "Personen",
+    "addProfile": "Person hinzufügen",
+    "newProfileNamePlaceholder": "Name",
+    "addProfileConfirm": "Hinzufügen",
+    "removeProfile": "{name} entfernen",
     "skinType": "Hauttyp",
     "skinTypeHint": "Wird verwendet, um zu berechnen, wann der Schutz erneuert werden sollte",
     "skinTypes": {

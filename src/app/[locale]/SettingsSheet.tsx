@@ -12,13 +12,16 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Slider } from "@/components/ui/slider";
+import { SKIN_TYPES, SKIN_TONE_SWATCH, type SkinType } from "@/lib/skinType";
 import {
-  SKIN_TYPES,
-  getStoredSkinType,
-  setStoredSkinType,
-  SKIN_TONE_SWATCH,
-  type SkinType,
-} from "@/lib/skinType";
+  getProfiles,
+  addProfile,
+  removeProfile,
+  setProfileSkinType,
+  resolveActiveProfileId,
+  setActiveProfileId,
+  type Profile,
+} from "@/lib/profiles";
 import DataSourcesSheet from "./DataSourcesSheet";
 
 const LOCALE_LABEL: Record<string, string> = {
@@ -38,24 +41,59 @@ export default function SettingsSheet({
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
-  const [skinType, setSkinType] = useState<SkinType | null>(null);
   const [showDataSources, setShowDataSources] = useState(false);
+  const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [selectedProfileId, setSelectedProfileId] = useState<string | null>(null);
+  const [addingProfile, setAddingProfile] = useState(false);
+  const [newProfileName, setNewProfileName] = useState("");
 
   useEffect(() => {
-    setSkinType(getStoredSkinType());
-  }, []);
+    if (!open) return;
+    const list = getProfiles(t("defaultProfileName"));
+    setProfiles(list);
+    setSelectedProfileId(resolveActiveProfileId(t("defaultProfileName")));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
 
   function changeLocale(next: string) {
     router.replace(pathname, { locale: next });
   }
 
-  function chooseSkinType(value: number | readonly number[]) {
-    const type = (Array.isArray(value) ? value[0] : value) as SkinType;
-    setSkinType(type);
-    setStoredSkinType(type);
+  function selectProfile(id: string) {
+    setSelectedProfileId(id);
+    setActiveProfileId(id);
   }
 
-  const displayedType = skinType ?? 3;
+  function chooseSkinType(value: number | readonly number[]) {
+    if (!selectedProfileId) return;
+    const type = (Array.isArray(value) ? value[0] : value) as SkinType;
+    setProfileSkinType(selectedProfileId, type);
+    setProfiles((prev) =>
+      prev.map((p) => (p.id === selectedProfileId ? { ...p, skinType: type } : p)),
+    );
+  }
+
+  function confirmAddProfile() {
+    const name = newProfileName.trim();
+    if (!name) return;
+    const created = addProfile(name);
+    setProfiles((prev) => [...prev, created]);
+    selectProfile(created.id);
+    setNewProfileName("");
+    setAddingProfile(false);
+  }
+
+  function handleRemoveProfile(id: string) {
+    if (profiles.length <= 1) return;
+    const remaining = removeProfile(id);
+    setProfiles(remaining);
+    if (selectedProfileId === id) {
+      setSelectedProfileId(remaining[0]?.id ?? null);
+    }
+  }
+
+  const selectedProfile = profiles.find((p) => p.id === selectedProfileId);
+  const displayedType = selectedProfile?.skinType ?? 3;
 
   return (
     <>
@@ -84,6 +122,75 @@ export default function SettingsSheet({
                   </Button>
                 ))}
               </div>
+            </div>
+
+            <div>
+              <h3 className="mb-2 text-sm font-medium text-muted-foreground">
+                {t("profiles")}
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {profiles.map((p) => (
+                  <div key={p.id} className="flex items-center">
+                    <button
+                      onClick={() => selectProfile(p.id)}
+                      className={
+                        "rounded-full px-3 py-1.5 text-sm font-medium transition-colors " +
+                        (p.id === selectedProfileId
+                          ? "bg-brand text-primary-foreground"
+                          : "bg-surface text-foreground hover:bg-border")
+                      }
+                    >
+                      {p.name}
+                    </button>
+                    {profiles.length > 1 && (
+                      <button
+                        onClick={() => handleRemoveProfile(p.id)}
+                        aria-label={t("removeProfile", { name: p.name })}
+                        className="-ml-1 p-1 text-muted-foreground hover:text-foreground"
+                      >
+                        <svg
+                          width="12"
+                          height="12"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                        >
+                          <line x1="18" y1="6" x2="6" y2="18" />
+                          <line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
+                ))}
+
+                {!addingProfile && (
+                  <button
+                    onClick={() => setAddingProfile(true)}
+                    className="rounded-full border border-dashed border-border px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-colors"
+                  >
+                    + {t("addProfile")}
+                  </button>
+                )}
+              </div>
+
+              {addingProfile && (
+                <div className="mt-2 flex gap-2">
+                  <input
+                    autoFocus
+                    type="text"
+                    value={newProfileName}
+                    onChange={(e) => setNewProfileName(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && confirmAddProfile()}
+                    placeholder={t("newProfileNamePlaceholder")}
+                    className="flex-1 rounded-xl border border-border bg-surface px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-brand"
+                  />
+                  <Button size="sm" onClick={confirmAddProfile}>
+                    {t("addProfileConfirm")}
+                  </Button>
+                </div>
+              )}
             </div>
 
             <div>

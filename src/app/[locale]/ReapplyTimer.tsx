@@ -13,7 +13,7 @@ import {
   SPF_OPTIONS,
   type Spf,
 } from "@/lib/reapplyTimer";
-import { getStoredSkinType, burnMinutes, type SkinType } from "@/lib/skinType";
+import { burnMinutes, type SkinType } from "@/lib/skinType";
 
 function spfLabel(spf: Spf) {
   return spf > 50 ? "50+" : String(spf);
@@ -26,23 +26,25 @@ const EYEBROW = "text-xs font-semibold uppercase tracking-wide text-white/60";
 
 export default function ReapplyTimer({
   uv,
+  profileId,
+  skinType,
   onOpenSettings,
 }: {
   uv: number;
+  profileId: string;
+  skinType: SkinType | null;
   onOpenSettings: () => void;
 }) {
   const t = useTranslations("reapply");
-  const [skinType, setSkinType] = useState<SkinType | null>(null);
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const [remaining, setRemaining] = useState<number | null>(null);
   const [spf, setSpf] = useState<Spf | null>(null);
   const [pendingSpf, setPendingSpf] = useState<Spf>(30);
 
   useEffect(() => {
-    setSkinType(getStoredSkinType());
-    setStartedAt(getReapplyStartedAt());
-    setSpf(getStoredSpf());
-  }, []);
+    setStartedAt(getReapplyStartedAt(profileId));
+    setSpf(getStoredSpf(profileId));
+  }, [profileId]);
 
   useEffect(() => {
     if (startedAt === null) {
@@ -59,14 +61,14 @@ export default function ReapplyTimer({
   }, [startedAt]);
 
   function start() {
-    startReapplyTimer();
-    setStoredSpf(pendingSpf);
+    startReapplyTimer(profileId);
+    setStoredSpf(profileId, pendingSpf);
     setSpf(pendingSpf);
-    setStartedAt(getReapplyStartedAt());
+    setStartedAt(getReapplyStartedAt(profileId));
   }
 
   function reset() {
-    clearReapplyTimer();
+    clearReapplyTimer(profileId);
     setStartedAt(null);
   }
 

@@ -28,19 +28,6 @@ export const BASE_BURN_MINUTES: Record<SkinType, number> = {
   6: 500,
 };
 
-const SKIN_TYPE_KEY = "uv-index:skin-type";
-
-export function getStoredSkinType(): SkinType | null {
-  if (typeof window === "undefined") return null;
-  const raw = localStorage.getItem(SKIN_TYPE_KEY);
-  const n = raw ? Number(raw) : null;
-  return n && n >= 1 && n <= 6 ? (n as SkinType) : null;
-}
-
-export function setStoredSkinType(type: SkinType) {
-  localStorage.setItem(SKIN_TYPE_KEY, String(type));
-}
-
 /** Minutes until sunburn risk at the given UV index, for a skin type. */
 export function burnMinutes(skinType: SkinType, uv: number): number | null {
   if (uv <= 0) return null;

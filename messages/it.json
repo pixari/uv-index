@@ -8,6 +8,7 @@
     "loading": "Carico...",
     "locationPrompt": "Attiva la posizione",
     "currentLocation": "La mia posizione",
+    "defaultProfileName": "Io",
     "riskLevels": {
       "low": "Basso",
       "moderate": "Moderato",
@@ -46,6 +47,11 @@
   "settings": {
     "title": "Impostazioni",
     "language": "Lingua",
+    "profiles": "Persone",
+    "addProfile": "Aggiungi persona",
+    "newProfileNamePlaceholder": "Nome",
+    "addProfileConfirm": "Aggiungi",
+    "removeProfile": "Rimuovi {name}",
     "skinType": "Fototipo pelle",
     "skinTypeHint": "Usato per calcolare quando riapplicare la protezione",
     "skinTypes": {

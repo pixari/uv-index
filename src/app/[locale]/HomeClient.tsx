@@ -3,6 +3,12 @@
 import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { uvLevel, skyGradientCss } from "@/lib/uvLevel";
+import {
+  getProfiles,
+  resolveActiveProfileId,
+  setActiveProfileId,
+  type Profile,
+} from "@/lib/profiles";
 import InstallPrompt from "./InstallPrompt";
 import LocationSheet, { type Place } from "./LocationSheet";
 import ReapplyTimer from "./ReapplyTimer";
@@ -28,6 +34,8 @@ export default function HomeClient() {
   const [showSettings, setShowSettings] = useState(false);
   const [revealed, setRevealed] = useState(false);
   const [settingsVersion, setSettingsVersion] = useState(0);
+  const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [activeProfileId, setActiveProfileIdState] = useState<string | null>(null);
 
   // Restore last-used place, or fall back to GPS prompt.
   useEffect(() => {
@@ -38,6 +46,20 @@ export default function HomeClient() {
     }
     setShowLocation(true);
   }, []);
+
+  // Load profiles (creating the default one on first run) and re-read
+  // whenever Settings closes, since that's where profiles are managed.
+  useEffect(() => {
+    const list = getProfiles(t("defaultProfileName"));
+    setProfiles(list);
+    setActiveProfileIdState(resolveActiveProfileId(t("defaultProfileName")));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [settingsVersion]);
+
+  function switchProfile(id: string) {
+    setActiveProfileId(id);
+    setActiveProfileIdState(id);
+  }
 
   // Persist on every change, including a label resolved after the fact.
   useEffect(() => {
@@ -208,11 +230,37 @@ export default function HomeClient() {
                 )}
               </div>
 
-              <ReapplyTimer
-                key={settingsVersion}
-                uv={uv}
-                onOpenSettings={() => setShowSettings(true)}
-              />
+              {profiles.length > 1 && (
+                <div className="flex flex-wrap justify-center gap-1.5">
+                  {profiles.map((p) => (
+                    <button
+                      key={p.id}
+                      onClick={() => switchProfile(p.id)}
+                      className={
+                        "rounded-full px-3 py-1.5 text-xs font-medium transition-colors " +
+                        (p.id === activeProfileId
+                          ? "bg-white text-ink"
+                          : "bg-white/15 text-white hover:bg-white/25")
+                      }
+                      aria-pressed={p.id === activeProfileId}
+                    >
+                      {p.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {activeProfileId && (
+                <ReapplyTimer
+                  key={activeProfileId}
+                  uv={uv}
+                  profileId={activeProfileId}
+                  skinType={
+                    profiles.find((p) => p.id === activeProfileId)?.skinType ?? null
+                  }
+                  onOpenSettings={() => setShowSettings(true)}
+                />
+              )}
 
               <div className="flex items-center gap-3 text-xs text-white/55">
                 {updatedAt && (
