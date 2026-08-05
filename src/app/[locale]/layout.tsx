@@ -77,8 +77,8 @@ export default async function LocaleLayout({
   }
 
   return (
-    <html lang={locale} className="h-full antialiased">
-      <body className="h-full overflow-hidden bg-bg text-ink font-sans">
+    <html lang={locale} className="antialiased">
+      <body className="bg-bg text-ink font-sans">
         <Script
           defer
           src="https://analytics.pixari.dev/script.js"
