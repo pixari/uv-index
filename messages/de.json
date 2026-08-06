@@ -116,6 +116,10 @@
       "title": "UV-Verlauf der nächsten 24 Stunden",
       "subtitle": "In {place}, Stunde für Stunde"
     },
+    "bestWindow": {
+      "title": "Beste Zeit zum Draußensein",
+      "none": "Kein risikoarmes Zeitfenster in den nächsten 24 Stunden — trotzdem schützen"
+    },
     "methodology": {
       "title": "Wie der UV-Index funktioniert",
       "p1": "Der UV-Index wurde von der WHO, der Weltorganisation für Meteorologie, UNEP und ICNIRP als standardisierte internationale Skala entwickelt, um die Intensität der UV-Strahlung am Boden verständlich zu kommunizieren, ohne Fachwissen zu erfordern — vor seiner Einführung nutzte jedes Land unterschiedliche, nicht vergleichbare Skalen.",

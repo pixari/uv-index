@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { findLowRiskWindows } from "@/lib/bestWindow";
 import UvDayChart from "./UvDayChart";
 
 const LAST_PLACE_KEY = "uv-index:last-place";
@@ -10,8 +11,16 @@ const LAST_PLACE_KEY = "uv-index:last-place";
 type Coords = { lat: number; lon: number; label: string };
 type Point = { time: string; uv: number };
 
+function formatTime(iso: string, locale: string) {
+  return new Date(iso).toLocaleTimeString(locale, {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
 export default function LearnClient() {
   const t = useTranslations("learn");
+  const locale = useLocale();
   const [points, setPoints] = useState<Point[] | null>(null);
   const [place, setPlace] = useState<string | null>(null);
 
@@ -50,6 +59,31 @@ export default function LearnClient() {
             </p>
           )}
           <UvDayChart points={points} />
+
+          {(() => {
+            const windows = findLowRiskWindows(points);
+            return (
+              <div className="mt-4 rounded-xl bg-surface px-4 py-3">
+                <p className="text-sm font-medium text-foreground">
+                  {t("bestWindow.title")}
+                </p>
+                {windows.length > 0 ? (
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {windows
+                      .map(
+                        (w) =>
+                          `${formatTime(w.start, locale)}–${formatTime(w.end, locale)}`,
+                      )
+                      .join(", ")}
+                  </p>
+                ) : (
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {t("bestWindow.none")}
+                  </p>
+                )}
+              </div>
+            );
+          })()}
         </section>
       )}
 
