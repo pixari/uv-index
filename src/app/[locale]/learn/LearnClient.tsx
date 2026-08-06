@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { findLowRiskWindows } from "@/lib/bestWindow";
+import { groupDailyPeaks, type DailyPeak } from "@/lib/dailyForecast";
+import DailyForecast from "./DailyForecast";
 import UvDayChart from "./UvDayChart";
 
 const LAST_PLACE_KEY = "uv-index:last-place";
@@ -22,6 +24,7 @@ export default function LearnClient() {
   const t = useTranslations("learn");
   const locale = useLocale();
   const [points, setPoints] = useState<Point[] | null>(null);
+  const [dailyPeaks, setDailyPeaks] = useState<DailyPeak[]>([]);
   const [place, setPlace] = useState<string | null>(null);
 
   useEffect(() => {
@@ -29,9 +32,13 @@ export default function LearnClient() {
     if (!saved) return;
     const coords: Coords = JSON.parse(saved);
     setPlace(coords.label);
-    fetch(`/api/uv-timeseries?lat=${coords.lat}&lon=${coords.lon}`)
+    fetch(`/api/uv-timeseries?lat=${coords.lat}&lon=${coords.lon}&hours=120`)
       .then((r) => r.json())
-      .then((d) => setPoints(d.today ?? []))
+      .then((d) => {
+        const all: Point[] = d.today ?? [];
+        setPoints(all.slice(0, 24));
+        setDailyPeaks(groupDailyPeaks(all, 5));
+      })
       .catch(() => setPoints([]));
   }, []);
 
@@ -84,6 +91,16 @@ export default function LearnClient() {
               </div>
             );
           })()}
+        </section>
+      )}
+
+      {dailyPeaks.length > 1 && (
+        <section className="mb-12">
+          <h2 className="font-display text-xl mb-1">{t("forecast.title")}</h2>
+          <p className="mb-4 text-sm text-muted-foreground">
+            {t("forecast.subtitle")}
+          </p>
+          <DailyForecast days={dailyPeaks} locale={locale} />
         </section>
       )}
 

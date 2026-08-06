@@ -120,6 +120,11 @@
       "title": "Momento migliore per stare all'aperto",
       "none": "Nessuna finestra a basso rischio nelle prossime 24 ore — porta comunque la protezione"
     },
+    "forecast": {
+      "title": "Prossimi giorni",
+      "subtitle": "Picco UV previsto per ogni giornata",
+      "today": "Oggi"
+    },
     "methodology": {
       "title": "Come funziona l'indice UV",
       "p1": "L'indice UV è stato sviluppato da OMS, Organizzazione Meteorologica Mondiale, UNEP e ICNIRP come scala internazionale standardizzata, pensata per comunicare l'intensità dei raggi UV al suolo in modo comprensibile senza conoscenze tecniche — prima della sua adozione, ogni paese usava scale diverse e non confrontabili.",

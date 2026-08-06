@@ -120,6 +120,11 @@
       "title": "Best time to be outside",
       "none": "No low-risk window in the next 24 hours — bring protection regardless"
     },
+    "forecast": {
+      "title": "Upcoming days",
+      "subtitle": "Peak UV expected each day",
+      "today": "Today"
+    },
     "methodology": {
       "title": "How the UV index works",
       "p1": "The UV Index was developed by WHO, the World Meteorological Organization, UNEP, and ICNIRP as a standardized international scale, designed to communicate the intensity of UV radiation at ground level without requiring technical knowledge — before its adoption, every country used different, incomparable scales.",

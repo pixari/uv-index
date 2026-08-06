@@ -13,6 +13,15 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "lat/lon required" }, { status: 400 });
   }
 
+  // Optional window size: the 24h day-chart wants hourly resolution,
+  // the multi-day forecast wants further out. MET gives hourly steps
+  // for ~2.5 days then falls back to 6-hourly, which is still enough
+  // to estimate a daily peak.
+  const hoursParam = Number(req.nextUrl.searchParams.get("hours"));
+  const hours = Number.isFinite(hoursParam)
+    ? Math.min(Math.max(Math.round(hoursParam), 1), 120)
+    : 24;
+
   const res = await fetch(`${MET_URL}?lat=${lat}&lon=${lon}`, {
     headers: {
       "User-Agent": "uv-index-app (contact: raffaele.pizzari@gmail.com)",
@@ -39,7 +48,7 @@ export async function GET(req: NextRequest) {
   // (only leftover nighttime hours, all UV 0). Taking the next 24 hourly
   // entries instead always shows a real curve, including tomorrow's rise.
   const today = timeseries
-    .slice(0, 24)
+    .slice(0, hours)
     .map((e) => ({
       time: e.time,
       uv: e.data?.instant?.details?.ultraviolet_index_clear_sky ?? null,
