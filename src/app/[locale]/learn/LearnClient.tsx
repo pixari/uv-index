@@ -46,7 +46,9 @@ function ArticleHeader({
 }) {
   return (
     <div className="mb-4 flex items-start justify-between gap-3">
-      <h2 className="font-display text-2xl leading-tight">{title}</h2>
+      <h2 className="min-w-0 flex-1 break-words font-display text-2xl leading-tight">
+        {title}
+      </h2>
       <ArticleShareButton text={shareText} anchor={anchor} />
     </div>
   );
@@ -119,7 +121,10 @@ export default function LearnClient() {
       <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-brand-ink">
         {t("eyebrow")}
       </p>
-      <h1 className="font-display text-5xl leading-[1.05] mb-6">
+      {/* break-words: a single long, space-less word in some locale (e.g.
+          Italian "Approfondimenti") won't wrap on its own at this size and
+          otherwise overflows past the right edge instead. */}
+      <h1 className="break-words font-display text-5xl leading-[1.05] mb-6">
         {t("title")}
       </h1>
 
