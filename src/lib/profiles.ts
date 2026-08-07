@@ -4,6 +4,12 @@ export type Profile = {
   id: string;
   name: string;
   skinType: SkinType | null;
+  // AAP/AAD guidance: infants under 6 months should be kept out of direct
+  // sun entirely — shade and clothing, not sunscreen — which supersedes
+  // the Fitzpatrick-based burn-time guidance skinType normally drives.
+  // Optional (not `boolean`) because profiles created before this field
+  // existed won't have it in storage; treated as false wherever read.
+  isInfant?: boolean;
 };
 
 export const DEFAULT_PROFILE_ID = "default";
@@ -85,6 +91,12 @@ export function renameProfile(id: string, name: string) {
 export function setProfileSkinType(id: string, skinType: SkinType) {
   writeProfiles(
     (readProfiles() ?? []).map((p) => (p.id === id ? { ...p, skinType } : p)),
+  );
+}
+
+export function setProfileIsInfant(id: string, isInfant: boolean) {
+  writeProfiles(
+    (readProfiles() ?? []).map((p) => (p.id === id ? { ...p, isInfant } : p)),
   );
 }
 

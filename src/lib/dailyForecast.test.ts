@@ -40,6 +40,29 @@ describe("groupDailyPeaks", () => {
     expect(days.every((d) => d.uv > 0)).toBe(true);
   });
 
+  it("regression: drops a day whose samples are all dawn/dusk/night, even with 3+ of them, instead of reporting an implausibly low peak", () => {
+    const points = [
+      // Day 1: full hourly coverage, real midday peak of 9.
+      ...Array.from({ length: 24 }, (_, h) =>
+        point(`2026-08-07T${String(h).padStart(2, "0")}:00:00Z`, h >= 6 && h <= 18 ? 9 : 0),
+      ),
+      // Day 2: 4 synoptic samples, but none of them land near midday —
+      // its highest recorded value (3) is really just a dawn/dusk reading,
+      // not the day's true peak (which in August would also be ~9).
+      point("2026-08-08T00:00:00Z", 0),
+      point("2026-08-08T06:00:00Z", 3),
+      point("2026-08-08T18:00:00Z", 2),
+      point("2026-08-08T21:00:00Z", 0),
+      // Day 3: 4 synoptic samples that do include a midday one — kept.
+      point("2026-08-09T00:00:00Z", 0),
+      point("2026-08-09T06:00:00Z", 3),
+      point("2026-08-09T12:00:00Z", 8),
+      point("2026-08-09T18:00:00Z", 2),
+    ];
+    const days = groupDailyPeaks(points, 5);
+    expect(days.map((d) => d.uv)).toEqual([9, 8]);
+  });
+
   it("keeps a sparse first day (today) even with few samples — it's expected to be partial", () => {
     const points = [point("2026-08-07T20:00:00Z", 1)];
     const days = groupDailyPeaks(points, 5);

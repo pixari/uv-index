@@ -16,6 +16,8 @@ import {
   showNotification,
 } from "@/lib/notifications";
 import { getCachedUv, setCachedUv } from "@/lib/uvCache";
+import { reapplyStatus, type ReapplyStatus } from "@/lib/reapplyTimer";
+import { setAppBadgeCount } from "@/lib/appBadge";
 import InstallPrompt from "./InstallPrompt";
 import LocationSheet, { type Place } from "./LocationSheet";
 import ReapplyTimer from "./ReapplyTimer";
@@ -45,6 +47,10 @@ export default function HomeClient() {
   const [settingsVersion, setSettingsVersion] = useState(0);
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [activeProfileId, setActiveProfileIdState] = useState<string | null>(null);
+  // Every profile's reapply status, not just the active one's — powers the
+  // at-a-glance dot on each switcher chip and the app icon badge, both of
+  // which need to know about people who aren't currently selected.
+  const [profileStatuses, setProfileStatuses] = useState<Record<string, ReapplyStatus>>({});
   // Tracks the last UV value we've considered for the high-UV alert, so a
   // notification fires on the rise past the threshold, not on every poll
   // while it stays high.
@@ -84,6 +90,27 @@ export default function HomeClient() {
     setActiveProfileId(id);
     setActiveProfileIdState(id);
   }
+
+  // Recompute every profile's reapply status on the same 30s cadence the
+  // active timer itself ticks on, so the chip dots and the app badge stay
+  // live without needing to mount every profile's ReapplyTimer at once.
+  useEffect(() => {
+    function recompute() {
+      const next: Record<string, ReapplyStatus> = {};
+      for (const p of profiles) next[p.id] = reapplyStatus(p.id);
+      setProfileStatuses(next);
+    }
+    recompute();
+    const id = setInterval(recompute, 30_000);
+    return () => clearInterval(id);
+  }, [profiles]);
+
+  // App icon badge — count of people currently overdue, visible even with
+  // the app closed (where supported; a no-op elsewhere).
+  useEffect(() => {
+    const overdueCount = Object.values(profileStatuses).filter((s) => s === "overdue").length;
+    setAppBadgeCount(overdueCount);
+  }, [profileStatuses]);
 
   // Persist on every change, including a label resolved after the fact.
   useEffect(() => {
@@ -231,6 +258,18 @@ export default function HomeClient() {
     setShowLocation(false);
   }
 
+  // Entry point for the PWA's app shortcuts (manifest.ts) — a long-press
+  // on the installed icon can only link to a static URL, not a specific
+  // saved place (those live in this browser's localStorage, which the
+  // manifest route has no access to), so the shortcuts jump here instead
+  // and trigger the same actions their labels promise.
+  useEffect(() => {
+    const action = new URLSearchParams(window.location.search).get("action");
+    if (action === "gps") useGps();
+    else if (action === "location") setShowLocation(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const level = uv !== null ? uvLevel(uv) : null;
 
   return (
@@ -346,21 +385,46 @@ export default function HomeClient() {
 
               {profiles.length > 1 && (
                 <div className="flex flex-wrap justify-center gap-1.5">
-                  {profiles.map((p) => (
-                    <button
-                      key={p.id}
-                      onClick={() => switchProfile(p.id)}
-                      className={
-                        "rounded-full px-3 py-1.5 text-xs font-medium transition-colors " +
-                        (p.id === activeProfileId
-                          ? "bg-white text-ink"
-                          : "bg-white/15 text-white hover:bg-white/25")
-                      }
-                      aria-pressed={p.id === activeProfileId}
-                    >
-                      {p.name}
-                    </button>
-                  ))}
+                  {profiles.map((p) => {
+                    const status = profileStatuses[p.id] ?? "none";
+                    return (
+                      <button
+                        key={p.id}
+                        onClick={() => switchProfile(p.id)}
+                        className={
+                          "relative rounded-full px-3 py-1.5 text-xs font-medium transition-colors " +
+                          (p.id === activeProfileId
+                            ? "bg-white text-ink"
+                            : "bg-white/15 text-white hover:bg-white/25")
+                        }
+                        aria-pressed={p.id === activeProfileId}
+                        title={
+                          status === "overdue"
+                            ? t("statusOverdue", { name: p.name })
+                            : status === "ok"
+                              ? t("statusOk", { name: p.name })
+                              : undefined
+                        }
+                      >
+                        {p.name}
+                        {/* Shape carries the signal too, not just color —
+                            an "!" glyph on overdue — so this isn't a
+                            hue-only cue. */}
+                        {status !== "none" && (
+                          <span
+                            aria-hidden
+                            className="absolute -top-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full text-[8px] font-bold leading-none text-white ring-2 ring-black/10"
+                            style={{
+                              backgroundColor:
+                                status === "overdue" ? "var(--risk-very-high)" : "var(--risk-low)",
+                            }}
+                          >
+                            {status === "overdue" ? "!" : ""}
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
               )}
 
@@ -374,6 +438,9 @@ export default function HomeClient() {
                   }
                   skinType={
                     profiles.find((p) => p.id === activeProfileId)?.skinType ?? null
+                  }
+                  isInfant={
+                    profiles.find((p) => p.id === activeProfileId)?.isInfant ?? false
                   }
                   onOpenSettings={() => setShowSettings(true)}
                 />

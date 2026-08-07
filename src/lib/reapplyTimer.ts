@@ -72,3 +72,16 @@ export function minutesRemaining(startedAt: number): number {
   const elapsedMinutes = (Date.now() - startedAt) / 60000;
   return Math.ceil(REAPPLY_INTERVAL_MINUTES - elapsedMinutes);
 }
+
+export type ReapplyStatus = "none" | "ok" | "overdue";
+
+/**
+ * A profile's reapply status without needing to mount its ReapplyTimer —
+ * used for the multi-profile at-a-glance chips and the app icon badge,
+ * both of which need every profile's status, not just the active one's.
+ */
+export function reapplyStatus(profileId: string): ReapplyStatus {
+  const startedAt = getReapplyStartedAt(profileId);
+  if (startedAt === null) return "none";
+  return minutesRemaining(startedAt) <= 0 ? "overdue" : "ok";
+}

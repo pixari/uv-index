@@ -7,6 +7,7 @@ import {
   removeProfile,
   resolveActiveProfileId,
   setActiveProfileId,
+  setProfileIsInfant,
   setProfileSkinType,
 } from "./profiles";
 
@@ -86,5 +87,21 @@ describe("setProfileSkinType", () => {
     const profiles = getProfiles("Me");
     expect(profiles.find((p) => p.id === kid.id)?.skinType).toBe(2);
     expect(profiles.find((p) => p.id === DEFAULT_PROFILE_ID)?.skinType).toBeNull();
+  });
+});
+
+describe("setProfileIsInfant", () => {
+  it("updates only the targeted profile and can be toggled back off", () => {
+    getProfiles("Me");
+    const baby = addProfile("Baby");
+
+    setProfileIsInfant(baby.id, true);
+    let profiles = getProfiles("Me");
+    expect(profiles.find((p) => p.id === baby.id)?.isInfant).toBe(true);
+    expect(profiles.find((p) => p.id === DEFAULT_PROFILE_ID)?.isInfant).toBeFalsy();
+
+    setProfileIsInfant(baby.id, false);
+    profiles = getProfiles("Me");
+    expect(profiles.find((p) => p.id === baby.id)?.isInfant).toBe(false);
   });
 });
