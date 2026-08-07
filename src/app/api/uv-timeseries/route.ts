@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { parseCoords } from "@/lib/validateCoords";
 
 // Same MET Norway source as /api/uv, but returns today's full hourly
 // curve for the day-chart on the Learn page instead of just the
@@ -6,12 +7,11 @@ import { NextRequest, NextResponse } from "next/server";
 const MET_URL = "https://api.met.no/weatherapi/locationforecast/2.0/complete";
 
 export async function GET(req: NextRequest) {
-  const lat = req.nextUrl.searchParams.get("lat");
-  const lon = req.nextUrl.searchParams.get("lon");
-
-  if (!lat || !lon) {
+  const coords = parseCoords(req.nextUrl.searchParams);
+  if (!coords) {
     return NextResponse.json({ error: "lat/lon required" }, { status: 400 });
   }
+  const { lat, lon } = coords;
 
   // Optional window size: the 24h day-chart wants hourly resolution,
   // the multi-day forecast wants further out. MET gives hourly steps

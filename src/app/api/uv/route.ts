@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { uvLevel } from "@/lib/uvLevel";
+import { parseCoords } from "@/lib/validateCoords";
 
 // MET Norway Locationforecast — free, no API key, requires a descriptive
 // User-Agent per their terms of use.
@@ -11,12 +12,11 @@ const MET_URL = "https://api.met.no/weatherapi/locationforecast/2.0/complete";
 const FORECAST_WINDOW_HOURS = 24;
 
 export async function GET(req: NextRequest) {
-  const lat = req.nextUrl.searchParams.get("lat");
-  const lon = req.nextUrl.searchParams.get("lon");
-
-  if (!lat || !lon) {
+  const coords = parseCoords(req.nextUrl.searchParams);
+  if (!coords) {
     return NextResponse.json({ error: "lat/lon required" }, { status: 400 });
   }
+  const { lat, lon } = coords;
 
   const res = await fetch(`${MET_URL}?lat=${lat}&lon=${lon}`, {
     headers: {

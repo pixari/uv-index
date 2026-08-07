@@ -63,6 +63,10 @@ export function setStoredSpf(profileId: string, spf: Spf) {
   localStorage.setItem(spfKey(profileId), String(spf));
 }
 
+export function clearStoredSpf(profileId: string) {
+  localStorage.removeItem(spfKey(profileId));
+}
+
 /** Minutes remaining until reapplication is due. Negative once overdue. */
 export function minutesRemaining(startedAt: number): number {
   const elapsedMinutes = (Date.now() - startedAt) / 60000;

@@ -22,6 +22,7 @@ import {
   setActiveProfileId,
   type Profile,
 } from "@/lib/profiles";
+import { clearReapplyTimer, clearStoredSpf } from "@/lib/reapplyTimer";
 import { markSettingsForReopen } from "@/lib/pendingSettingsReopen";
 import {
   ensureNotificationPermission,
@@ -189,6 +190,11 @@ export default function SettingsSheet({
   function handleRemoveProfile(id: string) {
     if (profiles.length <= 1) return;
     const remaining = removeProfile(id);
+    // removeProfile only drops the profile record — its reapply timer and
+    // SPF choice live under separate scoped keys and would otherwise sit
+    // orphaned in storage forever.
+    clearReapplyTimer(id);
+    clearStoredSpf(id);
     setProfiles(remaining);
     if (selectedProfileId === id) {
       setSelectedProfileId(remaining[0]?.id ?? null);
