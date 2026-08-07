@@ -9,10 +9,18 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 // API routes, which the browser's CSP has no visibility into anyway.
 const ANALYTICS_ORIGIN = "https://analytics.pixari.dev";
 
-// 'unsafe-inline' on style-src is a deliberate, narrow trade-off: the app
-// renders many per-value inline `style={{...}}` attributes (sky gradients,
-// skin-tone swatches) that a strict style-src would silently break. Kept
-// out of script-src, where it matters far more.
+// 'unsafe-inline' is a deliberate, narrow trade-off on both fronts:
+// - style-src: the app renders many per-value inline `style={{...}}`
+//   attributes (sky gradients, skin-tone swatches) that a strict
+//   style-src would silently break.
+// - script-src: Next's App Router injects its own inline hydration/RSC
+//   payload <script> tags with no nonce, so a strict script-src would
+//   break every page load, not just a few components. Dropping it would
+//   mean adopting a nonce-based CSP — which in turn requires reading the
+//   nonce from a per-request header on every page, undoing the static
+//   rendering these routes now get (see setRequestLocale in layout.tsx).
+//   No third-party script content runs here either way: the one external
+//   origin below is loaded via `src=`, not inline.
 const CSP = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline' ${ANALYTICS_ORIGIN}`,

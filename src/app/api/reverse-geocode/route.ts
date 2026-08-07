@@ -28,6 +28,7 @@ export async function GET(req: NextRequest) {
 
   const res = await fetch(
     `${REVERSE_URL}?latitude=${lat}&longitude=${lon}&localityLanguage=${lang}`,
+    { next: { revalidate: 86_400 } }, // a place name for a given point doesn't change; cache a day
   );
 
   if (!res.ok) {

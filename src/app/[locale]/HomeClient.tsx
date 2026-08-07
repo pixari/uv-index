@@ -129,7 +129,7 @@ export default function HomeClient() {
   // Falls back to the last cached reading for this place (if any) instead
   // of a blank error — a stale-but-real number beats nothing when offline
   // or the upstream source is down.
-  function useCacheOrError(lat: number, lon: number, opts?: { silent?: boolean }) {
+  function applyCachedOrError(lat: number, lon: number, opts?: { silent?: boolean }) {
     const cached = getCachedUv(lat, lon);
     if (cached) {
       setUv(cached.uv);
@@ -189,12 +189,12 @@ export default function HomeClient() {
           if (opts?.silent) setRevealed(true);
           else requestAnimationFrame(() => setRevealed(true));
         } else {
-          useCacheOrError(lat, lon, opts);
+          applyCachedOrError(lat, lon, opts);
         }
       })
       .catch(() => {
         if (seq !== fetchSeqRef.current) return;
-        useCacheOrError(lat, lon, opts);
+        applyCachedOrError(lat, lon, opts);
       });
   }
 
@@ -237,7 +237,7 @@ export default function HomeClient() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [coords?.lat, coords?.lon]);
 
-  function useGps() {
+  function requestGpsLocation() {
     if (!navigator.geolocation) return;
     navigator.geolocation.getCurrentPosition(
       (pos) => {
@@ -274,7 +274,7 @@ export default function HomeClient() {
   // and trigger the same actions their labels promise.
   useEffect(() => {
     const action = new URLSearchParams(window.location.search).get("action");
-    if (action === "gps") useGps();
+    if (action === "gps") requestGpsLocation();
     else if (action === "location") setShowLocation(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -509,7 +509,7 @@ export default function HomeClient() {
       <LocationSheet
         open={showLocation}
         onOpenChange={setShowLocation}
-        onUseGps={useGps}
+        onUseGps={requestGpsLocation}
         onSelect={selectPlace}
         currentPlace={coords}
       />
