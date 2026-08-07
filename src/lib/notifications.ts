@@ -1,9 +1,11 @@
-// Local, foreground notifications only — this app has no push server or
-// service worker, so these fire from the Web Notifications API while the
-// tab/PWA is open (including backgrounded, not fully closed). That's a real
-// limitation, not an oversight: true background push needs a backend.
+// Local, foreground notifications, fired via the Web Notifications API
+// while the tab/PWA is open (including backgrounded, not fully closed).
+// The high-UV alert also has a background-capable counterpart now (see
+// pushClient.ts) — the reapply reminder is still foreground-only, since
+// it's tied to a timer a person starts by tapping "applied", not
+// something worth standing up server-side scheduling for (yet).
 
-export const HIGH_UV_THRESHOLD = 7;
+export { HIGH_UV_THRESHOLD } from "./uvThreshold";
 
 const REAPPLY_PREF_KEY = "uv-index:notif-reapply";
 const HIGH_UV_PREF_KEY = "uv-index:notif-high-uv";

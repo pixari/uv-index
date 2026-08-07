@@ -10,11 +10,9 @@ import {
   type Profile,
 } from "@/lib/profiles";
 import { consumeSettingsReopen } from "@/lib/pendingSettingsReopen";
-import {
-  HIGH_UV_THRESHOLD,
-  getHighUvNotifPref,
-  showNotification,
-} from "@/lib/notifications";
+import { getHighUvNotifPref, showNotification } from "@/lib/notifications";
+import { crossedHighUvThreshold } from "@/lib/uvThreshold";
+import { isPushSubscribedLocally, subscribeToHighUvPush } from "@/lib/pushClient";
 import { getCachedUv, setCachedUv } from "@/lib/uvCache";
 import { reapplyStatus, type ReapplyStatus } from "@/lib/reapplyTimer";
 import { setAppBadgeCount } from "@/lib/appBadge";
@@ -121,7 +119,7 @@ export default function HomeClient() {
     const prev = lastNotifiedUvRef.current;
     lastNotifiedUvRef.current = value;
     if (!getHighUvNotifPref()) return;
-    if (value >= HIGH_UV_THRESHOLD && (prev === null || prev < HIGH_UV_THRESHOLD)) {
+    if (crossedHighUvThreshold(prev, value)) {
       showNotification(tn("highUvTitle"), tn("highUvBody", { uv: Math.round(value) }));
     }
   }
@@ -203,6 +201,14 @@ export default function HomeClient() {
   useEffect(() => {
     if (!coords) return;
     fetchUv(coords.lat, coords.lon);
+    // Keep an existing push subscription pointed at wherever the person
+    // actually is now — without this, switching places would leave a
+    // background alert silently watching the old one. No-ops if push
+    // was never turned on (isPushSubscribedLocally() reads a plain
+    // localStorage flag, no network round-trip either way).
+    if (isPushSubscribedLocally()) {
+      subscribeToHighUvPush(coords, locale);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [coords?.lat, coords?.lon]);
 

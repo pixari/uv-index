@@ -87,7 +87,9 @@
       "reapplyLabel": "Remind me to reapply sunscreen",
       "highUvLabel": "Alert me when UV goes above 7",
       "unsupported": "Notifications aren't supported on this device",
-      "blocked": "Notifications are blocked in your browser for this site — allow them in your browser's site settings to turn this on."
+      "blocked": "Notifications are blocked in your browser for this site — allow them in your browser's site settings to turn this on.",
+      "pushActive": "Also alerts even when the app is fully closed.",
+      "pushInactive": "Only while the app is open right now — background alerts aren't available on this device/browser."
     },
     "privacyLink": "Privacy & disclaimer"
   },
@@ -253,7 +255,7 @@
     "metaDescription": "What UV Index's numbers do and don't mean, and exactly what happens to your data when you use the app.",
     "eyebrow": "Legal",
     "back": "← Back to home",
-    "intro": "The short version: no accounts, no data for sale, and almost everything about you stays on your own device. Here's the full picture — what this app's guidance does and doesn't mean, and exactly what happens to your data.",
+    "intro": "The short version: no accounts, no data for sale, and — unless you turn on background push alerts — everything about you stays on your own device. Here's the full picture — what this app's guidance does and doesn't mean, and exactly what happens to your data.",
     "lastUpdated": "Last updated 7 August 2026",
     "toc": {
       "title": "In this page",
@@ -309,6 +311,12 @@
         "body": "We use Umami, a self-hosted, cookie-free analytics tool, to see aggregate numbers — how many people use the app, which pages get read. Umami sets no cookies and no persistent identifiers, and doesn't store your IP address or anything else that identifies you individually; any country-level stat it derives from IP is computed on the fly, and the address itself is discarded.",
         "legalBasis": "Legal basis: Art. 6(1)(f) — legitimate interest in basic, non-identifying usage statistics, using a tool chosen specifically because it doesn't need to track anyone.",
         "retention": "Retention: aggregate counts only, kept for as long as they're useful; nothing in them identifies you."
+      },
+      "push": {
+        "title": "Push subscription (only if you turn on background alerts)",
+        "body": "Turning on “alert me even when the app is closed” hands us a push subscription — an endpoint and two encryption keys your browser generates itself, not tied to your name or any account — plus the place you want watched. We store it so a background check can compare that place's UV every 15 minutes and send an alert on the rise past the threshold. Turning the toggle back off deletes it immediately.",
+        "legalBasis": "Legal basis: Art. 6(1)(a) GDPR — your explicit consent via the toggle, on top of your browser's own permission prompt. Withdraw it any time by turning the toggle off.",
+        "retention": "Retention: until you turn the toggle off, or your browser reports the subscription itself has expired."
       }
     },
     "thirdParties": {
@@ -318,11 +326,12 @@
       "openMeteo": "Open-Meteo — turning a typed place name into coordinates.",
       "bigDataCloud": "BigDataCloud — turning GPS coordinates into a place name.",
       "umami": "Umami, self-hosted on our own infrastructure — anonymous usage counts.",
-      "note": "None of these receive anything that identifies you personally, and we don't share data with advertisers, data brokers, or anyone else. Some may process requests on infrastructure outside the EU/EEA; where that's the case, it's on them to secure it under their own compliance obligations (e.g. standard contractual clauses)."
+      "note": "None of these receive anything that identifies you personally, and we don't share data with advertisers, data brokers, or anyone else. Some may process requests on infrastructure outside the EU/EEA; where that's the case, it's on them to secure it under their own compliance obligations (e.g. standard contractual clauses).",
+      "pushService": "Your browser's own push service (e.g. Google for Chrome, Mozilla for Firefox, Apple for Safari) — delivers the alert to your device if you've turned background alerts on. They see that a notification was sent, not its contents: Web Push payloads are encrypted end-to-end with keys your browser generates itself."
     },
     "cookiesStorage": {
       "title": "Cookies and local storage",
-      "body": "This app sets no cookies. Everything it remembers about you — profiles, skin type, notification preferences, saved places, your last known reading — lives in your browser's local storage, on your device only, and is never transmitted to our servers. Clear it any time from your browser's site settings; the app just starts fresh next time."
+      "body": "This app sets no cookies. Everything it remembers about you — profiles, skin type, notification preferences, saved places, your last known reading — lives in your browser's local storage, on your device only, and is never transmitted to our servers. The one exception is a push subscription, if you've turned on background high-UV alerts — see “What we collect” below. Clear your local storage any time from your browser's site settings; the app just starts fresh next time."
     },
     "yourRights": {
       "title": "Your rights",
