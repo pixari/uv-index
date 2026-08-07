@@ -31,7 +31,16 @@
     "updated": "Updated at {time}",
     "offlineNotice": "Offline — last known reading",
     "safeAfter": "Low risk after {time}",
-    "settingsLabel": "Settings"
+    "settingsLabel": "Settings",
+    "weather": {
+      "temperature": "{temp}°",
+      "cloud": {
+        "clear": "Clear sky",
+        "partlyCloudy": "Partly cloudy",
+        "mostlyCloudy": "Mostly cloudy",
+        "cloudy": "Cloudy"
+      }
+    }
   },
   "location": {
     "title": "Location",
@@ -171,6 +180,36 @@
       "source": "Source:",
       "shareText": "SPF30 blocks ~97% of UVB, SPF50 ~98% — the real difference is reapplying, not chasing a bigger number."
     },
+    "myths": {
+      "title": "Myths worth retiring",
+      "shareText": "Higher SPF ≠ reapply less often. A base tan ≈ SPF 3. Dark skin still needs sunscreen. Five sun-safety myths, checked against real sources.",
+      "intro": "Sun advice spreads fast and doesn't always survive contact with the evidence. Five persistent ones, checked against primary sources.",
+      "mythLabel": "Myth",
+      "factLabel": "Fact",
+      "sourceLabel": "Source",
+      "items": {
+        "reapplySpf": {
+          "myth": "A higher SPF lasts longer, so you can reapply less often.",
+          "fact": "SPF measures how much UVB it filters, not how long it lasts on skin. SPF 30, 50, or 100 — the reapplication interval is the same: every 2 hours, more often after swimming or sweating."
+        },
+        "clouds": {
+          "myth": "It's cloudy, so sunscreen isn't necessary today.",
+          "fact": "Light cloud cover blocks visible light far more than it blocks UV — up to 80% of UV radiation still gets through, per the WHO/WMO/UNEP/ICNIRP guide used throughout this page."
+        },
+        "darkSkin": {
+          "myth": "Darker skin doesn't need sunscreen.",
+          "fact": "Melanin gives some natural protection, but even at its highest it's roughly equivalent to SPF 13 — well short of the SPF 30 minimum recommended for everyone. Skin of color still burns (even when it's less visibly red) and still develops skin cancer, often diagnosed later."
+        },
+        "baseTan": {
+          "myth": "Building a base tan first prevents sunburn later.",
+          "fact": "A tan tops out at roughly SPF 3–4 worth of protection — far under the SPF 30 minimum. It's also already visible evidence of DNA damage, not a defense built up over time."
+        },
+        "expiration": {
+          "myth": "Sunscreen doesn't expire — one bottle lasts forever.",
+          "fact": "The FDA requires sunscreen to stay effective for at least 3 years; after that (or sooner if it's been left somewhere hot, like a car), discard it — separation, an off smell, or a change in texture are signs it's already gone."
+        }
+      }
+    },
     "toc": {
       "title": "In this piece",
       "chart": "Today's UV curve",
@@ -179,6 +218,7 @@
       "physics": "The physics behind it",
       "worldCompare": "You vs. the world",
       "spf": "How SPF works",
+      "myths": "Myths worth retiring",
       "burnHeatmap": "Burn time, by skin type",
       "ozone": "The ozone layer, healing",
       "iarc": "Why it's a Group 1 carcinogen"
@@ -314,9 +354,9 @@
       },
       "push": {
         "title": "Push subscription (only if you turn on background alerts)",
-        "body": "Turning on “alert me even when the app is closed” hands us a push subscription — an endpoint and two encryption keys your browser generates itself, not tied to your name or any account — plus the place you want watched. We store it so a background check can compare that place's UV every 15 minutes and send an alert on the rise past the threshold. Turning the toggle back off deletes it immediately.",
+        "body": "Turning on either background alert — high UV, or the reapply reminder — hands us a push subscription: an endpoint and two encryption keys your browser generates itself, not tied to your name or any account. For the high-UV alert, we also store the place you want watched, so a background check can compare that place's UV every 15 minutes and send an alert on the rise past the threshold. For the reapply reminder, we store the profile name you typed into the app and the one time it's due — nothing else — and delete it automatically once it's sent, cancelled, or replaced by starting the timer again.",
         "legalBasis": "Legal basis: Art. 6(1)(a) GDPR — your explicit consent via the toggle, on top of your browser's own permission prompt. Withdraw it any time by turning the toggle off.",
-        "retention": "Retention: until you turn the toggle off, or your browser reports the subscription itself has expired."
+        "retention": "Retention: the high-UV watch lasts until you turn its toggle off or your browser reports the subscription expired; a reapply reminder deletes itself automatically once it's sent (usually within 2 hours) or you cancel the timer."
       }
     },
     "thirdParties": {

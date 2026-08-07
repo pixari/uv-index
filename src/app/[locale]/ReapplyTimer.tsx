@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import {
   getReapplyStartedAt,
@@ -10,11 +10,13 @@ import {
   minutesRemaining,
   getStoredSpf,
   setStoredSpf,
+  REAPPLY_INTERVAL_MINUTES,
   SPF_OPTIONS,
   type Spf,
 } from "@/lib/reapplyTimer";
 import { burnMinutes, type SkinType } from "@/lib/skinType";
 import { getReapplyNotifPref, showNotification } from "@/lib/notifications";
+import { cancelReapplyPush, scheduleReapplyPush } from "@/lib/pushClient";
 
 function spfLabel(spf: Spf) {
   return spf > 50 ? "50+" : String(spf);
@@ -42,6 +44,7 @@ export default function ReapplyTimer({
 }) {
   const t = useTranslations("reapply");
   const tn = useTranslations("notify");
+  const locale = useLocale();
   // Lazy-initialized from storage rather than set in an effect: the parent
   // remounts this component (via `key={profileId}`) on every people switch,
   // so an effect-driven update would paint the "no timer" view for a beat
@@ -90,11 +93,22 @@ export default function ReapplyTimer({
     setStoredSpf(profileId, pendingSpf);
     setSpf(pendingSpf);
     setStartedAt(getReapplyStartedAt(profileId));
+
+    // Best-effort background counterpart to the foreground notification
+    // above — same preference gates both, same as the high-UV toggle in
+    // Settings. A browser without Push support, or a deployment without
+    // VAPID configured, just doesn't get this half; the local countdown
+    // and foreground alert are unaffected either way.
+    if (getReapplyNotifPref()) {
+      const dueAt = Date.now() + REAPPLY_INTERVAL_MINUTES * 60_000;
+      scheduleReapplyPush(profileId, profileName, locale, dueAt);
+    }
   }
 
   function reset() {
     clearReapplyTimer(profileId);
     setStartedAt(null);
+    cancelReapplyPush(profileId);
   }
 
   // Infants under 6 months: AAP/AAD guidance is to keep them out of direct

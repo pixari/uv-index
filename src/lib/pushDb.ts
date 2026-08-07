@@ -32,6 +32,17 @@ export type PushSubscriptionRecord = {
   lastUv: number | null;
 };
 
+export type PushReminderRecord = {
+  id: string;
+  endpoint: string;
+  p256dh: string;
+  auth: string;
+  profileId: string;
+  profileName: string;
+  locale: string;
+  dueAt: number;
+};
+
 type DatabaseSyncLike = InstanceType<
   typeof import("node:sqlite").DatabaseSync
 >;
@@ -61,6 +72,25 @@ function init(): Promise<DatabaseSyncLike | null> {
           last_uv REAL,
           created_at INTEGER NOT NULL,
           updated_at INTEGER NOT NULL
+        )
+      `);
+      // One-shot scheduled pushes for the reapply reminder — separate from
+      // push_subscriptions above, which is "watch this location forever
+      // until unsubscribed". A reminder is "fire once at this timestamp,
+      // then it's gone", and keyed by (endpoint, profileId) rather than
+      // endpoint alone since one device can run independent reapply
+      // timers for several profiles (people) at once.
+      database.exec(`
+        CREATE TABLE IF NOT EXISTS push_reminders (
+          id TEXT PRIMARY KEY,
+          endpoint TEXT NOT NULL,
+          p256dh TEXT NOT NULL,
+          auth TEXT NOT NULL,
+          profile_id TEXT NOT NULL,
+          profile_name TEXT NOT NULL,
+          locale TEXT NOT NULL DEFAULT 'en',
+          due_at INTEGER NOT NULL,
+          created_at INTEGER NOT NULL
         )
       `);
       db = database;
@@ -160,4 +190,96 @@ export async function updateLastUv(endpoint: string, uv: number): Promise<void> 
   database
     .prepare(`UPDATE push_subscriptions SET last_uv = ?, updated_at = ? WHERE endpoint = ?`)
     .run(uv, Date.now(), endpoint);
+}
+
+function reminderId(endpoint: string, profileId: string): string {
+  return `${endpoint}:${profileId}`;
+}
+
+/** Re-arming (same endpoint + profileId) replaces the previous due time rather than duplicating. */
+export async function upsertPushReminder(input: {
+  endpoint: string;
+  p256dh: string;
+  auth: string;
+  profileId: string;
+  profileName: string;
+  locale: string;
+  dueAt: number;
+}): Promise<void> {
+  const database = await init();
+  if (!database) return;
+  const id = reminderId(input.endpoint, input.profileId);
+  database
+    .prepare(
+      `INSERT INTO push_reminders
+         (id, endpoint, p256dh, auth, profile_id, profile_name, locale, due_at, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+       ON CONFLICT(id) DO UPDATE SET
+         p256dh = excluded.p256dh,
+         auth = excluded.auth,
+         profile_name = excluded.profile_name,
+         locale = excluded.locale,
+         due_at = excluded.due_at`,
+    )
+    .run(
+      id,
+      input.endpoint,
+      input.p256dh,
+      input.auth,
+      input.profileId,
+      input.profileName,
+      input.locale,
+      input.dueAt,
+      Date.now(),
+    );
+}
+
+export async function deletePushReminder(endpoint: string, profileId: string): Promise<void> {
+  const database = await init();
+  if (!database) return;
+  database
+    .prepare(`DELETE FROM push_reminders WHERE id = ?`)
+    .run(reminderId(endpoint, profileId));
+}
+
+export async function deletePushReminderById(id: string): Promise<void> {
+  const database = await init();
+  if (!database) return;
+  database.prepare(`DELETE FROM push_reminders WHERE id = ?`).run(id);
+}
+
+export async function listPushReminders(): Promise<PushReminderRecord[]> {
+  const database = await init();
+  if (!database) return [];
+  const rows = database
+    .prepare(
+      `SELECT id, endpoint, p256dh, auth, profile_id, profile_name, locale, due_at FROM push_reminders`,
+    )
+    .all() as Array<{
+    id: string;
+    endpoint: string;
+    p256dh: string;
+    auth: string;
+    profile_id: string;
+    profile_name: string;
+    locale: string;
+    due_at: number;
+  }>;
+  return rows.map((r) => ({
+    id: r.id,
+    endpoint: r.endpoint,
+    p256dh: r.p256dh,
+    auth: r.auth,
+    profileId: r.profile_id,
+    profileName: r.profile_name,
+    locale: r.locale,
+    dueAt: r.due_at,
+  }));
+}
+
+/** Removes every reminder tied to an endpoint — used when a subscription itself is gone (410). */
+export async function deletePushRemindersForEndpoint(endpoint: string): Promise<void> {
+  const database = await init();
+  if (!database) return;
+  database.prepare(`DELETE FROM push_reminders WHERE endpoint = ?`).run(endpoint);
 }

@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { routing } from "@/i18n/routing";
 import { coordsFromValues } from "@/lib/validateCoords";
 import { clientIp, rateLimit } from "@/lib/rateLimit";
 import { getVapidConfig } from "@/lib/vapid";
 import { isPushDbAvailable, upsertPushSubscription } from "@/lib/pushDb";
+import { parseLocale, parseSubscriptionInput } from "@/lib/pushValidation";
 
 // Saves (or refreshes) a browser's push subscription plus the one place
 // it wants alerted for. Re-subscribing with the same endpoint but a new
@@ -30,45 +30,22 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "invalid JSON" }, { status: 400 });
   }
 
-  const b = body as {
-    subscription?: { endpoint?: string; keys?: { p256dh?: string; auth?: string } };
-    lat?: unknown;
-    lon?: unknown;
-    placeLabel?: unknown;
-    locale?: unknown;
-  };
-
-  const endpoint = b.subscription?.endpoint;
-  const p256dh = b.subscription?.keys?.p256dh;
-  const auth = b.subscription?.keys?.auth;
-  if (!endpoint || !p256dh || !auth) {
-    return NextResponse.json({ error: "invalid subscription" }, { status: 400 });
-  }
-  // Push endpoints are URLs handed out by the browser's own push service
-  // (fcm.googleapis.com, updates.push.services.mozilla.com, …) — reject
-  // anything that isn't actually a URL rather than trusting it verbatim.
-  try {
-    new URL(endpoint);
-  } catch {
+  const subscription = parseSubscriptionInput(body);
+  if (!subscription) {
     return NextResponse.json({ error: "invalid subscription" }, { status: 400 });
   }
 
+  const b = body as { lat?: unknown; lon?: unknown; placeLabel?: unknown; locale?: unknown };
   const coords = coordsFromValues(b.lat, b.lon);
   if (!coords) {
     return NextResponse.json({ error: "lat/lon required" }, { status: 400 });
   }
 
-  const locale = routing.locales.includes(
-    b.locale as (typeof routing.locales)[number],
-  )
-    ? (b.locale as string)
-    : routing.defaultLocale;
+  const locale = parseLocale(b.locale);
   const placeLabel = typeof b.placeLabel === "string" ? b.placeLabel.slice(0, 200) : null;
 
   await upsertPushSubscription({
-    endpoint,
-    p256dh,
-    auth,
+    ...subscription,
     lat: coords.lat,
     lon: coords.lon,
     placeLabel,

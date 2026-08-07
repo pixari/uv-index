@@ -11,6 +11,10 @@ export type UvReading = {
   updatedAt: string | null;
   safeAfter: string | null;
   fetchedAt: number;
+  // Added later — optional so reading a value cached before this field
+  // existed doesn't need its own migration, just a `?? null` at read time.
+  temperature?: number | null;
+  cloudCover?: number | null;
 };
 
 // ~1.1km grid — "close enough to call it the same place" without requiring

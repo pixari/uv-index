@@ -31,7 +31,16 @@
     "updated": "Aktualisiert um {time}",
     "offlineNotice": "Offline — letzter bekannter Wert",
     "safeAfter": "Niedriges Risiko ab {time}",
-    "settingsLabel": "Einstellungen"
+    "settingsLabel": "Einstellungen",
+    "weather": {
+      "temperature": "{temp}°",
+      "cloud": {
+        "clear": "Klarer Himmel",
+        "partlyCloudy": "Teilweise bewölkt",
+        "mostlyCloudy": "Überwiegend bewölkt",
+        "cloudy": "Bewölkt"
+      }
+    }
   },
   "location": {
     "title": "Standort",
@@ -171,6 +180,36 @@
       "source": "Quelle:",
       "shareText": "LSF30 blockiert ~97% der UVB-Strahlen, LSF50 ~98% — den Unterschied macht das Nachcremen, nicht eine höhere Zahl."
     },
+    "myths": {
+      "title": "Mythen, die ausgedient haben",
+      "shareText": "Höherer LSF ≠ seltener nachcremen. Eine Basisbräune entspricht LSF 3. Dunkle Haut braucht trotzdem Sonnenschutz. Fünf Mythen, mit echten Quellen geprüft.",
+      "intro": "Sonnenschutz-Ratschläge verbreiten sich schnell und halten nicht immer der Überprüfung stand. Fünf hartnäckige, geprüft anhand von Primärquellen.",
+      "mythLabel": "Mythos",
+      "factLabel": "Fakt",
+      "sourceLabel": "Quelle",
+      "items": {
+        "reapplySpf": {
+          "myth": "Ein höherer LSF hält länger, man muss also seltener nachcremen.",
+          "fact": "Der LSF misst, wie viel UVB er filtert, nicht wie lange er auf der Haut hält. Ob LSF 30, 50 oder 100 — das Nachcrem-Intervall bleibt gleich: alle 2 Stunden, häufiger nach Schwimmen oder Schwitzen."
+        },
+        "clouds": {
+          "myth": "Bei bewölktem Himmel ist Sonnenschutz nicht nötig.",
+          "fact": "Leichte Bewölkung filtert vor allem sichtbares Licht, UV-Strahlung viel weniger — bis zu 80 % der UV-Strahlung kommen laut dem auf dieser Seite zitierten WHO/WMO/UNEP/ICNIRP-Leitfaden trotzdem durch."
+        },
+        "darkSkin": {
+          "myth": "Dunkle Haut braucht keinen Sonnenschutz.",
+          "fact": "Melanin bietet einen gewissen natürlichen Schutz, entspricht aber selbst im dunkelsten Fall nur etwa LSF 13 — deutlich unter dem für alle empfohlenen Minimum von LSF 30. Dunkle Haut bekommt trotzdem einen Sonnenbrand (auch wenn die Rötung weniger sichtbar ist) und entwickelt weiterhin Hautkrebs, oft erst später diagnostiziert."
+        },
+        "baseTan": {
+          "myth": "Eine Basisbräune vorher verhindert späteren Sonnenbrand.",
+          "fact": "Eine Bräune erreicht bestenfalls einen Schutz von etwa LSF 3–4 — weit unter dem Minimum von LSF 30. Und sie ist selbst schon ein sichtbares Zeichen von DNA-Schäden, keine im Lauf der Zeit aufgebaute Abwehr."
+        },
+        "expiration": {
+          "myth": "Sonnenschutzmittel verfällt nie — eine Flasche hält ewig.",
+          "fact": "Die US-Behörde FDA schreibt vor, dass Sonnenschutzmittel mindestens 3 Jahre wirksam bleiben muss; danach (oder früher, wenn es an einem heißen Ort wie im Auto lag) sollte es entsorgt werden — Trennung, ein seltsamer Geruch oder veränderte Konsistenz sind Anzeichen, dass es bereits hinüber ist."
+        }
+      }
+    },
     "toc": {
       "title": "In diesem Beitrag",
       "chart": "Heutige UV-Kurve",
@@ -179,6 +218,7 @@
       "physics": "Die Physik dahinter",
       "worldCompare": "Du vs. die Welt",
       "spf": "Wie LSF funktioniert",
+      "myths": "Mythen, die ausgedient haben",
       "burnHeatmap": "Sonnenbrand-Zeit nach Hauttyp",
       "ozone": "Die Ozonschicht erholt sich",
       "iarc": "Warum es ein Gruppe-1-Karzinogen ist"
@@ -314,9 +354,9 @@
       },
       "push": {
         "title": "Push-Abonnement (nur wenn du Hintergrund-Benachrichtigungen aktivierst)",
-        "body": "Wenn du „auch bei geschlossener App benachrichtigen“ aktivierst, erhalten wir ein Push-Abonnement — einen Endpunkt und zwei Verschlüsselungsschlüssel, die dein Browser selbst erzeugt, nicht an deinen Namen oder ein Konto gebunden — sowie den Ort, den du überwachen lassen willst. Wir speichern es, damit eine Hintergrundprüfung alle 15 Minuten den UV-Wert dieses Orts vergleichen und bei Überschreiten der Schwelle eine Benachrichtigung senden kann. Schaltest du die Option wieder aus, wird es sofort gelöscht.",
+        "body": "Aktivierst du eine der beiden Hintergrund-Benachrichtigungen — hoher UV-Wert oder die Nachcrem-Erinnerung —, erhalten wir ein Push-Abonnement: einen Endpunkt und zwei Verschlüsselungsschlüssel, die dein Browser selbst erzeugt, nicht an deinen Namen oder ein Konto gebunden. Für den UV-Alarm speichern wir zusätzlich den Ort, den du überwachen lassen willst, damit eine Hintergrundprüfung alle 15 Minuten den UV-Wert dieses Orts vergleichen kann. Für die Nachcrem-Erinnerung speichern wir den Profilnamen, den du in der App eingegeben hast, und den einen fälligen Zeitpunkt — sonst nichts — und löschen sie automatisch, sobald sie gesendet, abgebrochen oder durch einen neu gestarteten Timer ersetzt wird.",
         "legalBasis": "Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO — deine ausdrückliche Einwilligung über den Schalter, zusätzlich zur Berechtigungsabfrage des Browsers selbst. Jederzeit widerrufbar, indem du den Schalter ausschaltest.",
-        "retention": "Speicherdauer: bis du den Schalter ausschaltest oder dein Browser meldet, dass das Abonnement selbst abgelaufen ist."
+        "retention": "Speicherdauer: Die Beobachtung bei hohem UV-Wert dauert an, bis du den entsprechenden Schalter ausschaltest oder dein Browser meldet, dass das Abonnement abgelaufen ist; eine Nachcrem-Erinnerung löscht sich automatisch, sobald sie gesendet wurde (meist innerhalb von 2 Stunden) oder du den Timer abbrichst."
       }
     },
     "thirdParties": {

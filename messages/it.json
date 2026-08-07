@@ -31,7 +31,16 @@
     "updated": "Aggiornato alle {time}",
     "offlineNotice": "Offline — ultima lettura nota",
     "safeAfter": "Rischio basso dopo le {time}",
-    "settingsLabel": "Impostazioni"
+    "settingsLabel": "Impostazioni",
+    "weather": {
+      "temperature": "{temp}°",
+      "cloud": {
+        "clear": "Cielo sereno",
+        "partlyCloudy": "Poco nuvoloso",
+        "mostlyCloudy": "Nuvoloso",
+        "cloudy": "Molto nuvoloso"
+      }
+    }
   },
   "location": {
     "title": "Località",
@@ -171,6 +180,36 @@
       "source": "Fonte:",
       "shareText": "L'SPF30 blocca circa il 97% dei raggi UVB, l'SPF50 circa il 98% — la vera differenza la fa riapplicare, non rincorrere un numero più alto."
     },
+    "myths": {
+      "title": "Miti da sfatare",
+      "shareText": "SPF alto ≠ riapplicare meno spesso. Un'abbronzatura di base ≈ SPF 3. La pelle scura ha comunque bisogno di protezione. Cinque miti sfatati con fonti vere.",
+      "intro": "I consigli sul sole circolano in fretta e non sempre reggono il confronto con le prove. Cinque dei più diffusi, verificati sulle fonti primarie.",
+      "mythLabel": "Mito",
+      "factLabel": "Fatto",
+      "sourceLabel": "Fonte",
+      "items": {
+        "reapplySpf": {
+          "myth": "Una protezione più alta dura di più, quindi si può riapplicare meno spesso.",
+          "fact": "L'SPF misura quanti raggi UVB filtra, non per quanto tempo resta efficace sulla pelle. Che sia 30, 50 o 100, l'intervallo di riapplicazione è lo stesso: ogni 2 ore, più spesso dopo aver nuotato o sudato."
+        },
+        "clouds": {
+          "myth": "Con il cielo nuvoloso, la protezione solare non serve.",
+          "fact": "Una copertura nuvolosa leggera filtra soprattutto la luce visibile, molto meno i raggi UV: fino all'80% dei raggi UV passa comunque, secondo la guida OMS/OMM/UNEP/ICNIRP citata in questa pagina."
+        },
+        "darkSkin": {
+          "myth": "Con la pelle scura la protezione solare non serve.",
+          "fact": "La melanina offre una protezione naturale, ma anche al massimo equivale a circa un SPF 13 — ben sotto il minimo di SPF 30 raccomandato per tutti. La pelle scura scotta comunque (anche se il rossore è meno visibile) e sviluppa comunque tumori della pelle, spesso diagnosticati più tardi."
+        },
+        "baseTan": {
+          "myth": "Costruire un'abbronzatura di base prima previene le scottature dopo.",
+          "fact": "Un'abbronzatura arriva al massimo a una protezione equivalente a SPF 3-4 — molto sotto il minimo di SPF 30. Ed è già di per sé un segno visibile di danno al DNA, non una difesa costruita nel tempo."
+        },
+        "expiration": {
+          "myth": "La crema solare non scade mai — un flacone dura per sempre.",
+          "fact": "La FDA statunitense richiede che la protezione solare resti efficace per almeno 3 anni; dopo (o prima, se è stata lasciata in un posto caldo, come in auto), va buttata — separazione, odore strano o consistenza cambiata sono segnali che è già scaduta."
+        }
+      }
+    },
     "toc": {
       "title": "In questo articolo",
       "chart": "Curva UV di oggi",
@@ -179,6 +218,7 @@
       "physics": "La fisica dietro il numero",
       "worldCompare": "Tu vs. il mondo",
       "spf": "Come funziona l'SPF",
+      "myths": "Miti da sfatare",
       "burnHeatmap": "Tempo di scottatura, per fototipo",
       "ozone": "Lo strato di ozono si sta riprendendo",
       "iarc": "Perché è un cancerogeno di Gruppo 1"
@@ -314,9 +354,9 @@
       },
       "push": {
         "title": "Sottoscrizione push (solo se attivi gli avvisi in background)",
-        "body": "Attivare “avvisami anche ad app chiusa” ci consegna una sottoscrizione push — un endpoint e due chiavi di cifratura generate dal tuo browser stesso, non legate al tuo nome o a un account — più il luogo che vuoi monitorare. La salviamo così un controllo in background può confrontare l'UV di quel luogo ogni 15 minuti e mandare un avviso al superamento della soglia. Disattivare di nuovo l'interruttore la elimina immediatamente.",
+        "body": "Attivare uno qualsiasi dei due avvisi in background — UV alto, o il promemoria di riapplicazione — ci consegna una sottoscrizione push: un endpoint e due chiavi di cifratura generate dal tuo browser stesso, non legate al tuo nome o a un account. Per l'avviso UV alto salviamo anche il luogo che vuoi monitorare, così un controllo in background può confrontare l'UV di quel luogo ogni 15 minuti. Per il promemoria di riapplicazione salviamo il nome del profilo che hai digitato nell'app e l'orario in cui è previsto — nient'altro — e lo eliminiamo automaticamente una volta inviato, annullato, o sostituito riavviando il timer.",
         "legalBasis": "Base giuridica: art. 6(1)(a) GDPR — il tuo consenso esplicito tramite l'interruttore, oltre al permesso del browser stesso. Ritiralo in qualsiasi momento disattivando l'interruttore.",
-        "retention": "Conservazione: finché non disattivi l'interruttore, o il browser segnala che la sottoscrizione stessa è scaduta."
+        "retention": "Conservazione: il monitoraggio UV alto dura finché non disattivi il relativo interruttore o il browser segnala che la sottoscrizione è scaduta; un promemoria di riapplicazione si elimina da solo una volta inviato (di norma entro 2 ore) o se annulli il timer."
       }
     },
     "thirdParties": {

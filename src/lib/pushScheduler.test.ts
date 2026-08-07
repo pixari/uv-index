@@ -29,9 +29,16 @@ vi.mock("./metForecast", () => ({
   fetchCurrentUv: (...args: unknown[]) => fetchCurrentUv(...args),
 }));
 
-const { upsertPushSubscription, listPushSubscriptions, deletePushSubscription } =
-  await import("./pushDb");
-const { runCheck, gridKey, notificationFor } = await import("./pushScheduler");
+const {
+  upsertPushSubscription,
+  listPushSubscriptions,
+  deletePushSubscription,
+  upsertPushReminder,
+  listPushReminders,
+  deletePushReminderById,
+} = await import("./pushDb");
+const { runCheck, checkDueReminders, gridKey, notificationFor, reminderNotificationFor } =
+  await import("./pushScheduler");
 
 async function addSubscription(overrides: {
   endpoint: string;
@@ -50,12 +57,33 @@ async function addSubscription(overrides: {
   });
 }
 
+async function addReminder(overrides: {
+  endpoint: string;
+  profileId?: string;
+  profileName?: string;
+  locale?: string;
+  dueAt: number;
+}) {
+  await upsertPushReminder({
+    endpoint: overrides.endpoint,
+    p256dh: "p256dh",
+    auth: "auth",
+    profileId: overrides.profileId ?? "profile-1",
+    profileName: overrides.profileName ?? "Alex",
+    locale: overrides.locale ?? "en",
+    dueAt: overrides.dueAt,
+  });
+}
+
 beforeEach(async () => {
   sendNotification.mockReset();
   fetchCurrentUv.mockReset();
   // Clean slate between tests — delete whatever the previous test left.
   for (const sub of await listPushSubscriptions()) {
     await deletePushSubscription(sub.endpoint);
+  }
+  for (const reminder of await listPushReminders()) {
+    await deletePushReminderById(reminder.id);
   }
 });
 
@@ -152,5 +180,75 @@ describe("runCheck", () => {
     expect(sendNotification).not.toHaveBeenCalled();
     const [stored] = await listPushSubscriptions();
     expect(stored.lastUv).toBeNull();
+  });
+});
+
+describe("reminderNotificationFor", () => {
+  it("interpolates the profile name into the locale's body", () => {
+    const { title, body } = reminderNotificationFor("it", "Marco");
+    expect(title).toBeTruthy();
+    expect(body).toContain("Marco");
+    expect(body).not.toContain("{name}");
+  });
+
+  it("falls back to English for an unknown locale", () => {
+    expect(reminderNotificationFor("xx", "Alex")).toEqual(
+      reminderNotificationFor("en", "Alex"),
+    );
+  });
+});
+
+describe("checkDueReminders", () => {
+  it("sends a due reminder and removes it", async () => {
+    await addReminder({ endpoint: "https://push.example/r1", dueAt: Date.now() - 1000 });
+
+    await checkDueReminders();
+
+    expect(sendNotification).toHaveBeenCalledTimes(1);
+    const [subject, payload] = sendNotification.mock.calls[0];
+    expect(subject.endpoint).toBe("https://push.example/r1");
+    expect(JSON.parse(payload).body).toContain("Alex");
+    expect(await listPushReminders()).toHaveLength(0);
+  });
+
+  it("leaves a reminder that isn't due yet untouched", async () => {
+    await addReminder({ endpoint: "https://push.example/r2", dueAt: Date.now() + 60_000 });
+
+    await checkDueReminders();
+
+    expect(sendNotification).not.toHaveBeenCalled();
+    expect(await listPushReminders()).toHaveLength(1);
+  });
+
+  it("removes the reminder and its subscription when the push service reports it gone", async () => {
+    await addSubscription({ endpoint: "https://push.example/r3" });
+    await addReminder({ endpoint: "https://push.example/r3", dueAt: Date.now() - 1000 });
+    sendNotification.mockRejectedValueOnce(Object.assign(new Error("gone"), { statusCode: 410 }));
+
+    await checkDueReminders();
+
+    expect(await listPushReminders()).toHaveLength(0);
+    expect(await listPushSubscriptions()).toHaveLength(0);
+  });
+
+  it("keeps a recently-failed reminder for retry on the next tick", async () => {
+    await addReminder({ endpoint: "https://push.example/r4", dueAt: Date.now() - 1000 });
+    sendNotification.mockRejectedValueOnce(Object.assign(new Error("network"), { statusCode: 500 }));
+
+    await checkDueReminders();
+
+    expect(await listPushReminders()).toHaveLength(1);
+  });
+
+  it("gives up on a reminder that's been failing for too long", async () => {
+    await addReminder({
+      endpoint: "https://push.example/r5",
+      dueAt: Date.now() - 3 * 3600 * 1000, // 3h overdue, past the 2h give-up window
+    });
+    sendNotification.mockRejectedValueOnce(Object.assign(new Error("network"), { statusCode: 500 }));
+
+    await checkDueReminders();
+
+    expect(await listPushReminders()).toHaveLength(0);
   });
 });
