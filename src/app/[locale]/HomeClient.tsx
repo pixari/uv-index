@@ -134,7 +134,9 @@ export default function HomeClient() {
     const cached = getCachedUv(lat, lon);
     if (cached) {
       setUv(cached.uv);
-      setUpdatedAt(cached.updatedAt);
+      // The time *this device* last actually fetched it, not MET's own
+      // "updatedAt" (see the note in fetchUv) — same reasoning, cached.
+      setUpdatedAt(new Date(cached.fetchedAt).toISOString());
       setSafeAfter(cached.safeAfter);
       setError(null);
       setStale(true);
@@ -163,8 +165,16 @@ export default function HomeClient() {
       .then((d) => {
         if (seq !== fetchSeqRef.current) return; // a newer request has since started
         if (typeof d.uv === "number") {
+          const fetchedAt = Date.now();
           setUv(d.uv);
-          setUpdatedAt(d.updatedAt ?? null);
+          // Deliberately *not* d.updatedAt: that's MET's own model-run
+          // timestamp, which only changes when MET regenerates their
+          // forecast product — often hours apart — not on every refetch.
+          // Showing it as "Updated at" made the app look stuck even while
+          // it was successfully refreshing. This is when *this device*
+          // last actually confirmed the reading, which is what the label
+          // means to the person reading it.
+          setUpdatedAt(new Date(fetchedAt).toISOString());
           setSafeAfter(d.safeAfter ?? null);
           setError(null);
           setStale(false);
@@ -174,7 +184,7 @@ export default function HomeClient() {
             uv: d.uv,
             updatedAt: d.updatedAt ?? null,
             safeAfter: d.safeAfter ?? null,
-            fetchedAt: Date.now(),
+            fetchedAt,
           });
           maybeNotifyHighUv(d.uv);
           if (opts?.silent) setRevealed(true);
