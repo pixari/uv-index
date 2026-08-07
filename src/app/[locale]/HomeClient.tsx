@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { uvLevel, skyGradientCss } from "@/lib/uvLevel";
 import {
@@ -10,6 +10,11 @@ import {
   type Profile,
 } from "@/lib/profiles";
 import { consumeSettingsReopen } from "@/lib/pendingSettingsReopen";
+import {
+  HIGH_UV_THRESHOLD,
+  getHighUvNotifPref,
+  showNotification,
+} from "@/lib/notifications";
 import InstallPrompt from "./InstallPrompt";
 import LocationSheet, { type Place } from "./LocationSheet";
 import ReapplyTimer from "./ReapplyTimer";
@@ -24,6 +29,7 @@ const LAST_PLACE_KEY = "uv-index:last-place";
 
 export default function HomeClient() {
   const t = useTranslations("home");
+  const tn = useTranslations("notify");
   const locale = useLocale();
   const [coords, setCoords] = useState<Coords | null>(null);
   const [uv, setUv] = useState<number | null>(null);
@@ -37,6 +43,10 @@ export default function HomeClient() {
   const [settingsVersion, setSettingsVersion] = useState(0);
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [activeProfileId, setActiveProfileIdState] = useState<string | null>(null);
+  // Tracks the last UV value we've considered for the high-UV alert, so a
+  // notification fires on the rise past the threshold, not on every poll
+  // while it stays high.
+  const lastNotifiedUvRef = useRef<number | null>(null);
 
   // Restore last-used place, or fall back to GPS prompt.
   useEffect(() => {
@@ -74,26 +84,79 @@ export default function HomeClient() {
     localStorage.setItem(LAST_PLACE_KEY, JSON.stringify(coords));
   }, [coords]);
 
-  // Refetch UV only when the actual coordinates change, not when a
-  // reverse-geocoded label arrives later for the same point.
-  useEffect(() => {
-    if (!coords) return;
-    setUv(null);
-    setError(null);
-    setRevealed(false);
-    fetch(`/api/uv?lat=${coords.lat}&lon=${coords.lon}`)
+  function maybeNotifyHighUv(value: number) {
+    const prev = lastNotifiedUvRef.current;
+    lastNotifiedUvRef.current = value;
+    if (!getHighUvNotifPref()) return;
+    if (value >= HIGH_UV_THRESHOLD && (prev === null || prev < HIGH_UV_THRESHOLD)) {
+      showNotification(tn("highUvTitle"), tn("highUvBody", { uv: Math.round(value) }));
+    }
+  }
+
+  // `silent` skips the loading/reveal reset — used for background refreshes
+  // so an already-visible number doesn't flash away while the new one loads.
+  function fetchUv(lat: number, lon: number, opts?: { silent?: boolean }) {
+    if (!opts?.silent) {
+      setUv(null);
+      setError(null);
+      setRevealed(false);
+    }
+    fetch(`/api/uv?lat=${lat}&lon=${lon}`, { cache: "no-store" })
       .then((r) => r.json())
       .then((d) => {
         if (typeof d.uv === "number") {
           setUv(d.uv);
           setUpdatedAt(d.updatedAt ?? null);
           setSafeAfter(d.safeAfter ?? null);
-          requestAnimationFrame(() => setRevealed(true));
-        } else {
+          setError(null);
+          maybeNotifyHighUv(d.uv);
+          if (opts?.silent) setRevealed(true);
+          else requestAnimationFrame(() => setRevealed(true));
+        } else if (!opts?.silent) {
           setError("no-data");
         }
       })
-      .catch(() => setError("fetch-failed"));
+      .catch(() => {
+        if (!opts?.silent) setError("fetch-failed");
+      });
+  }
+
+  // Refetch UV only when the actual coordinates change, not when a
+  // reverse-geocoded label arrives later for the same point.
+  useEffect(() => {
+    if (!coords) return;
+    fetchUv(coords.lat, coords.lon);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [coords?.lat, coords?.lon]);
+
+  // Reopening the app (or switching back to its tab) should never show a
+  // stale reading — refresh immediately whenever it becomes visible again.
+  useEffect(() => {
+    if (!coords) return;
+    function onVisible() {
+      if (document.visibilityState === "visible" && coords) {
+        fetchUv(coords.lat, coords.lon, { silent: true });
+      }
+    }
+    document.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("focus", onVisible);
+    return () => {
+      document.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("focus", onVisible);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [coords?.lat, coords?.lon]);
+
+  // Also poll periodically while the app stays open — otherwise a long
+  // session (e.g. sitting outside all afternoon) would only ever notice a
+  // rise above the high-UV threshold at the moment it was opened.
+  useEffect(() => {
+    if (!coords) return;
+    const id = setInterval(
+      () => fetchUv(coords.lat, coords.lon, { silent: true }),
+      15 * 60 * 1000,
+    );
+    return () => clearInterval(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [coords?.lat, coords?.lon]);
 
@@ -262,6 +325,9 @@ export default function HomeClient() {
                   key={activeProfileId}
                   uv={uv}
                   profileId={activeProfileId}
+                  profileName={
+                    profiles.find((p) => p.id === activeProfileId)?.name ?? ""
+                  }
                   skinType={
                     profiles.find((p) => p.id === activeProfileId)?.skinType ?? null
                   }

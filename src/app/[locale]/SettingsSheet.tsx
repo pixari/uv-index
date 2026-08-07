@@ -23,6 +23,14 @@ import {
   type Profile,
 } from "@/lib/profiles";
 import { markSettingsForReopen } from "@/lib/pendingSettingsReopen";
+import {
+  ensureNotificationPermission,
+  getHighUvNotifPref,
+  getReapplyNotifPref,
+  notificationsSupported,
+  setHighUvNotifPref,
+  setReapplyNotifPref,
+} from "@/lib/notifications";
 import DataSourcesSheet from "./DataSourcesSheet";
 
 const LOCALE_LABEL: Record<string, string> = {
@@ -52,6 +60,40 @@ function ProfileAvatar({ profile }: { profile: Profile }) {
   );
 }
 
+function Toggle({
+  checked,
+  onChange,
+  label,
+  disabled,
+}: {
+  checked: boolean;
+  onChange: (next: boolean) => void;
+  label: string;
+  disabled?: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      aria-label={label}
+      disabled={disabled}
+      onClick={() => onChange(!checked)}
+      className={
+        "relative h-6 w-11 shrink-0 rounded-full transition-colors disabled:opacity-40 " +
+        (checked ? "bg-brand" : "bg-border")
+      }
+    >
+      <span
+        className={
+          "absolute top-0.5 h-5 w-5 rounded-full bg-white transition-transform " +
+          (checked ? "translate-x-[22px]" : "translate-x-0.5")
+        }
+      />
+    </button>
+  );
+}
+
 export default function SettingsSheet({
   open,
   onOpenChange,
@@ -72,14 +114,41 @@ export default function SettingsSheet({
   const [selectedProfileId, setSelectedProfileId] = useState<string | null>(null);
   const [addingProfile, setAddingProfile] = useState(false);
   const [newProfileName, setNewProfileName] = useState("");
+  const [reapplyNotif, setReapplyNotif] = useState(false);
+  const [highUvNotif, setHighUvNotif] = useState(false);
 
   useEffect(() => {
     if (!open) return;
     const list = getProfiles(tHome("defaultProfileName"));
     setProfiles(list);
     setSelectedProfileId(resolveActiveProfileId(tHome("defaultProfileName")));
+    setReapplyNotif(getReapplyNotifPref());
+    setHighUvNotif(getHighUvNotifPref());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
+
+  // Turning a toggle on needs permission first; if it's denied (or the
+  // browser can't do notifications at all), the toggle snaps back off
+  // instead of silently claiming to be on.
+  async function toggleReapplyNotif(next: boolean) {
+    if (next && !(await ensureNotificationPermission())) {
+      setReapplyNotif(false);
+      setReapplyNotifPref(false);
+      return;
+    }
+    setReapplyNotif(next);
+    setReapplyNotifPref(next);
+  }
+
+  async function toggleHighUvNotif(next: boolean) {
+    if (next && !(await ensureNotificationPermission())) {
+      setHighUvNotif(false);
+      setHighUvNotifPref(false);
+      return;
+    }
+    setHighUvNotif(next);
+    setHighUvNotifPref(next);
+  }
 
   function changeLocale(next: string) {
     // Switching language navigates to a different /[locale]/ URL, which
@@ -256,6 +325,40 @@ export default function SettingsSheet({
                   </button>
                 )}
               </div>
+            </div>
+
+            <div>
+              <h3 className="mb-2 text-sm font-medium text-muted-foreground">
+                {t("notifications.title")}
+              </h3>
+              {notificationsSupported() ? (
+                <div className="flex flex-col gap-3 rounded-2xl border border-border bg-surface p-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-sm text-foreground">
+                      {t("notifications.reapplyLabel")}
+                    </span>
+                    <Toggle
+                      checked={reapplyNotif}
+                      onChange={toggleReapplyNotif}
+                      label={t("notifications.reapplyLabel")}
+                    />
+                  </div>
+                  <div className="flex items-center justify-between gap-3 border-t border-border pt-3">
+                    <span className="text-sm text-foreground">
+                      {t("notifications.highUvLabel")}
+                    </span>
+                    <Toggle
+                      checked={highUvNotif}
+                      onChange={toggleHighUvNotif}
+                      label={t("notifications.highUvLabel")}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  {t("notifications.unsupported")}
+                </p>
+              )}
             </div>
 
             <div>

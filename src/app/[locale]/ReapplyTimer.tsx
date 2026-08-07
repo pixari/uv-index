@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import {
@@ -14,6 +14,7 @@ import {
   type Spf,
 } from "@/lib/reapplyTimer";
 import { burnMinutes, type SkinType } from "@/lib/skinType";
+import { getReapplyNotifPref, showNotification } from "@/lib/notifications";
 
 function spfLabel(spf: Spf) {
   return spf > 50 ? "50+" : String(spf);
@@ -27,15 +28,18 @@ const EYEBROW = "text-xs font-semibold uppercase tracking-wide text-white/60";
 export default function ReapplyTimer({
   uv,
   profileId,
+  profileName,
   skinType,
   onOpenSettings,
 }: {
   uv: number;
   profileId: string;
+  profileName: string;
   skinType: SkinType | null;
   onOpenSettings: () => void;
 }) {
   const t = useTranslations("reapply");
+  const tn = useTranslations("notify");
   // Lazy-initialized from storage rather than set in an effect: the parent
   // remounts this component (via `key={profileId}`) on every people switch,
   // so an effect-driven update would paint the "no timer" view for a beat
@@ -47,6 +51,7 @@ export default function ReapplyTimer({
   const [remaining, setRemaining] = useState<number | null>(null);
   const [spf, setSpf] = useState<Spf | null>(() => getStoredSpf(profileId));
   const [pendingSpf, setPendingSpf] = useState<Spf>(30);
+  const notifiedOverdueRef = useRef(false);
 
   useEffect(() => {
     if (startedAt === null) {
@@ -61,6 +66,22 @@ export default function ReapplyTimer({
     const id = setInterval(tick, 30_000);
     return () => clearInterval(id);
   }, [startedAt]);
+
+  const overdue = startedAt !== null && remaining !== null && remaining <= 0;
+
+  // Fire once per timer cycle, right as it flips overdue — not on every
+  // 30s tick afterwards.
+  useEffect(() => {
+    notifiedOverdueRef.current = false;
+  }, [startedAt]);
+
+  useEffect(() => {
+    if (!overdue || notifiedOverdueRef.current) return;
+    notifiedOverdueRef.current = true;
+    if (getReapplyNotifPref()) {
+      showNotification(tn("reapplyTitle"), tn("reapplyBody", { name: profileName }));
+    }
+  }, [overdue, tn, profileName]);
 
   function start() {
     startReapplyTimer(profileId);
@@ -89,7 +110,6 @@ export default function ReapplyTimer({
 
   // Active countdown running.
   if (startedAt !== null && remaining !== null) {
-    const overdue = remaining <= 0;
     const h = Math.floor(Math.abs(remaining) / 60);
     const m = Math.abs(remaining) % 60;
     const timeLabel = h > 0 ? `${h}h ${m}min` : `${m}min`;

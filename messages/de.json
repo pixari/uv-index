@@ -72,7 +72,13 @@
       "6": "Sehr dunkle oder schwarze Haut, Sonnenbrand extrem selten"
     },
     "skinTypeWhy": "Das ist die Fitzpatrick-Skala, der dermatologische Standard zur Abschätzung, wie lange ungeschützte Haut einen bestimmten UV-Index verträgt, bevor sie verbrennt. Es ist kein ästhetisches Urteil — je heller der Hauttyp, desto weniger Zeit braucht die Sonne, um die Haut zu schädigen.",
-    "dataSourcesLink": "Wie wir deine Daten verwenden"
+    "dataSourcesLink": "Wie wir deine Daten verwenden",
+    "notifications": {
+      "title": "Benachrichtigungen",
+      "reapplyLabel": "An das Erneuern des Sonnenschutzes erinnern",
+      "highUvLabel": "Benachrichtigen, wenn der UV-Index über 7 steigt",
+      "unsupported": "Benachrichtigungen werden auf diesem Gerät nicht unterstützt"
+    }
   },
   "install": {
     "prompt": "App installieren für schnellen Zugriff",
@@ -97,6 +103,12 @@
     "spfLabel": "Welchen LSF hast du verwendet?",
     "spfInUse": "LSF {spf}",
     "spfNote": "Das Intervall bleibt bei jedem LSF 2 Stunden — Menge und Häufigkeit zählen mehr als die Zahl →"
+  },
+  "notify": {
+    "reapplyTitle": "Sonnenschutz erneuern",
+    "reapplyBody": "Zeit zum Erneuern — {name}",
+    "highUvTitle": "Hoher UV-Index",
+    "highUvBody": "Der UV-Index liegt gerade bei {uv} — schütze deine Haut"
   },
   "dataSources": {
     "title": "Daten & Datenschutz",
