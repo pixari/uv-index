@@ -78,6 +78,8 @@
       "6": "Sehr dunkle oder schwarze Haut, Sonnenbrand extrem selten"
     },
     "skinTypeWhy": "Das ist die Fitzpatrick-Skala, der dermatologische Standard zur Abschätzung, wie lange ungeschützte Haut einen bestimmten UV-Index verträgt, bevor sie verbrennt. Es ist kein ästhetisches Urteil — je heller der Hauttyp, desto weniger Zeit braucht die Sonne, um die Haut zu schädigen.",
+    "learnMoreLink": "Mehr über UV und Sonnenschutz erfahren →",
+    "scienceLink": "Warum das wichtig ist",
     "dataSourcesLink": "Wie wir deine Daten verwenden",
     "notifications": {
       "title": "Benachrichtigungen",
@@ -132,6 +134,7 @@
   },
   "learn": {
     "title": "Mehr erfahren",
+    "eyebrow": "Die Wissenschaft des Sonnenschutzes",
     "metaDescription": "Wie der UV-Index wirklich funktioniert, die Wissenschaft des Sonnenschutzes und was LSF wirklich bedeutet — mit überprüfbaren Quellen.",
     "back": "← Zurück zur Startseite",
     "chart": {

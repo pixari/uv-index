@@ -104,7 +104,10 @@ export default function LearnClient() {
         {t("back")}
       </Link>
 
-      <h1 className="font-display text-4xl leading-tight mb-6">
+      <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-brand-ink">
+        {t("eyebrow")}
+      </p>
+      <h1 className="font-display text-5xl leading-[1.05] mb-6">
         {t("title")}
       </h1>
 

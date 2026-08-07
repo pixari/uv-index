@@ -3,8 +3,21 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import Script from "next/script";
+import { Fraunces } from "next/font/google";
 import { routing } from "@/i18n/routing";
 import "./globals.css";
+
+// DESIGN.md's typography spec calls for Fraunces on the UV number and all
+// page/section titles ("distinctive numeral shapes, warm and editorial
+// rather than clinical") — this was specified but never actually wired up;
+// --font-display just aliased to the system sans stack. Self-hosted via
+// next/font (downloaded at build time, served from this origin, so it
+// doesn't add a runtime dependency on Google's CDN or need a CSP allowance).
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-fraunces",
+  display: "swap",
+});
 
 const SITE_URL = "https://uvindex.pixari.dev";
 
@@ -77,7 +90,7 @@ export default async function LocaleLayout({
   }
 
   return (
-    <html lang={locale} className="antialiased">
+    <html lang={locale} className={`antialiased ${fraunces.variable}`}>
       <body className="bg-bg text-ink font-sans">
         <Script
           defer
