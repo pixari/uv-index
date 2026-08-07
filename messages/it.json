@@ -72,7 +72,13 @@
       "6": "Pelle molto scura o nera, scottature rarissime"
     },
     "skinTypeWhy": "È la scala di Fitzpatrick, lo standard dermatologico usato per stimare in quanto tempo la pelle non protetta rischia di scottarsi a un dato indice UV. Non è un giudizio estetico: più chiaro è il fototipo, meno tempo serve al sole per danneggiare la pelle.",
-    "dataSourcesLink": "Come uso i tuoi dati"
+    "dataSourcesLink": "Come uso i tuoi dati",
+    "notifications": {
+      "title": "Notifiche",
+      "reapplyLabel": "Ricordami di riapplicare la protezione",
+      "highUvLabel": "Avvisami quando l'UV supera 7",
+      "unsupported": "Le notifiche non sono supportate su questo dispositivo"
+    }
   },
   "install": {
     "prompt": "Installa l'app per un accesso rapido",
@@ -97,6 +103,12 @@
     "spfLabel": "Con che SPF ti sei protetto?",
     "spfInUse": "SPF {spf}",
     "spfNote": "L'intervallo resta 2 ore con qualsiasi SPF: contano di più la quantità e la frequenza che il numero →"
+  },
+  "notify": {
+    "reapplyTitle": "Riapplica la protezione solare",
+    "reapplyBody": "È ora di riapplicarla — {name}",
+    "highUvTitle": "Indice UV alto",
+    "highUvBody": "L'indice UV ora è {uv} — proteggi la pelle"
   },
   "dataSources": {
     "title": "Dati e privacy",
