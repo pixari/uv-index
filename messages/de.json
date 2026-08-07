@@ -236,6 +236,11 @@
         }
       },
       "shareText": "Solare UV-Strahlung ist offiziell ein Gruppe-1-Karzinogen — hier ist wann und warum:"
+    },
+    "footer": {
+      "tagline": "Gemacht, um eine Frage schnell zu beantworten — und die Quellen offenzulegen.",
+      "backToTop": "Nach oben",
+      "backToHome": "Zurück zur Startseite"
     }
   }
 }

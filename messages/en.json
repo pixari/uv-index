@@ -236,6 +236,11 @@
         }
       },
       "shareText": "Solar UV radiation is officially a Group 1 carcinogen — here's when and why:"
+    },
+    "footer": {
+      "tagline": "Built to answer one question quickly — and to show its work.",
+      "backToTop": "Back to top",
+      "backToHome": "Back to home"
     }
   }
 }

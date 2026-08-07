@@ -105,6 +105,7 @@ export default function LearnClient() {
     // garish). Brand color has no semantic meaning to protect (unlike
     // the WHO risk scale), so it's free to use decoratively here.
     <main
+      id="learnTop"
       className="mx-auto max-w-xl px-6 py-10"
       style={{
         background:
@@ -322,6 +323,37 @@ export default function LearnClient() {
         <p className="mb-6 text-ink leading-relaxed">{t("iarc.intro")}</p>
         <IarcTimeline milestones={IARC_TIMELINE} />
       </article>
+
+      {/* A bookend for the hero's gradient bar, and a real closing
+          treatment for an 11,000px page that otherwise just stopped. */}
+      <footer className="mt-4 border-t border-border pt-8 pb-2">
+        <div className="mb-6">
+          <WhoGradientBar />
+        </div>
+        <div className="mb-4 flex items-center gap-2">
+          <div
+            aria-hidden
+            className="h-6 w-6 shrink-0 rounded-full"
+            style={{
+              background:
+                "linear-gradient(135deg, #3EA72D 0%, #FFF300 35%, #F18B00 65%, #E53210 100%)",
+            }}
+          />
+          <span className="font-display text-base text-foreground">UV Index</span>
+        </div>
+        <p className="mb-6 max-w-[38ch] text-sm text-muted-foreground leading-relaxed">
+          {t("footer.tagline")}
+        </p>
+        <div className="flex items-center gap-3">
+          <a href="#learnTop" className="text-sm text-brand-ink hover:underline">
+            {t("footer.backToTop")}
+          </a>
+          <span aria-hidden className="text-border">·</span>
+          <Link href="/" className="text-sm text-brand-ink hover:underline">
+            {t("footer.backToHome")}
+          </Link>
+        </div>
+      </footer>
     </main>
   );
 }
