@@ -87,7 +87,9 @@
       "reapplyLabel": "An das Erneuern des Sonnenschutzes erinnern",
       "highUvLabel": "Benachrichtigen, wenn der UV-Index über 7 steigt",
       "unsupported": "Benachrichtigungen werden auf diesem Gerät nicht unterstützt",
-      "blocked": "Benachrichtigungen sind in deinem Browser für diese Seite blockiert — erlaube sie in den Website-Einstellungen deines Browsers, um dies zu aktivieren."
+      "blocked": "Benachrichtigungen sind in deinem Browser für diese Seite blockiert — erlaube sie in den Website-Einstellungen deines Browsers, um dies zu aktivieren.",
+      "pushActive": "Benachrichtigt auch bei vollständig geschlossener App.",
+      "pushInactive": "Nur solange die App geöffnet ist — Benachrichtigungen im Hintergrund sind auf diesem Gerät/Browser nicht verfügbar."
     },
     "privacyLink": "Datenschutz & Haftungsausschluss"
   },
@@ -253,7 +255,7 @@
     "metaDescription": "Was die Zahlen von UV Index bedeuten — und was nicht — und was genau mit deinen Daten passiert, wenn du die App nutzt.",
     "eyebrow": "Rechtliches",
     "back": "← Zurück zur Startseite",
-    "intro": "Kurz gesagt: keine Konten, keine Daten zum Verkauf, und fast alles über dich bleibt auf deinem eigenen Gerät. Hier ist das vollständige Bild — was die Hinweise dieser App bedeuten und was nicht, und was genau mit deinen Daten passiert.",
+    "intro": "Kurz gesagt: keine Konten, keine Daten zum Verkauf, und — sofern du keine Hintergrund-Push-Benachrichtigungen aktivierst — bleibt alles über dich auf deinem eigenen Gerät. Hier ist das vollständige Bild — was die Hinweise dieser App bedeuten und was nicht, und was genau mit deinen Daten passiert.",
     "lastUpdated": "Zuletzt aktualisiert: 7. August 2026",
     "toc": {
       "title": "Auf dieser Seite",
@@ -309,6 +311,12 @@
         "body": "Wir nutzen Umami, ein selbst gehostetes, cookie-freies Analyse-Tool, um aggregierte Zahlen zu sehen — wie viele Menschen die App nutzen, welche Seiten gelesen werden. Umami setzt keine Cookies und keine dauerhaften Kennungen und speichert weder deine IP-Adresse noch sonst etwas, das dich individuell identifiziert; eine eventuelle Statistik auf Länderebene wird aus der IP im laufenden Betrieb berechnet, die Adresse selbst wird verworfen.",
         "legalBasis": "Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO — berechtigtes Interesse an einfachen, nicht identifizierenden Nutzungsstatistiken, mit einem Tool, das gerade deshalb gewählt wurde, weil es niemanden nachverfolgen muss.",
         "retention": "Speicherdauer: nur aggregierte Zählwerte, solange sie nützlich sind; nichts darin identifiziert dich."
+      },
+      "push": {
+        "title": "Push-Abonnement (nur wenn du Hintergrund-Benachrichtigungen aktivierst)",
+        "body": "Wenn du „auch bei geschlossener App benachrichtigen“ aktivierst, erhalten wir ein Push-Abonnement — einen Endpunkt und zwei Verschlüsselungsschlüssel, die dein Browser selbst erzeugt, nicht an deinen Namen oder ein Konto gebunden — sowie den Ort, den du überwachen lassen willst. Wir speichern es, damit eine Hintergrundprüfung alle 15 Minuten den UV-Wert dieses Orts vergleichen und bei Überschreiten der Schwelle eine Benachrichtigung senden kann. Schaltest du die Option wieder aus, wird es sofort gelöscht.",
+        "legalBasis": "Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO — deine ausdrückliche Einwilligung über den Schalter, zusätzlich zur Berechtigungsabfrage des Browsers selbst. Jederzeit widerrufbar, indem du den Schalter ausschaltest.",
+        "retention": "Speicherdauer: bis du den Schalter ausschaltest oder dein Browser meldet, dass das Abonnement selbst abgelaufen ist."
       }
     },
     "thirdParties": {
@@ -318,11 +326,12 @@
       "openMeteo": "Open-Meteo — wandelt einen eingegebenen Ortsnamen in Koordinaten um.",
       "bigDataCloud": "BigDataCloud — wandelt GPS-Koordinaten in einen Ortsnamen um.",
       "umami": "Umami, selbst gehostet auf unserer eigenen Infrastruktur — anonyme Nutzungszahlen.",
-      "note": "Keiner von ihnen erhält Informationen, die dich persönlich identifizieren, und wir teilen keine Daten mit Werbetreibenden, Datenhändlern oder sonst jemandem. Manche verarbeiten Anfragen eventuell auf Infrastruktur außerhalb der EU/des EWR; in diesem Fall liegt es an ihnen, dies im Rahmen ihrer eigenen Compliance-Pflichten abzusichern (z. B. Standardvertragsklauseln)."
+      "note": "Keiner von ihnen erhält Informationen, die dich persönlich identifizieren, und wir teilen keine Daten mit Werbetreibenden, Datenhändlern oder sonst jemandem. Manche verarbeiten Anfragen eventuell auf Infrastruktur außerhalb der EU/des EWR; in diesem Fall liegt es an ihnen, dies im Rahmen ihrer eigenen Compliance-Pflichten abzusichern (z. B. Standardvertragsklauseln).",
+      "pushService": "Der Push-Dienst deines eigenen Browsers (z. B. Google für Chrome, Mozilla für Firefox, Apple für Safari) — stellt die Benachrichtigung an dein Gerät zu, falls du Hintergrund-Benachrichtigungen aktiviert hast. Er sieht, dass eine Benachrichtigung gesendet wurde, nicht ihren Inhalt: Web-Push-Payloads sind Ende-zu-Ende mit Schlüsseln verschlüsselt, die dein Browser selbst erzeugt."
     },
     "cookiesStorage": {
       "title": "Cookies und lokaler Speicher",
-      "body": "Diese App setzt keine Cookies. Alles, woran sie sich über dich erinnert — Profile, Hauttyp, Benachrichtigungseinstellungen, gespeicherte Orte, letzter bekannter Messwert — liegt im lokalen Speicher deines Browsers, nur auf deinem Gerät, und wird nie an unsere Server übertragen. Du kannst ihn jederzeit über die Website-Einstellungen deines Browsers löschen; die App startet dann einfach wieder von vorn."
+      "body": "Diese App setzt keine Cookies. Alles, woran sie sich über dich erinnert — Profile, Hauttyp, Benachrichtigungseinstellungen, gespeicherte Orte, letzter bekannter Messwert — liegt im lokalen Speicher deines Browsers, nur auf deinem Gerät, und wird nie an unsere Server übertragen. Die einzige Ausnahme ist ein Push-Abonnement, falls du Hintergrund-Benachrichtigungen bei hohem UV-Wert aktiviert hast — siehe „Was wir erheben“ weiter unten. Du kannst den lokalen Speicher jederzeit über die Website-Einstellungen deines Browsers löschen; die App startet dann einfach wieder von vorn."
     },
     "yourRights": {
       "title": "Deine Rechte",

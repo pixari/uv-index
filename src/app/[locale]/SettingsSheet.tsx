@@ -33,6 +33,11 @@ import {
   setHighUvNotifPref,
   setReapplyNotifPref,
 } from "@/lib/notifications";
+import {
+  isPushSubscribedLocally,
+  subscribeToHighUvPush,
+  unsubscribeFromHighUvPush,
+} from "@/lib/pushClient";
 import DataSourcesSheet from "./DataSourcesSheet";
 import ScienceSheet from "./ScienceSheet";
 
@@ -41,6 +46,24 @@ const LOCALE_LABEL: Record<string, string> = {
   en: "English",
   de: "Deutsch",
 };
+
+// Same key HomeClient/LearnClient already read/write independently —
+// there's no shared "current place" module, each screen that needs it
+// just agrees on the storage key.
+const LAST_PLACE_KEY = "uv-index:last-place";
+
+type LastPlace = { lat: number; lon: number; label: string };
+
+function readLastPlace(): LastPlace | null {
+  if (typeof window === "undefined") return null;
+  const raw = localStorage.getItem(LAST_PLACE_KEY);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw) as LastPlace;
+  } catch {
+    return null;
+  }
+}
 
 function ProfileAvatar({ profile }: { profile: Profile }) {
   // Skin type doesn't apply to an infant profile — the avatar shouldn't
@@ -123,6 +146,12 @@ export default function SettingsSheet({
   const [newProfileName, setNewProfileName] = useState("");
   const [reapplyNotif, setReapplyNotif] = useState(false);
   const [highUvNotif, setHighUvNotif] = useState(false);
+  // Whether the high-UV toggle is actually backed by a live push
+  // subscription (alerts even when the app is closed) rather than just
+  // the foreground Notification permission — shown as a small hint so
+  // "on" doesn't silently mean two different things depending on the
+  // browser/deployment.
+  const [pushActive, setPushActive] = useState(false);
   // Browser-level, sticky until the person changes it in their browser's
   // own site settings — distinct from just "not decided yet".
   const [notifBlocked, setNotifBlocked] = useState(false);
@@ -134,6 +163,7 @@ export default function SettingsSheet({
     setSelectedProfileId(resolveActiveProfileId(tHome("defaultProfileName")));
     setReapplyNotif(getReapplyNotifPref());
     setHighUvNotif(getHighUvNotifPref());
+    setPushActive(isPushSubscribedLocally());
     setNotifBlocked(notificationsSupported() && Notification.permission === "denied");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
@@ -165,6 +195,16 @@ export default function SettingsSheet({
         setHighUvNotifPref(false);
         return;
       }
+      // Best-effort — a browser without Push support, or a deployment
+      // that hasn't configured VAPID keys, still gets the foreground
+      // alert above; this just adds the "even when closed" half on top
+      // where it's actually available.
+      const place = readLastPlace();
+      const subscribed = place ? await subscribeToHighUvPush(place, locale) : false;
+      setPushActive(subscribed);
+    } else {
+      await unsubscribeFromHighUvPush();
+      setPushActive(false);
     }
     setHighUvNotif(next);
     setHighUvNotifPref(next);
@@ -376,15 +416,24 @@ export default function SettingsSheet({
                       label={t("notifications.reapplyLabel")}
                     />
                   </div>
-                  <div className="flex items-center justify-between gap-3 border-t border-border pt-3">
-                    <span className="text-sm text-foreground">
-                      {t("notifications.highUvLabel")}
-                    </span>
-                    <Toggle
-                      checked={highUvNotif}
-                      onChange={toggleHighUvNotif}
-                      label={t("notifications.highUvLabel")}
-                    />
+                  <div className="border-t border-border pt-3">
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="text-sm text-foreground">
+                        {t("notifications.highUvLabel")}
+                      </span>
+                      <Toggle
+                        checked={highUvNotif}
+                        onChange={toggleHighUvNotif}
+                        label={t("notifications.highUvLabel")}
+                      />
+                    </div>
+                    {highUvNotif && (
+                      <p className="mt-1.5 text-xs leading-snug text-muted-foreground">
+                        {pushActive
+                          ? t("notifications.pushActive")
+                          : t("notifications.pushInactive")}
+                      </p>
+                    )}
                   </div>
                 </div>
               ) : (

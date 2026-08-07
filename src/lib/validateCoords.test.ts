@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseCoords } from "./validateCoords";
+import { coordsFromValues, parseCoords } from "./validateCoords";
 
 function params(obj: Record<string, string>) {
   return new URLSearchParams(obj);
@@ -37,5 +37,17 @@ describe("parseCoords", () => {
   it("accepts boundary values", () => {
     expect(parseCoords(params({ lat: "90", lon: "180" }))).toEqual({ lat: 90, lon: 180 });
     expect(parseCoords(params({ lat: "-90", lon: "-180" }))).toEqual({ lat: -90, lon: -180 });
+  });
+});
+
+describe("coordsFromValues", () => {
+  it("accepts already-numeric values (e.g. from a parsed JSON body)", () => {
+    expect(coordsFromValues(40.6, 17.9)).toEqual({ lat: 40.6, lon: 17.9 });
+  });
+
+  it("rejects non-numeric, out-of-range, and missing values", () => {
+    expect(coordsFromValues("nope", 17.9)).toBeNull();
+    expect(coordsFromValues(91, 0)).toBeNull();
+    expect(coordsFromValues(undefined, 0)).toBeNull();
   });
 });

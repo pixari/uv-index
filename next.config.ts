@@ -28,6 +28,10 @@ const CSP = [
   "img-src 'self' data:",
   "font-src 'self'",
   `connect-src 'self' ${ANALYTICS_ORIGIN}`,
+  // Some browsers fall back to script-src for workers if this isn't set
+  // explicitly, but not all — public/sw.js (registered for Web Push)
+  // wants its own explicit allowance rather than riding on script-src's.
+  "worker-src 'self'",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",

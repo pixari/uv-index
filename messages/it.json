@@ -87,7 +87,9 @@
       "reapplyLabel": "Ricordami di riapplicare la protezione",
       "highUvLabel": "Avvisami quando l'UV supera 7",
       "unsupported": "Le notifiche non sono supportate su questo dispositivo",
-      "blocked": "Le notifiche sono bloccate nel browser per questo sito — abilitale nelle impostazioni del sito per attivare questa opzione."
+      "blocked": "Le notifiche sono bloccate nel browser per questo sito — abilitale nelle impostazioni del sito per attivare questa opzione.",
+      "pushActive": "Avvisa anche ad app completamente chiusa.",
+      "pushInactive": "Solo mentre l'app è aperta — gli avvisi in background non sono disponibili su questo dispositivo/browser."
     },
     "privacyLink": "Privacy e disclaimer"
   },
@@ -253,7 +255,7 @@
     "metaDescription": "Cosa significano — e cosa non significano — i numeri di UV Index, e cosa succede esattamente ai tuoi dati quando usi l'app.",
     "eyebrow": "Legale",
     "back": "← Torna alla home",
-    "intro": "In breve: nessun account, nessun dato in vendita, e quasi tutto quello che ti riguarda resta sul tuo dispositivo. Qui trovi il quadro completo — cosa significano e cosa non significano i consigli dell'app, e cosa succede esattamente ai tuoi dati.",
+    "intro": "In breve: nessun account, nessun dato in vendita, e — a meno che tu non attivi gli avvisi push in background — tutto quello che ti riguarda resta sul tuo dispositivo. Qui trovi il quadro completo — cosa significano e cosa non significano i consigli dell'app, e cosa succede esattamente ai tuoi dati.",
     "lastUpdated": "Ultimo aggiornamento: 7 agosto 2026",
     "toc": {
       "title": "In questa pagina",
@@ -309,6 +311,12 @@
         "body": "Usiamo Umami, uno strumento di analisi self-hosted che non usa cookie, per vedere numeri aggregati — quante persone usano l'app, quali pagine vengono lette. Umami non imposta cookie né identificatori persistenti, e non salva il tuo indirizzo IP né altro che ti identifichi individualmente; l'eventuale statistica a livello di paese derivata dall'IP viene calcolata al volo, e l'indirizzo stesso viene scartato.",
         "legalBasis": "Base giuridica: art. 6(1)(f) — legittimo interesse a statistiche d'uso di base e non identificative, usando uno strumento scelto apposta perché non ha bisogno di tracciare nessuno.",
         "retention": "Conservazione: solo conteggi aggregati, mantenuti finché utili; nulla al loro interno ti identifica."
+      },
+      "push": {
+        "title": "Sottoscrizione push (solo se attivi gli avvisi in background)",
+        "body": "Attivare “avvisami anche ad app chiusa” ci consegna una sottoscrizione push — un endpoint e due chiavi di cifratura generate dal tuo browser stesso, non legate al tuo nome o a un account — più il luogo che vuoi monitorare. La salviamo così un controllo in background può confrontare l'UV di quel luogo ogni 15 minuti e mandare un avviso al superamento della soglia. Disattivare di nuovo l'interruttore la elimina immediatamente.",
+        "legalBasis": "Base giuridica: art. 6(1)(a) GDPR — il tuo consenso esplicito tramite l'interruttore, oltre al permesso del browser stesso. Ritiralo in qualsiasi momento disattivando l'interruttore.",
+        "retention": "Conservazione: finché non disattivi l'interruttore, o il browser segnala che la sottoscrizione stessa è scaduta."
       }
     },
     "thirdParties": {
@@ -318,11 +326,12 @@
       "openMeteo": "Open-Meteo — trasforma un nome di luogo digitato in coordinate.",
       "bigDataCloud": "BigDataCloud — trasforma coordinate GPS in un nome di luogo.",
       "umami": "Umami, self-hosted sulla nostra infrastruttura — conteggi d'uso anonimi.",
-      "note": "Nessuno di questi riceve informazioni che ti identifichino personalmente, e non condividiamo dati con inserzionisti, broker di dati o chiunque altro. Alcuni potrebbero elaborare le richieste su infrastrutture fuori dall'UE/SEE; in quel caso, spetta a loro proteggerle secondo i propri obblighi di conformità (ad es. clausole contrattuali standard)."
+      "note": "Nessuno di questi riceve informazioni che ti identifichino personalmente, e non condividiamo dati con inserzionisti, broker di dati o chiunque altro. Alcuni potrebbero elaborare le richieste su infrastrutture fuori dall'UE/SEE; in quel caso, spetta a loro proteggerle secondo i propri obblighi di conformità (ad es. clausole contrattuali standard).",
+      "pushService": "Il servizio push del tuo browser (es. Google per Chrome, Mozilla per Firefox, Apple per Safari) — consegna l'avviso al tuo dispositivo se hai attivato gli avvisi in background. Vede che una notifica è stata inviata, non il suo contenuto: i payload Web Push sono cifrati end-to-end con chiavi generate dal tuo stesso browser."
     },
     "cookiesStorage": {
       "title": "Cookie e archiviazione locale",
-      "body": "Questa app non imposta cookie. Tutto ciò che ricorda di te — profili, fototipo, preferenze di notifica, luoghi salvati, l'ultima lettura nota — vive nell'archiviazione locale del tuo browser, solo sul tuo dispositivo, e non viene mai trasmesso ai nostri server. Puoi cancellarla in qualsiasi momento dalle impostazioni del sito nel browser; l'app ripartirà semplicemente da zero."
+      "body": "Questa app non imposta cookie. Tutto ciò che ricorda di te — profili, fototipo, preferenze di notifica, luoghi salvati, l'ultima lettura nota — vive nell'archiviazione locale del tuo browser, solo sul tuo dispositivo, e non viene mai trasmesso ai nostri server. L'unica eccezione è una sottoscrizione push, se hai attivato gli avvisi UV alto in background — vedi “Cosa raccogliamo” qui sotto. Puoi cancellare l'archiviazione locale in qualsiasi momento dalle impostazioni del sito nel browser; l'app ripartirà semplicemente da zero."
     },
     "yourRights": {
       "title": "I tuoi diritti",
