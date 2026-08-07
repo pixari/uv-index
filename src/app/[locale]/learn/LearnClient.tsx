@@ -16,6 +16,7 @@ import BurnHeatmap from "./BurnHeatmap";
 import ReferenceCitiesChart from "./ReferenceCitiesChart";
 import IarcTimeline from "./IarcTimeline";
 import ArticleShareButton from "./ArticleShareButton";
+import WhoGradientBar from "./WhoGradientBar";
 
 const LAST_PLACE_KEY = "uv-index:last-place";
 
@@ -96,7 +97,18 @@ export default function LearnClient() {
       : [];
 
   return (
-    <main className="mx-auto max-w-xl px-6 py-10">
+    // A soft brand-tinted wash behind just the hero, fading out well
+    // before the TOC — a nod to Home's colorful sky without turning a
+    // long reading page into something busy (DESIGN.md: calm, not
+    // garish). Brand color has no semantic meaning to protect (unlike
+    // the WHO risk scale), so it's free to use decoratively here.
+    <main
+      className="mx-auto max-w-xl px-6 py-10"
+      style={{
+        background:
+          "linear-gradient(to bottom, oklch(0.48 0.15 230 / 0.08), oklch(0.48 0.15 230 / 0) 480px)",
+      }}
+    >
       <Link
         href="/"
         className="mb-8 inline-block text-sm text-muted-foreground hover:text-brand-ink transition-colors"
@@ -111,7 +123,14 @@ export default function LearnClient() {
         {t("title")}
       </h1>
 
-      <nav className="mb-12 rounded-2xl border border-border bg-surface p-4" aria-label={t("toc.title")}>
+      <div className="mb-8">
+        <WhoGradientBar />
+      </div>
+
+      <nav
+        className="mb-12 rounded-2xl border border-brand/15 bg-brand/[0.04] p-4"
+        aria-label={t("toc.title")}
+      >
         <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
           {t("toc.title")}
         </p>
