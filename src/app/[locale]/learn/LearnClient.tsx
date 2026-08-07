@@ -353,6 +353,10 @@ export default function LearnClient() {
             {t("footer.backToHome")}
           </Link>
           <span aria-hidden className="text-border">·</span>
+          <Link href="/privacy" className="text-sm text-brand-ink hover:underline">
+            {t("footer.privacyLink")}
+          </Link>
+          <span aria-hidden className="text-border">·</span>
           <a
             href="https://github.com/pixari/uv-index"
             target="_blank"
