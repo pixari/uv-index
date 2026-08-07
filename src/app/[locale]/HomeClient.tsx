@@ -485,18 +485,25 @@ export default function HomeClient() {
           )}
         </div>
 
-        {/* Straight to the (now much richer) /learn page — a person
-            already has to leave Home to read it, so a single direct tap
-            beats detouring through an intermediate sheet first. The quick
-            "why trust this" sources list that used to live behind this
-            button now lives in Settings, alongside the other "more info"
+        {/* A real, bounded footer rather than a stray line of text — but
+            scaled for a single-viewport glanceable screen, not a long page:
+            no brand mark (Home itself already is the brand moment) and no
+            back-to-top (nothing here scrolls). The divider reuses the same
+            hairline pattern already used inside ReapplyTimer's SPF picker,
+            not a new one-off. Straight to the (now much richer) /learn page
+            — a person already has to leave Home to read it, so a single
+            direct tap beats detouring through an intermediate sheet first;
+            the quick "why trust this" sources list that used to live behind
+            this link now lives in Settings, alongside the other "more info"
             links, rather than gatekeeping the primary destination. */}
-        <Link
-          href="/learn"
-          className="mt-2 shrink-0 pb-[max(0.5rem,env(safe-area-inset-bottom))] text-sm font-medium text-white/75 underline-offset-4 hover:text-white hover:underline"
-        >
-          {t("learnMore")}
-        </Link>
+        <footer className="mt-2 flex shrink-0 justify-center border-t border-white/10 pt-4 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
+          <Link
+            href="/learn"
+            className="text-sm font-medium text-white/75 underline-offset-4 hover:text-white hover:underline"
+          >
+            {t("learnMore")}
+          </Link>
+        </footer>
       </main>
 
       <LocationSheet
