@@ -70,7 +70,7 @@ export default function LearnClient() {
           {(() => {
             const windows = findLowRiskWindows(points);
             return (
-              <div className="mt-4 rounded-xl bg-surface px-4 py-3">
+              <div className="mt-4 rounded-xl border border-border bg-surface px-4 py-3">
                 <p className="text-sm font-medium text-foreground">
                   {t("bestWindow.title")}
                 </p>

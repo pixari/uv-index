@@ -22,6 +22,7 @@ import {
   setActiveProfileId,
   type Profile,
 } from "@/lib/profiles";
+import { markSettingsForReopen } from "@/lib/pendingSettingsReopen";
 import DataSourcesSheet from "./DataSourcesSheet";
 
 const LOCALE_LABEL: Record<string, string> = {
@@ -59,6 +60,10 @@ export default function SettingsSheet({
   onOpenChange: (open: boolean) => void;
 }) {
   const t = useTranslations("settings");
+  // "defaultProfileName" lives under "home" (HomeClient creates the same
+  // default profile the first time the app ever runs, before Settings has
+  // been opened) — look it up from there so both call sites agree.
+  const tHome = useTranslations("home");
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
@@ -70,13 +75,16 @@ export default function SettingsSheet({
 
   useEffect(() => {
     if (!open) return;
-    const list = getProfiles(t("defaultProfileName"));
+    const list = getProfiles(tHome("defaultProfileName"));
     setProfiles(list);
-    setSelectedProfileId(resolveActiveProfileId(t("defaultProfileName")));
+    setSelectedProfileId(resolveActiveProfileId(tHome("defaultProfileName")));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   function changeLocale(next: string) {
+    // Switching language navigates to a different /[locale]/ URL, which
+    // remounts the page and would otherwise close this sheet.
+    markSettingsForReopen();
     router.replace(pathname, { locale: next });
   }
 
@@ -204,7 +212,13 @@ export default function SettingsSheet({
                       onChange={(e) => setNewProfileName(e.target.value)}
                       onKeyDown={(e) => {
                         if (e.key === "Enter") confirmAddProfile();
-                        if (e.key === "Escape") cancelAddProfile();
+                        if (e.key === "Escape") {
+                          // Cancel just this composer — without stopping
+                          // propagation, Escape also bubbles to the sheet's
+                          // own dismiss handler and closes the whole panel.
+                          e.stopPropagation();
+                          cancelAddProfile();
+                        }
                       }}
                       placeholder={t("newProfileNamePlaceholder")}
                       className="w-24 bg-transparent text-sm text-foreground placeholder:text-muted-foreground outline-none"

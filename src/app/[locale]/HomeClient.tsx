@@ -9,6 +9,7 @@ import {
   setActiveProfileId,
   type Profile,
 } from "@/lib/profiles";
+import { consumeSettingsReopen } from "@/lib/pendingSettingsReopen";
 import InstallPrompt from "./InstallPrompt";
 import LocationSheet, { type Place } from "./LocationSheet";
 import ReapplyTimer from "./ReapplyTimer";
@@ -45,6 +46,12 @@ export default function HomeClient() {
       return;
     }
     setShowLocation(true);
+  }, []);
+
+  // Settings was open right before a language switch remounted this page —
+  // reopen it so the panel doesn't just appear to have closed on its own.
+  useEffect(() => {
+    if (consumeSettingsReopen()) setShowSettings(true);
   }, []);
 
   // Load profiles (creating the default one on first run) and re-read
