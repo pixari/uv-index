@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import Script from "next/script";
 import { Fraunces } from "next/font/google";
@@ -43,6 +43,10 @@ export async function generateMetadata({
   for (const l of routing.locales) {
     languages[l] = `${SITE_URL}/${l}`;
   }
+  // Tells search engines which version to serve someone whose browser
+  // language doesn't match any of the three we actually have — without
+  // it, that traffic has no defined hreflang target at all.
+  languages["x-default"] = `${SITE_URL}/${routing.defaultLocale}`;
 
   return {
     metadataBase: new URL(SITE_URL),
@@ -89,6 +93,16 @@ export default async function LocaleLayout({
     notFound();
   }
 
+  // Without this, next-intl falls back to resolving the locale from
+  // request headers (middleware-negotiated Accept-Language), which is a
+  // Request-time API and forces every page under here into per-request
+  // dynamic rendering — even though generateStaticParams above already
+  // enumerates every locale at build time. This call, plus passing
+  // `locale` to the provider explicitly below, is what actually lets
+  // Next prerender the three locale shells as static HTML instead of
+  // re-running SSR on every single request.
+  setRequestLocale(locale);
+
   return (
     <html lang={locale} className={`antialiased ${fraunces.variable}`}>
       <body className="bg-bg text-ink font-sans">
@@ -98,7 +112,7 @@ export default async function LocaleLayout({
           data-website-id="c87465e5-3964-4abc-821b-a7e6c04484ab"
           strategy="afterInteractive"
         />
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider locale={locale}>{children}</NextIntlClientProvider>
       </body>
     </html>
   );

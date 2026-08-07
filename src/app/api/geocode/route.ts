@@ -26,6 +26,7 @@ export async function GET(req: NextRequest) {
 
   const res = await fetch(
     `${GEOCODE_URL}?name=${encodeURIComponent(q)}&count=5&language=${lang}`,
+    { next: { revalidate: 86_400 } }, // place names don't change; cache a day
   );
 
   if (!res.ok) {
