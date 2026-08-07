@@ -152,14 +152,87 @@
       "p1": "L'indice UV è stato sviluppato da OMS, Organizzazione Meteorologica Mondiale, UNEP e ICNIRP come scala internazionale standardizzata, pensata per comunicare l'intensità dei raggi UV al suolo in modo comprensibile senza conoscenze tecniche — prima della sua adozione, ogni paese usava scale diverse e non confrontabili.",
       "p2": "L'intensità reale dipende da diversi fattori insieme: l'altezza del sole nel cielo (massima a mezzogiorno solare e in estate), la latitudine (più forte vicino all'equatore), l'altitudine (aumenta di circa il 10% ogni 1000 metri, perché l'atmosfera che filtra i raggi è più sottile), lo spessore dello strato di ozono, e la copertura nuvolosa — quest'ultima è ingannevole: anche con cielo nuvoloso passa gran parte dei raggi UV, un errore comune è pensare che il cielo coperto renda inutile la protezione.",
       "p3": "Il numero che vedi in questa app è calcolato in tempo reale combinando questi fattori con modelli meteorologici — per questo cambia ora per ora, con un picco vicino al mezzogiorno solare e valori vicini a zero all'alba e al tramonto, come puoi vedere nel grafico qui sopra.",
-      "source": "Fonte:"
+      "source": "Fonte:",
+      "shareText": "Il cielo nuvoloso non blocca gran parte dei raggi UV — ecco come funziona davvero l'indice UV:"
     },
     "spf": {
       "title": "Come funziona davvero l'SPF",
       "p1": "L'SPF (Sun Protection Factor) misura di quanto tempo in più la pelle protetta impiega a scottarsi rispetto alla pelle non protetta, in condizioni di laboratorio con uno strato di crema molto spesso (2 mg per cm²) — nella pratica quasi nessuno applica una quantità così generosa, quindi la protezione reale è quasi sempre inferiore a quella dichiarata.",
       "p2": "Il rapporto tra SPF e protezione non è lineare: l'SPF30 blocca circa il 97% dei raggi UVB, l'SPF50 circa il 98% — una differenza minima che però illude molte persone a pensare che l'SPF50 protegga il doppio dell'SPF30. Non è così. Quello che fa davvero la differenza è riapplicare spesso e usarne a sufficienza, non rincorrere un numero sempre più alto.",
       "p3": "L'SPF misura solo la protezione dai raggi UVB, quelli che causano le scottature visibili. La dicitura \"ad ampio spettro\" (broad spectrum) indica che il prodotto protegge anche dai raggi UVA, che penetrano più in profondità e contribuiscono a invecchiamento cutaneo e rischio di cancro anche senza causare scottature evidenti — controllare la dicitura \"ampio spettro\" conta quanto il numero SPF stesso.",
-      "source": "Fonte:"
+      "source": "Fonte:",
+      "shareText": "L'SPF30 blocca circa il 97% dei raggi UVB, l'SPF50 circa il 98% — la vera differenza la fa riapplicare, non rincorrere un numero più alto."
+    },
+    "toc": {
+      "title": "In questo articolo",
+      "chart": "Curva UV di oggi",
+      "forecast": "Prossimi giorni",
+      "methodology": "Come funziona l'indice",
+      "physics": "La fisica dietro il numero",
+      "worldCompare": "Tu vs. il mondo",
+      "spf": "Come funziona l'SPF",
+      "burnHeatmap": "Tempo di scottatura, per fototipo",
+      "ozone": "Lo strato di ozono si sta riprendendo",
+      "iarc": "Perché è un cancerogeno di Gruppo 1"
+    },
+    "physics": {
+      "title": "La fisica dietro il numero",
+      "p1": "L'intensità UV aumenta di circa il {percent}% ogni 1000 metri di altitudine — semplicemente c'è meno atmosfera sopra di te a filtrarla. Una stazione sciistica a 2000m può avere un UV nettamente più alto della valle sottostante, nella stessa giornata di sole.",
+      "p2": "Il sole non è l'unica fonte, però — le superfici rimandano indietro una quota reale di raggi UV. La neve fresca ne riflette la maggior parte; anche sabbia e schiuma del mare contano, anche se in modo meno drastico. Per questo le scottature da riflesso (e l'abbagliamento da neve) sono un rischio reale anche all'ombra.",
+      "chartCaption": "Quota di UV riflessa verso l'alto, per superficie",
+      "source": "Fonte:",
+      "surfaces": {
+        "freshSnow": "Neve fresca",
+        "seaFoam": "Schiuma di mare",
+        "drySand": "Sabbia asciutta",
+        "concrete": "Cemento",
+        "grassSoil": "Erba, terreno"
+      },
+      "shareText": "La neve fresca riflette fino all'80% dei raggi UV — e l'altitudine da sola aggiunge ~10% ogni 1000m. La fisica dietro il numero:"
+    },
+    "worldCompare": {
+      "title": "Il tuo UV vs. il mondo, in questo momento",
+      "subtitle": "Lo stesso cielo sereno produce UV molto diversi a seconda di dove — e a che altitudine — ti trovi.",
+      "note": "Nairobi e Denver si trovano a circa 1600–1800m sul livello del mare — anche per questo hanno valori più alti di quanto suggerirebbe la sola latitudine.",
+      "you": "Tu",
+      "cities": {
+        "singapore": "Singapore",
+        "nairobi": "Nairobi",
+        "denver": "Denver",
+        "reykjavik": "Reykjavík"
+      },
+      "shareText": "Ecco come si confronta l'indice UV tra dove sono io e alcuni posti nel mondo, in questo momento:"
+    },
+    "burnHeatmap": {
+      "title": "Minuti prima di scottarsi, per fototipo e indice UV",
+      "p1": "È lo stesso calcolo dietro la stima del tempo di scottatura di questa app — una base Fitzpatrick divisa per l'indice UV attuale — mostrato come griglia completa invece che un numero alla volta.",
+      "uvHeader": "UV",
+      "skinTypeHeader": "Tipo {skinType}",
+      "source": "Vedi \"Come funziona l'indice\" qui sopra per la scala di Fitzpatrick.",
+      "shareText": "Quanto velocemente si scotta davvero la pelle non protetta, per fototipo e indice UV? I numeri reali:"
+    },
+    "ozone": {
+      "title": "Lo strato di ozono si sta riprendendo — ecco il grafico reale",
+      "p1": "La quantità di UV che arriva al suolo dipende molto da quanto ozono c'è tra te e lo spazio. I composti chimici industriali (i CFC) hanno aperto un buco stagionale sopra l'Antartide a partire dagli anni '80 — a metà anni 2000 era arrivato a quasi 30 milioni di km², grande quanto l'Africa.",
+      "p2": "Il Protocollo di Montreal del 1987 ha eliminato quei composti in tutto il mondo, e sta funzionando: il buco si sta riducendo dal 2000 circa, e la scienza attuale prevede il ritorno ai livelli del 1980 entro il {year} sopra l'Antartide.",
+      "chartCaption": "Area massima del buco dell'ozono antartico, milioni di km²",
+      "source": "Fonte:",
+      "shareText": "Il buco dell'ozono si sta davvero riducendo — ecco il grafico reale, non solo un titolo:"
+    },
+    "iarc": {
+      "title": "Perché l'UV è ufficialmente un cancerogeno di Gruppo 1",
+      "intro": "Gruppo 1 è la categoria di massima certezza della IARC (Agenzia Internazionale per la Ricerca sul Cancro) — riservata alle cause con le prove più solide sull'uomo, insieme a tabacco e amianto.",
+      "milestones": {
+        "solarUv": {
+          "text": "Il gruppo di lavoro IARC ha classificato formalmente le radiazioni solari e UV come cancerogene per l'uomo (Gruppo 1), sulla base delle prove epidemiologiche accumulate sul legame tra esposizione UV e cancro della pelle.",
+          "source": "IARC Monographs, Volume 55"
+        },
+        "tanningDevices": {
+          "text": "Una revisione IARC separata ha esteso la stessa classificazione di Gruppo 1 in modo specifico ai lettini abbronzanti UV, dopo che le prove hanno mostrato un forte aumento del rischio di melanoma quando l'uso inizia prima dei 30 anni.",
+          "source": "IARC Monographs, Volume 100D"
+        }
+      },
+      "shareText": "Le radiazioni UV solari sono ufficialmente un cancerogeno di Gruppo 1 — ecco quando e perché:"
     }
   }
 }

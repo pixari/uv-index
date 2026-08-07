@@ -152,14 +152,87 @@
       "p1": "The UV Index was developed by WHO, the World Meteorological Organization, UNEP, and ICNIRP as a standardized international scale, designed to communicate the intensity of UV radiation at ground level without requiring technical knowledge — before its adoption, every country used different, incomparable scales.",
       "p2": "Actual intensity depends on several factors together: the sun's height in the sky (highest at solar noon and in summer), latitude (stronger near the equator), altitude (increases roughly 10% per 1000 meters, since there's less filtering atmosphere), the thickness of the ozone layer, and cloud cover — this last one is deceptive: even under overcast skies, most UV still gets through, and a common mistake is assuming cloudy weather makes protection unnecessary.",
       "p3": "The number shown in this app is calculated in real time by combining these factors with weather models — that's why it changes hour by hour, peaking near solar noon and dropping close to zero at dawn and dusk, as you can see in the chart above.",
-      "source": "Source:"
+      "source": "Source:",
+      "shareText": "Cloudy skies don't block most UV — here's how the UV index actually works:"
     },
     "spf": {
       "title": "How SPF actually works",
       "p1": "SPF (Sun Protection Factor) measures how much longer protected skin takes to burn compared to unprotected skin, under lab conditions using a thick, generously applied layer (2 mg per cm²) — in practice, almost no one applies that much, so real-world protection is usually lower than the labeled number.",
       "p2": "The relationship between SPF and protection isn't linear: SPF30 blocks about 97% of UVB rays, SPF50 about 98% — a small numerical gap that misleads many people into assuming SPF50 offers roughly double the protection of SPF30. It doesn't. What actually makes the difference is reapplying often and using enough of it, not chasing an ever-higher number.",
       "p3": "SPF only measures protection against UVB rays, the ones that cause visible sunburn. A \"broad spectrum\" label means the product also protects against UVA rays, which penetrate deeper and contribute to skin aging and cancer risk even without causing a visible burn — checking for \"broad spectrum\" matters as much as the SPF number itself.",
-      "source": "Source:"
+      "source": "Source:",
+      "shareText": "SPF30 blocks ~97% of UVB, SPF50 ~98% — the real difference is reapplying, not chasing a bigger number."
+    },
+    "toc": {
+      "title": "In this piece",
+      "chart": "Today's UV curve",
+      "forecast": "Upcoming days",
+      "methodology": "How the index works",
+      "physics": "The physics behind it",
+      "worldCompare": "You vs. the world",
+      "spf": "How SPF works",
+      "burnHeatmap": "Burn time, by skin type",
+      "ozone": "The ozone layer, healing",
+      "iarc": "Why it's a Group 1 carcinogen"
+    },
+    "physics": {
+      "title": "The physics behind the number",
+      "p1": "UV intensity increases by roughly {percent}% for every 1,000 meters of altitude — there's simply less atmosphere above you to filter it. A ski resort at 2,000m can see meaningfully higher UV than the valley below it, on the same clear day.",
+      "p2": "The sun isn't the only source, either — surfaces bounce a real share of it back up at you. Fresh snow reflects most of it; sand and sea foam matter too, just less dramatically. It's why reflected sunburn (and snow-blindness) are real risks even in the shade.",
+      "chartCaption": "Share of UV reflected back up, by surface",
+      "source": "Source:",
+      "surfaces": {
+        "freshSnow": "Fresh snow",
+        "seaFoam": "Sea foam",
+        "drySand": "Dry sand",
+        "concrete": "Concrete",
+        "grassSoil": "Grass, soil"
+      },
+      "shareText": "Fresh snow reflects up to 80% of UV back at you — and altitude alone adds ~10% per 1000m. The physics behind the number:"
+    },
+    "worldCompare": {
+      "title": "Your UV vs. the world, right now",
+      "subtitle": "The same clear sky produces very different UV depending on where — and how high — you are.",
+      "note": "Nairobi and Denver sit roughly 1,600–1,800m above sea level — part of why they read higher than latitude alone would suggest.",
+      "you": "You",
+      "cities": {
+        "singapore": "Singapore",
+        "nairobi": "Nairobi",
+        "denver": "Denver",
+        "reykjavik": "Reykjavík"
+      },
+      "shareText": "Here's how the UV index compares between where I am and a few places around the world, right now:"
+    },
+    "burnHeatmap": {
+      "title": "Minutes to burn, by skin type and UV index",
+      "p1": "This is the same calculation behind this app's own burn-time estimate — a Fitzpatrick baseline divided by the current UV index — laid out as a full grid instead of one number at a time.",
+      "uvHeader": "UV",
+      "skinTypeHeader": "Type {skinType}",
+      "source": "See \"How the index works\" above for the Fitzpatrick scale itself.",
+      "shareText": "How fast does unprotected skin actually burn, by skin type and UV index? The real numbers:"
+    },
+    "ozone": {
+      "title": "The ozone layer is healing — here's the actual chart",
+      "p1": "Solar UV reaching the ground depends heavily on how much ozone sits between you and space. Industrial chemicals (CFCs) tore a seasonal hole in it over Antarctica starting in the 1980s — by the mid-2000s it had grown to nearly 30 million km², roughly the size of Africa.",
+      "p2": "The 1987 Montreal Protocol phased those chemicals out worldwide, and it's working: the hole has been shrinking since around 2000, and current science projects it back to 1980 levels by {year} over Antarctica.",
+      "chartCaption": "Antarctic ozone hole maximum area, million km²",
+      "source": "Source:",
+      "shareText": "The ozone hole is actually shrinking — here's the real chart, not just a headline:"
+    },
+    "iarc": {
+      "title": "Why UV is officially a Group 1 carcinogen",
+      "intro": "Group 1 is the International Agency for Research on Cancer's highest-certainty category — reserved for causes with the strongest human evidence, alongside tobacco and asbestos.",
+      "milestones": {
+        "solarUv": {
+          "text": "IARC's Working Group formally classified solar and UV radiation as carcinogenic to humans (Group 1), based on the accumulated epidemiological evidence linking UV exposure to skin cancer.",
+          "source": "IARC Monographs, Volume 55"
+        },
+        "tanningDevices": {
+          "text": "A separate IARC review extended the same Group 1 classification specifically to UV-emitting tanning devices, after evidence showed melanoma risk rises sharply when tanning-bed use starts before age 30.",
+          "source": "IARC Monographs, Volume 100D"
+        }
+      },
+      "shareText": "Solar UV radiation is officially a Group 1 carcinogen — here's when and why:"
     }
   }
 }

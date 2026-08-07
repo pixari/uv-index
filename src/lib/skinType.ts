@@ -1,3 +1,5 @@
+import type { UvLevel } from "./uvLevel";
+
 // Fitzpatrick skin phototype scale — standard dermatological classification
 // used to estimate burn time / reapplication interval relative to UV index.
 export type SkinType = 1 | 2 | 3 | 4 | 5 | 6;
@@ -32,4 +34,17 @@ export const BASE_BURN_MINUTES: Record<SkinType, number> = {
 export function burnMinutes(skinType: SkinType, uv: number): number | null {
   if (uv <= 0) return null;
   return Math.round(BASE_BURN_MINUTES[skinType] / uv);
+}
+
+/**
+ * Maps a burn-time estimate onto the same 5-tier palette the rest of the
+ * app uses for current UV risk — reused here as "burn urgency" rather than
+ * inventing a second color scale for the burn-time heatmap on /learn.
+ */
+export function burnUrgencyLevel(minutes: number): UvLevel {
+  if (minutes < 15) return "extreme";
+  if (minutes < 30) return "veryHigh";
+  if (minutes < 60) return "high";
+  if (minutes < 120) return "moderate";
+  return "low";
 }
