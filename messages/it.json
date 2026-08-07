@@ -51,6 +51,7 @@
     "addProfile": "Aggiungi persona",
     "newProfileNamePlaceholder": "Nome",
     "addProfileConfirm": "Aggiungi",
+    "cancelAddProfile": "Annulla",
     "removeProfile": "Rimuovi {name}",
     "skinType": "Fototipo pelle",
     "skinTypeHint": "Usato per calcolare quando riapplicare la protezione",

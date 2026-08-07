@@ -51,6 +51,7 @@
     "addProfile": "Add person",
     "newProfileNamePlaceholder": "Name",
     "addProfileConfirm": "Add",
+    "cancelAddProfile": "Cancel",
     "removeProfile": "Remove {name}",
     "skinType": "Skin type",
     "skinTypeHint": "Used to calculate when to reapply protection",
