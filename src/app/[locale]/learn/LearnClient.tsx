@@ -344,7 +344,7 @@ export default function LearnClient() {
         <p className="mb-6 max-w-[38ch] text-sm text-muted-foreground leading-relaxed">
           {t("footer.tagline")}
         </p>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
           <a href="#learnTop" className="text-sm text-brand-ink hover:underline">
             {t("footer.backToTop")}
           </a>
@@ -352,6 +352,15 @@ export default function LearnClient() {
           <Link href="/" className="text-sm text-brand-ink hover:underline">
             {t("footer.backToHome")}
           </Link>
+          <span aria-hidden className="text-border">·</span>
+          <a
+            href="https://github.com/pixari/uv-index"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-brand-ink hover:underline"
+          >
+            {t("footer.sourceLink")}
+          </a>
         </div>
       </footer>
     </main>

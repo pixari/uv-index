@@ -81,6 +81,7 @@
     "learnMoreLink": "Approfondimenti su UV e protezione solare →",
     "scienceLink": "Perché è importante",
     "dataSourcesLink": "Come uso i tuoi dati",
+    "sourceLink": "Vedi il codice sorgente su GitHub",
     "notifications": {
       "title": "Notifiche",
       "reapplyLabel": "Ricordami di riapplicare la protezione",
@@ -240,7 +241,8 @@
     "footer": {
       "tagline": "Pensata per rispondere a una domanda in fretta — e per mostrare le fonti.",
       "backToTop": "Torna all'inizio",
-      "backToHome": "Torna alla home"
+      "backToHome": "Torna alla home",
+      "sourceLink": "Codice sorgente"
     }
   }
 }
