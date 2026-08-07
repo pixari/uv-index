@@ -236,6 +236,11 @@
         }
       },
       "shareText": "Le radiazioni UV solari sono ufficialmente un cancerogeno di Gruppo 1 — ecco quando e perché:"
+    },
+    "footer": {
+      "tagline": "Pensata per rispondere a una domanda in fretta — e per mostrare le fonti.",
+      "backToTop": "Torna all'inizio",
+      "backToHome": "Torna alla home"
     }
   }
 }
