@@ -117,6 +117,9 @@ export default function SettingsSheet({
   const [newProfileName, setNewProfileName] = useState("");
   const [reapplyNotif, setReapplyNotif] = useState(false);
   const [highUvNotif, setHighUvNotif] = useState(false);
+  // Browser-level, sticky until the person changes it in their browser's
+  // own site settings — distinct from just "not decided yet".
+  const [notifBlocked, setNotifBlocked] = useState(false);
 
   useEffect(() => {
     if (!open) return;
@@ -125,27 +128,37 @@ export default function SettingsSheet({
     setSelectedProfileId(resolveActiveProfileId(tHome("defaultProfileName")));
     setReapplyNotif(getReapplyNotifPref());
     setHighUvNotif(getHighUvNotifPref());
+    setNotifBlocked(notificationsSupported() && Notification.permission === "denied");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   // Turning a toggle on needs permission first; if it's denied (or the
   // browser can't do notifications at all), the toggle snaps back off
-  // instead of silently claiming to be on.
+  // instead of silently claiming to be on — and, if it was denied, a hint
+  // explains why rather than leaving it a mystery.
   async function toggleReapplyNotif(next: boolean) {
-    if (next && !(await ensureNotificationPermission())) {
-      setReapplyNotif(false);
-      setReapplyNotifPref(false);
-      return;
+    if (next) {
+      const granted = await ensureNotificationPermission();
+      setNotifBlocked(notificationsSupported() && Notification.permission === "denied");
+      if (!granted) {
+        setReapplyNotif(false);
+        setReapplyNotifPref(false);
+        return;
+      }
     }
     setReapplyNotif(next);
     setReapplyNotifPref(next);
   }
 
   async function toggleHighUvNotif(next: boolean) {
-    if (next && !(await ensureNotificationPermission())) {
-      setHighUvNotif(false);
-      setHighUvNotifPref(false);
-      return;
+    if (next) {
+      const granted = await ensureNotificationPermission();
+      setNotifBlocked(notificationsSupported() && Notification.permission === "denied");
+      if (!granted) {
+        setHighUvNotif(false);
+        setHighUvNotifPref(false);
+        return;
+      }
     }
     setHighUvNotif(next);
     setHighUvNotifPref(next);
@@ -363,6 +376,11 @@ export default function SettingsSheet({
               ) : (
                 <p className="text-sm text-muted-foreground">
                   {t("notifications.unsupported")}
+                </p>
+              )}
+              {notifBlocked && (
+                <p className="mt-2 text-xs leading-snug text-muted-foreground">
+                  {t("notifications.blocked")}
                 </p>
               )}
             </div>

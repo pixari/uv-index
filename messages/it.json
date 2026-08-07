@@ -7,6 +7,7 @@
     "title": "Indice UV",
     "loading": "Carico...",
     "locationPrompt": "Attiva la posizione",
+    "fetchErrorRetry": "Impossibile caricare l'indice UV — tocca per riprovare",
     "currentLocation": "La mia posizione",
     "defaultProfileName": "Io",
     "riskLevels": {
@@ -78,7 +79,8 @@
       "title": "Notifiche",
       "reapplyLabel": "Ricordami di riapplicare la protezione",
       "highUvLabel": "Avvisami quando l'UV supera 7",
-      "unsupported": "Le notifiche non sono supportate su questo dispositivo"
+      "unsupported": "Le notifiche non sono supportate su questo dispositivo",
+      "blocked": "Le notifiche sono bloccate nel browser per questo sito — abilitale nelle impostazioni del sito per attivare questa opzione."
     }
   },
   "install": {

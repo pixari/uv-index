@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { parseCoords } from "@/lib/validateCoords";
+import { clientIp, rateLimit } from "@/lib/rateLimit";
 
 // Same MET Norway source as /api/uv, but returns today's full hourly
 // curve for the day-chart on the Learn page instead of just the
@@ -7,6 +8,14 @@ import { parseCoords } from "@/lib/validateCoords";
 const MET_URL = "https://api.met.no/weatherapi/locationforecast/2.0/complete";
 
 export async function GET(req: NextRequest) {
+  const limited = rateLimit(`uv-timeseries:${clientIp(req.headers)}`, 20, 60_000);
+  if (!limited.ok) {
+    return NextResponse.json(
+      { error: "rate limited" },
+      { status: 429, headers: { "Retry-After": String(limited.retryAfterSeconds) } },
+    );
+  }
+
   const coords = parseCoords(req.nextUrl.searchParams);
   if (!coords) {
     return NextResponse.json({ error: "lat/lon required" }, { status: 400 });

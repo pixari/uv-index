@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import {
@@ -63,24 +63,51 @@ export default function LocationSheet({
   const [results, setResults] = useState<Place[]>([]);
   const [searching, setSearching] = useState(false);
   const [saved, setSaved] = useState<SavedPlace[]>([]);
+  // Guards against out-of-order responses: without it, a slow request for
+  // an earlier keystroke resolving after a faster one for a later keystroke
+  // can overwrite the results with stale matches for text no longer in the
+  // box.
+  const searchSeqRef = useRef(0);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (open) setSaved(getSavedPlaces());
   }, [open]);
 
-  async function search(q: string) {
+  // Debounce so every keystroke doesn't fire its own request.
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, []);
+
+  async function runSearch(q: string) {
+    const seq = ++searchSeqRef.current;
+    try {
+      const res = await fetch(
+        `/api/geocode?q=${encodeURIComponent(q)}&lang=${locale}`,
+      );
+      const data = await res.json();
+      if (seq !== searchSeqRef.current) return; // a newer search has since started
+      setResults(data.results ?? []);
+    } catch {
+      if (seq !== searchSeqRef.current) return;
+      setResults([]);
+    } finally {
+      if (seq === searchSeqRef.current) setSearching(false);
+    }
+  }
+
+  function search(q: string) {
     setQuery(q);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
     if (q.length < 2) {
       setResults([]);
+      setSearching(false);
       return;
     }
     setSearching(true);
-    const res = await fetch(
-      `/api/geocode?q=${encodeURIComponent(q)}&lang=${locale}`,
-    );
-    const data = await res.json();
-    setResults(data.results ?? []);
-    setSearching(false);
+    debounceRef.current = setTimeout(() => runSearch(q), 300);
   }
 
   function toggleSaved(place: { label: string; lat: number; lon: number }) {
