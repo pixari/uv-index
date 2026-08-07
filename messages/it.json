@@ -78,6 +78,8 @@
       "6": "Pelle molto scura o nera, scottature rarissime"
     },
     "skinTypeWhy": "È la scala di Fitzpatrick, lo standard dermatologico usato per stimare in quanto tempo la pelle non protetta rischia di scottarsi a un dato indice UV. Non è un giudizio estetico: più chiaro è il fototipo, meno tempo serve al sole per danneggiare la pelle.",
+    "learnMoreLink": "Approfondimenti su UV e protezione solare →",
+    "scienceLink": "Perché è importante",
     "dataSourcesLink": "Come uso i tuoi dati",
     "notifications": {
       "title": "Notifiche",
@@ -132,6 +134,7 @@
   },
   "learn": {
     "title": "Approfondimenti",
+    "eyebrow": "La scienza della protezione solare",
     "metaDescription": "Come funziona davvero l'indice UV, la scienza della protezione solare e cosa significa SPF — con fonti verificabili.",
     "back": "← Torna alla home",
     "chart": {

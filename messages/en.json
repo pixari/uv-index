@@ -78,6 +78,8 @@
       "6": "Very dark or black skin, burns are extremely rare"
     },
     "skinTypeWhy": "This is the Fitzpatrick scale, the dermatological standard used to estimate how long unprotected skin can tolerate a given UV index before burning. It's not an aesthetic judgment — the fairer the type, the less time the sun needs to damage skin.",
+    "learnMoreLink": "Learn more about UV & sun safety →",
+    "scienceLink": "Why it matters",
     "dataSourcesLink": "How we use your data",
     "notifications": {
       "title": "Notifications",
@@ -132,6 +134,7 @@
   },
   "learn": {
     "title": "Learn more",
+    "eyebrow": "The science of sun safety",
     "metaDescription": "How the UV index actually works, the science of sun protection, and what SPF really means — with verifiable sources.",
     "back": "← Back to home",
     "chart": {

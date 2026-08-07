@@ -18,10 +18,10 @@ import {
 import { getCachedUv, setCachedUv } from "@/lib/uvCache";
 import { reapplyStatus, type ReapplyStatus } from "@/lib/reapplyTimer";
 import { setAppBadgeCount } from "@/lib/appBadge";
+import { Link } from "@/i18n/navigation";
 import InstallPrompt from "./InstallPrompt";
 import LocationSheet, { type Place } from "./LocationSheet";
 import ReapplyTimer from "./ReapplyTimer";
-import ScienceSheet from "./ScienceSheet";
 import SettingsSheet from "./SettingsSheet";
 import ShareButton from "./ShareButton";
 import UvScaleBar from "./UvScaleBar";
@@ -41,7 +41,6 @@ export default function HomeClient() {
   const [error, setError] = useState<string | null>(null);
   const [stale, setStale] = useState(false);
   const [showLocation, setShowLocation] = useState(false);
-  const [showScience, setShowScience] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [revealed, setRevealed] = useState(false);
   const [settingsVersion, setSettingsVersion] = useState(0);
@@ -486,12 +485,18 @@ export default function HomeClient() {
           )}
         </div>
 
-        <button
-          onClick={() => setShowScience(true)}
+        {/* Straight to the (now much richer) /learn page — a person
+            already has to leave Home to read it, so a single direct tap
+            beats detouring through an intermediate sheet first. The quick
+            "why trust this" sources list that used to live behind this
+            button now lives in Settings, alongside the other "more info"
+            links, rather than gatekeeping the primary destination. */}
+        <Link
+          href="/learn"
           className="mt-2 shrink-0 pb-[max(0.5rem,env(safe-area-inset-bottom))] text-sm font-medium text-white/75 underline-offset-4 hover:text-white hover:underline"
         >
           {t("learnMore")}
-        </button>
+        </Link>
       </main>
 
       <LocationSheet
@@ -501,7 +506,6 @@ export default function HomeClient() {
         onSelect={selectPlace}
         currentPlace={coords}
       />
-      <ScienceSheet open={showScience} onOpenChange={setShowScience} />
       <SettingsSheet
         open={showSettings}
         onOpenChange={(next) => {

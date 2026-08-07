@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { usePathname, useRouter } from "@/i18n/navigation";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import {
@@ -34,6 +34,7 @@ import {
   setReapplyNotifPref,
 } from "@/lib/notifications";
 import DataSourcesSheet from "./DataSourcesSheet";
+import ScienceSheet from "./ScienceSheet";
 
 const LOCALE_LABEL: Record<string, string> = {
   it: "Italiano",
@@ -115,6 +116,7 @@ export default function SettingsSheet({
   const pathname = usePathname();
   const router = useRouter();
   const [showDataSources, setShowDataSources] = useState(false);
+  const [showScience, setShowScience] = useState(false);
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [selectedProfileId, setSelectedProfileId] = useState<string | null>(null);
   const [addingProfile, setAddingProfile] = useState(false);
@@ -477,16 +479,38 @@ export default function SettingsSheet({
               )}
             </div>
 
-            <button
-              onClick={() => setShowDataSources(true)}
-              className="text-left text-sm text-brand-ink underline-offset-4 hover:underline"
-            >
-              {t("dataSourcesLink")}
-            </button>
+            {/* "More info" cluster — the app's second, more prominent
+                path to /learn (the first is the quiet link at the bottom
+                of Home), plus the two sheets that used to be reachable
+                only from Home (Science) or buried at the very end of this
+                list on their own (Data sources). Grouped together since
+                they're all the same kind of thing: where to go to read
+                more, rather than to change a setting. */}
+            <div className="flex flex-col items-start gap-2">
+              <Link
+                href="/learn"
+                className="text-sm text-brand-ink underline-offset-4 hover:underline"
+              >
+                {t("learnMoreLink")}
+              </Link>
+              <button
+                onClick={() => setShowScience(true)}
+                className="text-left text-sm text-brand-ink underline-offset-4 hover:underline"
+              >
+                {t("scienceLink")}
+              </button>
+              <button
+                onClick={() => setShowDataSources(true)}
+                className="text-left text-sm text-brand-ink underline-offset-4 hover:underline"
+              >
+                {t("dataSourcesLink")}
+              </button>
+            </div>
           </div>
         </SheetContent>
       </Sheet>
 
+      <ScienceSheet open={showScience} onOpenChange={setShowScience} />
       <DataSourcesSheet
         open={showDataSources}
         onOpenChange={setShowDataSources}
