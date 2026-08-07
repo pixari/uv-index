@@ -36,15 +36,17 @@ export default function ReapplyTimer({
   onOpenSettings: () => void;
 }) {
   const t = useTranslations("reapply");
-  const [startedAt, setStartedAt] = useState<number | null>(null);
+  // Lazy-initialized from storage rather than set in an effect: the parent
+  // remounts this component (via `key={profileId}`) on every people switch,
+  // so an effect-driven update would paint the "no timer" view for a beat
+  // before correcting itself — a visible glitch when a timer was actually
+  // running for the newly selected person.
+  const [startedAt, setStartedAt] = useState<number | null>(() =>
+    getReapplyStartedAt(profileId),
+  );
   const [remaining, setRemaining] = useState<number | null>(null);
-  const [spf, setSpf] = useState<Spf | null>(null);
+  const [spf, setSpf] = useState<Spf | null>(() => getStoredSpf(profileId));
   const [pendingSpf, setPendingSpf] = useState<Spf>(30);
-
-  useEffect(() => {
-    setStartedAt(getReapplyStartedAt(profileId));
-    setSpf(getStoredSpf(profileId));
-  }, [profileId]);
 
   useEffect(() => {
     if (startedAt === null) {
