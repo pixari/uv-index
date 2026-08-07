@@ -7,6 +7,7 @@
     "title": "UV-Index",
     "loading": "Lädt...",
     "locationPrompt": "Standort aktivieren",
+    "fetchErrorRetry": "UV-Index konnte nicht geladen werden — zum Wiederholen tippen",
     "currentLocation": "Mein Standort",
     "defaultProfileName": "Ich",
     "riskLevels": {
@@ -78,7 +79,8 @@
       "title": "Benachrichtigungen",
       "reapplyLabel": "An das Erneuern des Sonnenschutzes erinnern",
       "highUvLabel": "Benachrichtigen, wenn der UV-Index über 7 steigt",
-      "unsupported": "Benachrichtigungen werden auf diesem Gerät nicht unterstützt"
+      "unsupported": "Benachrichtigungen werden auf diesem Gerät nicht unterstützt",
+      "blocked": "Benachrichtigungen sind in deinem Browser für diese Seite blockiert — erlaube sie in den Website-Einstellungen deines Browsers, um dies zu aktivieren."
     }
   },
   "install": {

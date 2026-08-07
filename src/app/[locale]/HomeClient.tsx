@@ -286,12 +286,15 @@ export default function HomeClient() {
           {uv === null && !error && (
             <p className="text-white/70">{t("loading")}</p>
           )}
-          {error && (
+          {/* `error` only ever gets set once coords already exist (see
+              fetchUv's call sites) — the problem is never "no location",
+              so retry the same fetch instead of re-prompting for GPS. */}
+          {error && coords && (
             <button
-              onClick={useGps}
+              onClick={() => fetchUv(coords.lat, coords.lon)}
               className="text-white/70 underline underline-offset-4 hover:text-white transition-colors"
             >
-              {t("locationPrompt")}
+              {t("fetchErrorRetry")}
             </button>
           )}
           {uv !== null && level && (

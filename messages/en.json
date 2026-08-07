@@ -7,6 +7,7 @@
     "title": "UV Index",
     "loading": "Loading...",
     "locationPrompt": "Enable location",
+    "fetchErrorRetry": "Couldn't load the UV index — tap to retry",
     "currentLocation": "My location",
     "defaultProfileName": "Me",
     "riskLevels": {
@@ -78,7 +79,8 @@
       "title": "Notifications",
       "reapplyLabel": "Remind me to reapply sunscreen",
       "highUvLabel": "Alert me when UV goes above 7",
-      "unsupported": "Notifications aren't supported on this device"
+      "unsupported": "Notifications aren't supported on this device",
+      "blocked": "Notifications are blocked in your browser for this site — allow them in your browser's site settings to turn this on."
     }
   },
   "install": {
