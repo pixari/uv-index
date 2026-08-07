@@ -8,6 +8,8 @@
     "loading": "Loading...",
     "locationPrompt": "Enable location",
     "fetchErrorRetry": "Couldn't load the UV index — tap to retry",
+    "statusOverdue": "{name}: time to reapply",
+    "statusOk": "{name}: reapply timer running",
     "currentLocation": "My location",
     "defaultProfileName": "Me",
     "riskLevels": {
@@ -57,6 +59,8 @@
     "removeProfile": "Remove {name}",
     "skinType": "Skin type",
     "skinTypeHint": "Used to calculate when to reapply protection",
+    "infantToggleLabel": "Under 6 months old",
+    "infantHint": "Skin type doesn't apply yet — at this age, the guidance is to avoid direct sun entirely rather than track a burn-time budget.",
     "skinTypes": {
       "1": "Very fair — always burns, never tans",
       "2": "Fair — burns easily, tans minimally",
@@ -105,7 +109,9 @@
     "setupCta": "Set your skin type →",
     "spfLabel": "Which SPF did you use?",
     "spfInUse": "SPF {spf}",
-    "spfNote": "The interval stays 2 hours with any SPF — amount and frequency matter more than the number →"
+    "spfNote": "The interval stays 2 hours with any SPF — amount and frequency matter more than the number →",
+    "infantAdvisory": "Keep infants under 6 months out of direct sun entirely — shade and protective clothing, not sunscreen, are the primary protection at this age.",
+    "infantAdvisorySource": "American Academy of Pediatrics / AAD guidance"
   },
   "notify": {
     "reapplyTitle": "Reapply sunscreen",

@@ -8,6 +8,8 @@
     "loading": "Lädt...",
     "locationPrompt": "Standort aktivieren",
     "fetchErrorRetry": "UV-Index konnte nicht geladen werden — zum Wiederholen tippen",
+    "statusOverdue": "{name}: Zeit zum Erneuern",
+    "statusOk": "{name}: Erneuerungs-Timer läuft",
     "currentLocation": "Mein Standort",
     "defaultProfileName": "Ich",
     "riskLevels": {
@@ -57,6 +59,8 @@
     "removeProfile": "{name} entfernen",
     "skinType": "Hauttyp",
     "skinTypeHint": "Wird verwendet, um zu berechnen, wann der Schutz erneuert werden sollte",
+    "infantToggleLabel": "Unter 6 Monate alt",
+    "infantHint": "Der Hauttyp gilt hier noch nicht — in diesem Alter lautet die Empfehlung, direkte Sonne ganz zu meiden, statt ein Sonnenbrand-Zeitbudget zu berechnen.",
     "skinTypes": {
       "1": "Sehr hell — verbrennt immer, bräunt nie",
       "2": "Hell — verbrennt leicht, bräunt minimal",
@@ -105,7 +109,9 @@
     "setupCta": "Hauttyp festlegen →",
     "spfLabel": "Welchen LSF hast du verwendet?",
     "spfInUse": "LSF {spf}",
-    "spfNote": "Das Intervall bleibt bei jedem LSF 2 Stunden — Menge und Häufigkeit zählen mehr als die Zahl →"
+    "spfNote": "Das Intervall bleibt bei jedem LSF 2 Stunden — Menge und Häufigkeit zählen mehr als die Zahl →",
+    "infantAdvisory": "Halte Säuglinge unter 6 Monaten ganz von direkter Sonne fern — Schatten und schützende Kleidung, nicht Sonnencreme, sind in diesem Alter der wichtigste Schutz.",
+    "infantAdvisorySource": "Empfehlung der American Academy of Pediatrics / AAD"
   },
   "notify": {
     "reapplyTitle": "Sonnenschutz erneuern",

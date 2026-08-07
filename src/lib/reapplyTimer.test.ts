@@ -6,6 +6,7 @@ import {
   getReapplyStartedAt,
   getStoredSpf,
   minutesRemaining,
+  reapplyStatus,
   setStoredSpf,
   startReapplyTimer,
 } from "./reapplyTimer";
@@ -47,6 +48,36 @@ describe("reapply timer storage", () => {
     startReapplyTimer("a");
     expect(getReapplyStartedAt("b")).toBeNull();
     expect(getReapplyStartedAt("a")).not.toBeNull();
+  });
+});
+
+describe("reapplyStatus", () => {
+  beforeEach(() => vi.useFakeTimers());
+  afterEach(() => vi.useRealTimers());
+
+  it("is 'none' when no timer has ever been started", () => {
+    expect(reapplyStatus(PROFILE)).toBe("none");
+  });
+
+  it("is 'ok' right after starting", () => {
+    const now = Date.now();
+    vi.setSystemTime(now);
+    startReapplyTimer(PROFILE);
+    expect(reapplyStatus(PROFILE)).toBe("ok");
+  });
+
+  it("is 'overdue' once the interval has elapsed", () => {
+    const now = Date.now();
+    vi.setSystemTime(now);
+    startReapplyTimer(PROFILE);
+    vi.setSystemTime(now + (REAPPLY_INTERVAL_MINUTES + 1) * 60_000);
+    expect(reapplyStatus(PROFILE)).toBe("overdue");
+  });
+
+  it("tracks each profile independently", () => {
+    startReapplyTimer("a");
+    expect(reapplyStatus("a")).toBe("ok");
+    expect(reapplyStatus("b")).toBe("none");
   });
 });
 

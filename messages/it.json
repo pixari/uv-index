@@ -8,6 +8,8 @@
     "loading": "Carico...",
     "locationPrompt": "Attiva la posizione",
     "fetchErrorRetry": "Impossibile caricare l'indice UV — tocca per riprovare",
+    "statusOverdue": "{name}: è ora di riapplicare",
+    "statusOk": "{name}: timer di riapplicazione attivo",
     "currentLocation": "La mia posizione",
     "defaultProfileName": "Io",
     "riskLevels": {
@@ -57,6 +59,8 @@
     "removeProfile": "Rimuovi {name}",
     "skinType": "Fototipo pelle",
     "skinTypeHint": "Usato per calcolare quando riapplicare la protezione",
+    "infantToggleLabel": "Sotto i 6 mesi",
+    "infantHint": "Il fototipo non si applica ancora — a questa età l'indicazione è evitare del tutto il sole diretto, non calcolare un margine di sicurezza.",
     "skinTypes": {
       "1": "Molto chiara — scotta sempre, non si abbronza mai",
       "2": "Chiara — scotta facilmente, abbronzatura minima",
@@ -105,7 +109,9 @@
     "setupCta": "Imposta il tuo fototipo →",
     "spfLabel": "Con che SPF ti sei protetto?",
     "spfInUse": "SPF {spf}",
-    "spfNote": "L'intervallo resta 2 ore con qualsiasi SPF: contano di più la quantità e la frequenza che il numero →"
+    "spfNote": "L'intervallo resta 2 ore con qualsiasi SPF: contano di più la quantità e la frequenza che il numero →",
+    "infantAdvisory": "Evita del tutto il sole diretto sotto i 6 mesi — ombra e vestiti protettivi, non la crema solare, sono la protezione principale a questa età.",
+    "infantAdvisorySource": "Linee guida American Academy of Pediatrics / AAD"
   },
   "notify": {
     "reapplyTitle": "Riapplica la protezione solare",

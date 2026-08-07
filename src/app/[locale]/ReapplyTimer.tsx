@@ -30,12 +30,14 @@ export default function ReapplyTimer({
   profileId,
   profileName,
   skinType,
+  isInfant,
   onOpenSettings,
 }: {
   uv: number;
   profileId: string;
   profileName: string;
   skinType: SkinType | null;
+  isInfant: boolean;
   onOpenSettings: () => void;
 }) {
   const t = useTranslations("reapply");
@@ -93,6 +95,19 @@ export default function ReapplyTimer({
   function reset() {
     clearReapplyTimer(profileId);
     setStartedAt(null);
+  }
+
+  // Infants under 6 months: AAP/AAD guidance is to keep them out of direct
+  // sun entirely — shade and clothing, not a reapply schedule — so this
+  // takes priority over everything else below, including an unset skin type.
+  if (isInfant) {
+    return (
+      <div className={`${GLASS} flex flex-col items-center gap-2 px-5 py-5 text-center`}>
+        <span className={EYEBROW}>{t("title")}</span>
+        <p className="text-lg font-medium text-white">{t("infantAdvisory")}</p>
+        <p className="text-xs text-white/70">{t("infantAdvisorySource")}</p>
+      </div>
+    );
   }
 
   // No skin type set yet — a discoverable prompt, not silent absence.
