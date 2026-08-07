@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { uvLevel } from "@/lib/uvLevel";
 import { parseCoords } from "@/lib/validateCoords";
 import { clientIp, rateLimit } from "@/lib/rateLimit";
-import { currentUvFrom, fetchMetTimeseries } from "@/lib/metForecast";
+import { currentUvFrom, currentWeatherFrom, fetchMetTimeseries } from "@/lib/metForecast";
 
 // Look no further than 24h ahead for a "safe after" estimate — beyond
 // that the forecast is coarser and the number stops being actionable
@@ -34,6 +34,7 @@ export async function GET(req: NextRequest) {
   const { timeseries, updatedAt } = forecast;
 
   const uv = currentUvFrom(timeseries);
+  const { temperature, cloudCover } = currentWeatherFrom(timeseries);
 
   // "Safe after" — the next time UV drops back into the "low" bracket
   // (no protection needed), searched within the next 24h. Null if
@@ -52,5 +53,5 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  return NextResponse.json({ uv, updatedAt, safeAfter });
+  return NextResponse.json({ uv, updatedAt, safeAfter, temperature, cloudCover });
 }

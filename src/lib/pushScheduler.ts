@@ -1,8 +1,12 @@
-// The one background job this app runs: periodically check each active
-// push subscription's location against the high-UV threshold and send a
-// real push notification on the rising edge — the background-capable
-// counterpart to HomeClient's foreground-only maybeNotifyHighUv. Started
-// once per server process from src/instrumentation.ts.
+// The two background jobs this app runs, both on the same 15-minute
+// timer, started once per server process from src/instrumentation.ts:
+//
+// 1. High-UV alert — check each active subscription's location against
+//    the threshold, push on the rising edge. Background counterpart to
+//    HomeClient's foreground-only maybeNotifyHighUv.
+// 2. Reapply reminder — send any one-shot reminder whose due time has
+//    passed. Background counterpart to ReapplyTimer's foreground-only
+//    overdue notification.
 
 import webpush from "web-push";
 import enMessages from "../../messages/en.json";
@@ -14,6 +18,9 @@ import {
   listPushSubscriptions,
   updateLastUv,
   deletePushSubscription,
+  listPushReminders,
+  deletePushReminderById,
+  deletePushRemindersForEndpoint,
   type PushSubscriptionRecord,
 } from "./pushDb";
 import { fetchCurrentUv } from "./metForecast";
@@ -21,7 +28,19 @@ import { crossedHighUvThreshold } from "./uvThreshold";
 
 const CHECK_INTERVAL_MS = 15 * 60 * 1000; // matches HomeClient's own poll cadence
 
-const NOTIFY_MESSAGES: Record<string, { highUvTitle: string; highUvBody: string }> = {
+// A reminder is time-sensitive — if it's been sitting un-sendable (a
+// transient push-service error, say) for this long, it's stopped being
+// useful and retrying it forever would just be noise.
+const REMINDER_GIVE_UP_MS = 2 * 3600 * 1000;
+
+type NotifyStrings = {
+  highUvTitle: string;
+  highUvBody: string;
+  reapplyTitle: string;
+  reapplyBody: string;
+};
+
+const NOTIFY_MESSAGES: Record<string, NotifyStrings> = {
   en: enMessages.notify,
   it: itMessages.notify,
   de: deMessages.notify,
@@ -29,13 +48,22 @@ const NOTIFY_MESSAGES: Record<string, { highUvTitle: string; highUvBody: string 
 
 // Exported for direct unit testing — everything else in this file is
 // either orchestration or has real network/DB side effects, but locale
-// fallback and grid bucketing are worth pinning down precisely.
+// fallback, grid bucketing, and message formatting are worth pinning
+// down precisely.
 
 export function notificationFor(locale: string, uv: number) {
   const strings = NOTIFY_MESSAGES[locale] ?? NOTIFY_MESSAGES.en;
   return {
     title: strings.highUvTitle,
     body: strings.highUvBody.replace("{uv}", String(Math.round(uv))),
+  };
+}
+
+export function reminderNotificationFor(locale: string, profileName: string) {
+  const strings = NOTIFY_MESSAGES[locale] ?? NOTIFY_MESSAGES.en;
+  return {
+    title: strings.reapplyTitle,
+    body: strings.reapplyBody.replace("{name}", profileName),
   };
 }
 
@@ -49,26 +77,37 @@ export function gridKey(lat: number, lon: number): string {
 let started = false;
 let timer: ReturnType<typeof setInterval> | null = null;
 
-async function sendPush(sub: PushSubscriptionRecord, uv: number, subject: string) {
-  const { title, body } = notificationFor(sub.locale, uv);
+type SendResult = "sent" | "gone" | "failed";
+
+async function sendRawPush(
+  endpoint: string,
+  p256dh: string,
+  auth: string,
+  payload: { title: string; body: string },
+): Promise<SendResult> {
   try {
     await webpush.sendNotification(
-      {
-        endpoint: sub.endpoint,
-        keys: { p256dh: sub.p256dh, auth: sub.auth },
-      },
-      JSON.stringify({ title, body }),
+      { endpoint, keys: { p256dh, auth } },
+      JSON.stringify(payload),
     );
+    return "sent";
   } catch (err) {
     const statusCode = (err as { statusCode?: number }).statusCode;
-    if (statusCode === 404 || statusCode === 410) {
-      // The push service itself says this endpoint is gone — the
-      // browser unregistered, the user uninstalled, whatever the
-      // reason, retrying it forever would just be noise.
-      await deletePushSubscription(sub.endpoint);
-    } else {
-      console.warn(`[push] send failed for one subscription (status ${statusCode ?? "?"})`, subject);
-    }
+    if (statusCode === 404 || statusCode === 410) return "gone";
+    console.warn(`[push] send failed (status ${statusCode ?? "?"})`);
+    return "failed";
+  }
+}
+
+async function sendHighUvPush(sub: PushSubscriptionRecord, uv: number) {
+  const result = await sendRawPush(sub.endpoint, sub.p256dh, sub.auth, notificationFor(sub.locale, uv));
+  if (result === "gone") {
+    // The push service itself says this endpoint is gone — the browser
+    // unregistered, the person uninstalled, whatever the reason. Clears
+    // any reminders tied to the same dead endpoint too, not just the
+    // location watch.
+    await deletePushSubscription(sub.endpoint);
+    await deletePushRemindersForEndpoint(sub.endpoint);
   }
 }
 
@@ -94,10 +133,33 @@ export async function runCheck() {
 
     for (const sub of bucket) {
       if (crossedHighUvThreshold(sub.lastUv, uv)) {
-        await sendPush(sub, uv, vapid.subject);
+        await sendHighUvPush(sub, uv);
       }
       await updateLastUv(sub.endpoint, uv);
     }
+  }
+}
+
+/** Exported for tests — production callers only need startPushScheduler. */
+export async function checkDueReminders() {
+  if (!(await isPushDbAvailable())) return;
+
+  const reminders = await listPushReminders();
+  const now = Date.now();
+
+  for (const reminder of reminders) {
+    if (reminder.dueAt > now) continue; // not due yet
+
+    const result = await sendRawPush(
+      reminder.endpoint,
+      reminder.p256dh,
+      reminder.auth,
+      reminderNotificationFor(reminder.locale, reminder.profileName),
+    );
+
+    const giveUp = result !== "failed" || now - reminder.dueAt > REMINDER_GIVE_UP_MS;
+    if (giveUp) await deletePushReminderById(reminder.id);
+    if (result === "gone") await deletePushSubscription(reminder.endpoint);
   }
 }
 
@@ -107,15 +169,20 @@ export async function startPushScheduler() {
 
   const vapid = getVapidConfig();
   if (!vapid) {
-    console.info("[push] VAPID not configured — background high-UV push disabled.");
+    console.info("[push] VAPID not configured — background push disabled.");
     return;
   }
   if (!(await isPushDbAvailable())) return; // pushDb.ts already logs why
 
   webpush.setVapidDetails(vapid.subject, vapid.publicKey, vapid.privateKey);
 
+  async function tick() {
+    await runCheck().catch((err) => console.warn("[push] high-UV tick failed", err));
+    await checkDueReminders().catch((err) => console.warn("[push] reminder tick failed", err));
+  }
+
   timer = setInterval(() => {
-    runCheck().catch((err) => console.warn("[push] scheduler tick failed", err));
+    tick();
   }, CHECK_INTERVAL_MS);
   // Don't hold the process open just for this timer during graceful
   // shutdown/short-lived scripts (e.g. `next build`'s own instrumentation
@@ -123,7 +190,7 @@ export async function startPushScheduler() {
   timer.unref?.();
 
   // Also run once shortly after boot rather than waiting a full interval.
-  runCheck().catch((err) => console.warn("[push] initial scheduler tick failed", err));
+  tick();
 }
 
 export function stopPushScheduler() {

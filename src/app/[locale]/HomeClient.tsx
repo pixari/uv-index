@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { uvLevel, skyGradientCss } from "@/lib/uvLevel";
+import { cloudCoverLevel } from "@/lib/cloudCover";
 import {
   getProfiles,
   resolveActiveProfileId,
@@ -36,6 +37,8 @@ export default function HomeClient() {
   const [uv, setUv] = useState<number | null>(null);
   const [updatedAt, setUpdatedAt] = useState<string | null>(null);
   const [safeAfter, setSafeAfter] = useState<string | null>(null);
+  const [temperature, setTemperature] = useState<number | null>(null);
+  const [cloudCover, setCloudCover] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [stale, setStale] = useState(false);
   const [showLocation, setShowLocation] = useState(false);
@@ -135,6 +138,8 @@ export default function HomeClient() {
       // "updatedAt" (see the note in fetchUv) — same reasoning, cached.
       setUpdatedAt(new Date(cached.fetchedAt).toISOString());
       setSafeAfter(cached.safeAfter);
+      setTemperature(cached.temperature ?? null);
+      setCloudCover(cached.cloudCover ?? null);
       setError(null);
       setStale(true);
       if (opts?.silent) setRevealed(true);
@@ -173,6 +178,8 @@ export default function HomeClient() {
           // means to the person reading it.
           setUpdatedAt(new Date(fetchedAt).toISOString());
           setSafeAfter(d.safeAfter ?? null);
+          setTemperature(typeof d.temperature === "number" ? d.temperature : null);
+          setCloudCover(typeof d.cloudCover === "number" ? d.cloudCover : null);
           setError(null);
           setStale(false);
           setCachedUv({
@@ -182,6 +189,8 @@ export default function HomeClient() {
             updatedAt: d.updatedAt ?? null,
             safeAfter: d.safeAfter ?? null,
             fetchedAt,
+            temperature: typeof d.temperature === "number" ? d.temperature : null,
+            cloudCover: typeof d.cloudCover === "number" ? d.cloudCover : null,
           });
           maybeNotifyHighUv(d.uv);
           if (opts?.silent) setRevealed(true);
@@ -373,6 +382,24 @@ export default function HomeClient() {
                 <p className="text-2xl font-medium text-white">
                   {t(`riskLevels.${level}`)}
                 </p>
+                {/* Same MET instant the UV reading itself comes from — no
+                    extra request, just fields the app used to ignore.
+                    Quiet/secondary on purpose: DESIGN.md reserves color
+                    for the WHO risk signal, this is just context. */}
+                {(temperature !== null || cloudCover !== null) && (
+                  <p className="text-sm font-medium text-white/60">
+                    {[
+                      temperature !== null
+                        ? t("weather.temperature", { temp: Math.round(temperature) })
+                        : null,
+                      cloudCover !== null
+                        ? t(`weather.cloud.${cloudCoverLevel(cloudCover)}`)
+                        : null,
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </p>
+                )}
               </div>
 
               <p className="max-w-[26ch] text-center text-white/85 text-lg font-medium leading-snug">

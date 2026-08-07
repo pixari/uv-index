@@ -1,11 +1,15 @@
 // Browser-side half of Web Push: registers the service worker (public/sw.js),
-// subscribes/unsubscribes with the push service, and tells our own API
-// about it. Kept separate from notifications.ts (the foreground
-// Notification-API helpers) since this is a materially different
-// capability with its own failure modes — a deployment that hasn't set
-// VAPID_PUBLIC_KEY, or a browser without Push API support (most desktop
-// Safari, for one), should fall back to foreground-only alerts rather
-// than break the toggle entirely.
+// subscribes with the push service, and tells our own API about it. Kept
+// separate from notifications.ts (the foreground Notification-API helpers)
+// since this is a materially different capability with its own failure
+// modes — a deployment that hasn't set VAPID_PUBLIC_KEY, or a browser
+// without Push API support (most desktop Safari, for one), should fall
+// back to foreground-only alerts rather than break either toggle entirely.
+//
+// Two independent features share one underlying browser subscription:
+// the high-UV location watch (push_subscriptions) and the reapply
+// reminder (push_reminders, one-shot). getOrCreatePushSubscription()
+// is the one place either of them gets/creates it.
 
 const PUSH_SUBSCRIBED_KEY = "uv-index:push-subscribed";
 
@@ -37,12 +41,9 @@ function urlBase64ToUint8Array(base64String: string): Uint8Array {
   return bytes;
 }
 
-/** Registers the SW (if needed), subscribes to push, and tells our API. Resolves false on any failure. */
-export async function subscribeToHighUvPush(
-  place: { lat: number; lon: number; label: string },
-  locale: string,
-): Promise<boolean> {
-  if (!pushSupported()) return false;
+/** Registers the SW (if needed) and returns an existing or freshly-created subscription. Null on any failure. */
+async function getOrCreatePushSubscription(): Promise<PushSubscriptionJSON | null> {
+  if (!pushSupported()) return null;
   const publicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY as string;
 
   try {
@@ -60,12 +61,26 @@ export async function subscribeToHighUvPush(
         applicationServerKey: urlBase64ToUint8Array(publicKey) as BufferSource,
       });
     }
+    return subscription.toJSON();
+  } catch {
+    return null;
+  }
+}
 
+/** Tells our API to watch a place for high UV and push when it crosses the threshold. */
+export async function subscribeToHighUvPush(
+  place: { lat: number; lon: number; label: string },
+  locale: string,
+): Promise<boolean> {
+  const subscription = await getOrCreatePushSubscription();
+  if (!subscription) return false;
+
+  try {
     const res = await fetch("/api/push/subscribe", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        subscription: subscription.toJSON(),
+        subscription,
         lat: place.lat,
         lon: place.lon,
         placeLabel: place.label,
@@ -73,7 +88,6 @@ export async function subscribeToHighUvPush(
       }),
     });
     if (!res.ok) return false;
-
     localStorage.setItem(PUSH_SUBSCRIBED_KEY, "1");
     return true;
   } catch {
@@ -81,19 +95,24 @@ export async function subscribeToHighUvPush(
   }
 }
 
-/** Best-effort: unsubscribes locally and tells the server, but never throws. */
+/**
+ * Best-effort: tells the server to stop watching this device's place, but
+ * never throws. Deliberately does *not* revoke the browser-level
+ * PushSubscription itself — a reapply reminder (a separate toggle) might
+ * still be relying on the same subscription, and re-subscribing
+ * repeatedly is wasteful (and can fail) for no benefit over just leaving
+ * an inert subscription registered.
+ */
 export async function unsubscribeFromHighUvPush(): Promise<void> {
   try {
     if (pushSupported()) {
       const registration = await navigator.serviceWorker.getRegistration("/sw.js");
       const subscription = await registration?.pushManager.getSubscription();
       if (subscription) {
-        const endpoint = subscription.endpoint;
-        await subscription.unsubscribe();
         await fetch("/api/push/unsubscribe", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ endpoint }),
+          body: JSON.stringify({ endpoint: subscription.endpoint }),
         }).catch(() => {});
       }
     }
@@ -102,5 +121,44 @@ export async function unsubscribeFromHighUvPush(): Promise<void> {
     // trusts, so a mid-unsubscribe failure doesn't leave the toggle stuck.
   } finally {
     localStorage.removeItem(PUSH_SUBSCRIBED_KEY);
+  }
+}
+
+/** Arms a one-shot background reminder for `dueAt` (epoch ms). Resolves false on any failure. */
+export async function scheduleReapplyPush(
+  profileId: string,
+  profileName: string,
+  locale: string,
+  dueAt: number,
+): Promise<boolean> {
+  const subscription = await getOrCreatePushSubscription();
+  if (!subscription) return false;
+
+  try {
+    const res = await fetch("/api/push/schedule-reminder", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ subscription, profileId, profileName, locale, dueAt }),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
+/** Best-effort: cancels a profile's pending reminder, but never throws. */
+export async function cancelReapplyPush(profileId: string): Promise<void> {
+  try {
+    if (!pushSupported()) return;
+    const registration = await navigator.serviceWorker.getRegistration("/sw.js");
+    const subscription = await registration?.pushManager.getSubscription();
+    if (!subscription) return;
+    await fetch("/api/push/cancel-reminder", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ endpoint: subscription.endpoint, profileId }),
+    }).catch(() => {});
+  } catch {
+    // best-effort
   }
 }

@@ -34,6 +34,7 @@ import {
   setReapplyNotifPref,
 } from "@/lib/notifications";
 import {
+  cancelReapplyPush,
   isPushSubscribedLocally,
   subscribeToHighUvPush,
   unsubscribeFromHighUvPush,
@@ -259,9 +260,11 @@ export default function SettingsSheet({
     const remaining = removeProfile(id);
     // removeProfile only drops the profile record — its reapply timer and
     // SPF choice live under separate scoped keys and would otherwise sit
-    // orphaned in storage forever.
+    // orphaned in storage forever. Same for any reminder already armed
+    // server-side for this profile — best-effort, no local state to undo.
     clearReapplyTimer(id);
     clearStoredSpf(id);
+    cancelReapplyPush(id);
     setProfiles(remaining);
     if (selectedProfileId === id) {
       setSelectedProfileId(remaining[0]?.id ?? null);

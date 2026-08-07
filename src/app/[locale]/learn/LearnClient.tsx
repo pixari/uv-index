@@ -24,6 +24,32 @@ type Coords = { lat: number; lon: number; label: string };
 type Point = { time: string; uv: number };
 type ReferenceReading = { key: string; uv: number | null };
 
+// One source per myth, since — unlike the rest of the page — each item
+// here traces back to a different organization rather than one shared
+// citation for the whole section.
+const MYTH_SOURCES = {
+  reapplySpf: {
+    label: "American Academy of Dermatology",
+    url: "https://www.aad.org/public/everyday-care/sun-protection/shade-clothing-sunscreen/how-to-apply-sunscreen",
+  },
+  clouds: {
+    label: "WHO/WMO/UNEP/ICNIRP",
+    url: "https://www.who.int/publications/i/item/9241590076",
+  },
+  darkSkin: {
+    label: "Skin Cancer Foundation",
+    url: "https://www.skincancer.org/blog/are-people-of-color-at-risk-for-skin-cancer/",
+  },
+  baseTan: {
+    label: "American Academy of Dermatology",
+    url: "https://www.aad.org/news/new-survey-reveals-public-confusion-about-risks-of-tanning-and-sunburns",
+  },
+  expiration: {
+    label: "U.S. Food and Drug Administration",
+    url: "https://www.fda.gov/drugs/understanding-over-counter-medicines/sunscreen-how-help-protect-your-skin-sun",
+  },
+} as const;
+
 function formatTime(iso: string, locale: string) {
   return new Date(iso).toLocaleTimeString(locale, {
     hour: "2-digit",
@@ -141,7 +167,7 @@ export default function LearnClient() {
           {t("toc.title")}
         </p>
         <ul className="grid grid-cols-1 gap-x-4 gap-y-1.5 sm:grid-cols-2">
-          {(["chart", "forecast", "methodology", "physics", "worldCompare", "spf", "burnHeatmap", "ozone", "iarc"] as const).map(
+          {(["chart", "forecast", "methodology", "physics", "worldCompare", "spf", "myths", "burnHeatmap", "ozone", "iarc"] as const).map(
             (key) => (
               <li key={key}>
                 <a href={`#${key}`} className="text-sm text-ink hover:text-brand-ink hover:underline">
@@ -280,6 +306,37 @@ export default function LearnClient() {
             American Academy of Dermatology
           </a>
         </p>
+      </article>
+
+      <article id="myths" className="mb-14 scroll-mt-20">
+        <ArticleHeader title={t("myths.title")} shareText={t("myths.shareText")} anchor="myths" />
+        <p className="mb-5 text-ink leading-relaxed">{t("myths.intro")}</p>
+        <div className="flex flex-col gap-4">
+          {(Object.keys(MYTH_SOURCES) as Array<keyof typeof MYTH_SOURCES>).map((key) => (
+            <div key={key} className="rounded-2xl border border-border bg-surface p-5">
+              <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                {t("myths.mythLabel")}
+              </p>
+              <p className="mb-3 text-sm font-medium text-foreground">
+                {t(`myths.items.${key}.myth`)}
+              </p>
+              <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-brand-ink">
+                {t("myths.factLabel")}
+              </p>
+              <p className="mb-3 text-sm leading-relaxed text-ink">
+                {t(`myths.items.${key}.fact`)}
+              </p>
+              <a
+                href={MYTH_SOURCES[key].url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-muted-foreground hover:text-brand-ink hover:underline"
+              >
+                {t("myths.sourceLabel")}: {MYTH_SOURCES[key].label}
+              </a>
+            </div>
+          ))}
+        </div>
       </article>
 
       <article id="burnHeatmap" className="mb-14 scroll-mt-20">

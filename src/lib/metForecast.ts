@@ -11,7 +11,11 @@ export type MetTimeseriesEntry = {
   time: string;
   data: {
     instant: {
-      details: { ultraviolet_index_clear_sky?: number };
+      details: {
+        ultraviolet_index_clear_sky?: number;
+        air_temperature?: number;
+        cloud_area_fraction?: number;
+      };
     };
   };
 };
@@ -46,6 +50,22 @@ export async function fetchMetTimeseries(
 
 export function currentUvFrom(timeseries: MetTimeseriesEntry[]): number | null {
   return timeseries[0]?.data?.instant?.details?.ultraviolet_index_clear_sky ?? null;
+}
+
+/**
+ * Same instant MET already gives us alongside the UV reading — no extra
+ * request, just fields the app previously ignored. `cloudCover` is a raw
+ * 0–100 percentage; see cloudCover.ts for turning that into a level.
+ */
+export function currentWeatherFrom(timeseries: MetTimeseriesEntry[]): {
+  temperature: number | null;
+  cloudCover: number | null;
+} {
+  const details = timeseries[0]?.data?.instant?.details;
+  return {
+    temperature: details?.air_temperature ?? null,
+    cloudCover: details?.cloud_area_fraction ?? null,
+  };
 }
 
 /** Fetches just the current-instant UV reading for a point. */
