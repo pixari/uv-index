@@ -152,14 +152,87 @@
       "p1": "Der UV-Index wurde von der WHO, der Weltorganisation für Meteorologie, UNEP und ICNIRP als standardisierte internationale Skala entwickelt, um die Intensität der UV-Strahlung am Boden verständlich zu kommunizieren, ohne Fachwissen zu erfordern — vor seiner Einführung nutzte jedes Land unterschiedliche, nicht vergleichbare Skalen.",
       "p2": "Die tatsächliche Intensität hängt von mehreren Faktoren zusammen ab: dem Sonnenstand am Himmel (am höchsten zur Sonnenmittagszeit und im Sommer), dem Breitengrad (stärker in Äquatornähe), der Höhenlage (steigt um etwa 10% pro 1000 Meter, da weniger filternde Atmosphäre vorhanden ist), der Dicke der Ozonschicht und der Bewölkung — Letzteres täuscht leicht: Auch bei bedecktem Himmel kommt der Großteil der UV-Strahlung durch, ein verbreiteter Irrtum ist zu glauben, bewölktes Wetter mache Schutz überflüssig.",
       "p3": "Die in dieser App angezeigte Zahl wird in Echtzeit berechnet, indem diese Faktoren mit Wettermodellen kombiniert werden — deshalb ändert sie sich stündlich, mit einem Höhepunkt nahe der Sonnenmittagszeit und Werten nahe Null bei Sonnenauf- und -untergang, wie im obigen Diagramm zu sehen ist.",
-      "source": "Quelle:"
+      "source": "Quelle:",
+      "shareText": "Wolken blockieren die meiste UV-Strahlung nicht — so funktioniert der UV-Index wirklich:"
     },
     "spf": {
       "title": "Wie LSF wirklich funktioniert",
       "p1": "Der LSF (Lichtschutzfaktor) misst, wie viel länger geschützte Haut braucht, um zu verbrennen, im Vergleich zu ungeschützter Haut — unter Laborbedingungen mit einer dick und großzügig aufgetragenen Schicht (2 mg pro cm²). In der Praxis trägt fast niemand so viel auf, weshalb der reale Schutz meist geringer ist als die angegebene Zahl.",
       "p2": "Der Zusammenhang zwischen LSF und Schutz ist nicht linear: LSF30 blockiert etwa 97% der UVB-Strahlen, LSF50 etwa 98% — ein kleiner zahlenmäßiger Unterschied, der viele Menschen fälschlich glauben lässt, LSF50 biete etwa doppelt so viel Schutz wie LSF30. Das stimmt nicht. Was wirklich den Unterschied macht, ist häufiges Nachcremen und ausreichende Menge, nicht die Jagd nach einer immer höheren Zahl.",
       "p3": "LSF misst nur den Schutz vor UVB-Strahlen, die sichtbaren Sonnenbrand verursachen. Die Kennzeichnung \"Breitband\" (broad spectrum) bedeutet, dass das Produkt auch vor UVA-Strahlen schützt, die tiefer eindringen und zu Hautalterung und Krebsrisiko beitragen, auch ohne sichtbaren Sonnenbrand zu verursachen — auf \"Breitband\" zu achten ist genauso wichtig wie die LSF-Zahl selbst.",
-      "source": "Quelle:"
+      "source": "Quelle:",
+      "shareText": "LSF30 blockiert ~97% der UVB-Strahlen, LSF50 ~98% — den Unterschied macht das Nachcremen, nicht eine höhere Zahl."
+    },
+    "toc": {
+      "title": "In diesem Beitrag",
+      "chart": "Heutige UV-Kurve",
+      "forecast": "Kommende Tage",
+      "methodology": "Wie der Index funktioniert",
+      "physics": "Die Physik dahinter",
+      "worldCompare": "Du vs. die Welt",
+      "spf": "Wie LSF funktioniert",
+      "burnHeatmap": "Sonnenbrand-Zeit nach Hauttyp",
+      "ozone": "Die Ozonschicht erholt sich",
+      "iarc": "Warum es ein Gruppe-1-Karzinogen ist"
+    },
+    "physics": {
+      "title": "Die Physik hinter der Zahl",
+      "p1": "Die UV-Intensität steigt um etwa {percent}% pro 1000 Meter Höhe — es liegt einfach weniger Atmosphäre über dir, die sie filtert. Ein Skigebiet auf 2000m kann an einem klaren Tag einen deutlich höheren UV-Index haben als das Tal darunter.",
+      "p2": "Die Sonne ist auch nicht die einzige Quelle — Oberflächen werfen einen echten Anteil der Strahlung zurück. Frischer Schnee reflektiert das meiste davon; Sand und Meeresschaum spielen ebenfalls eine Rolle, wenn auch weniger drastisch. Deshalb sind reflektierter Sonnenbrand (und Schneeblindheit) auch im Schatten ein echtes Risiko.",
+      "chartCaption": "Anteil der zurückgeworfenen UV-Strahlung, nach Oberfläche",
+      "source": "Quelle:",
+      "surfaces": {
+        "freshSnow": "Frischer Schnee",
+        "seaFoam": "Meeresschaum",
+        "drySand": "Trockener Sand",
+        "concrete": "Beton",
+        "grassSoil": "Gras, Erde"
+      },
+      "shareText": "Frischer Schnee reflektiert bis zu 80% der UV-Strahlung zurück — und die Höhenlage allein addiert ~10% pro 1000m. Die Physik hinter der Zahl:"
+    },
+    "worldCompare": {
+      "title": "Dein UV-Index vs. die Welt, gerade jetzt",
+      "subtitle": "Derselbe klare Himmel erzeugt je nach Ort — und Höhenlage — sehr unterschiedliche UV-Werte.",
+      "note": "Nairobi und Denver liegen auf etwa 1600–1800m Höhe — auch deshalb sind ihre Werte höher, als es der Breitengrad allein vermuten lässt.",
+      "you": "Du",
+      "cities": {
+        "singapore": "Singapur",
+        "nairobi": "Nairobi",
+        "denver": "Denver",
+        "reykjavik": "Reykjavík"
+      },
+      "shareText": "So vergleicht sich der UV-Index zwischen meinem Standort und einigen Orten weltweit, gerade jetzt:"
+    },
+    "burnHeatmap": {
+      "title": "Minuten bis zum Sonnenbrand, nach Hauttyp und UV-Index",
+      "p1": "Das ist dieselbe Berechnung, die hinter der Sonnenbrand-Zeitschätzung dieser App steckt — ein Fitzpatrick-Basiswert geteilt durch den aktuellen UV-Index — hier als vollständiges Raster statt einer einzelnen Zahl.",
+      "uvHeader": "UV",
+      "skinTypeHeader": "Typ {skinType}",
+      "source": "Siehe \"Wie der Index funktioniert\" oben für die Fitzpatrick-Skala selbst.",
+      "shareText": "Wie schnell verbrennt ungeschützte Haut wirklich, nach Hauttyp und UV-Index? Die echten Zahlen:"
+    },
+    "ozone": {
+      "title": "Die Ozonschicht erholt sich — hier ist das echte Diagramm",
+      "p1": "Wie viel UV-Strahlung den Boden erreicht, hängt stark davon ab, wie viel Ozon zwischen dir und dem Weltraum liegt. Industriechemikalien (FCKW) rissen ab den 1980er-Jahren ein saisonales Loch über der Antarktis — Mitte der 2000er war es auf fast 30 Millionen km² angewachsen, etwa so groß wie Afrika.",
+      "p2": "Das Montreal-Protokoll von 1987 hat diese Chemikalien weltweit ausgephast, und es wirkt: Das Loch schrumpft seit etwa 2000, und aktuelle Wissenschaft prognostiziert die Rückkehr zu den Werten von 1980 bis {year} über der Antarktis.",
+      "chartCaption": "Maximale Fläche des antarktischen Ozonlochs, Millionen km²",
+      "source": "Quelle:",
+      "shareText": "Das Ozonloch schrumpft tatsächlich — hier ist das echte Diagramm, nicht nur eine Schlagzeile:"
+    },
+    "iarc": {
+      "title": "Warum UV-Strahlung offiziell ein Gruppe-1-Karzinogen ist",
+      "intro": "Gruppe 1 ist die Kategorie mit der höchsten Gewissheit der IARC (Internationale Agentur für Krebsforschung) — reserviert für Ursachen mit der stärksten Evidenz beim Menschen, neben Tabak und Asbest.",
+      "milestones": {
+        "solarUv": {
+          "text": "Die IARC-Arbeitsgruppe klassifizierte Sonnen- und UV-Strahlung offiziell als krebserregend für den Menschen (Gruppe 1), basierend auf den gesammelten epidemiologischen Belegen für den Zusammenhang zwischen UV-Exposition und Hautkrebs.",
+          "source": "IARC Monographs, Band 55"
+        },
+        "tanningDevices": {
+          "text": "Eine separate IARC-Bewertung weitete dieselbe Gruppe-1-Klassifizierung gezielt auf UV-Sonnenbänke aus, nachdem sich gezeigt hatte, dass das Melanomrisiko stark steigt, wenn die Nutzung vor dem 30. Lebensjahr beginnt.",
+          "source": "IARC Monographs, Band 100D"
+        }
+      },
+      "shareText": "Solare UV-Strahlung ist offiziell ein Gruppe-1-Karzinogen — hier ist wann und warum:"
     }
   }
 }
