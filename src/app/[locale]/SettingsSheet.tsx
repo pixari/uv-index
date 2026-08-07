@@ -130,15 +130,18 @@ export default function SettingsSheet({
               </h3>
               <div className="flex flex-wrap gap-2">
                 {profiles.map((p) => (
-                  <div key={p.id} className="flex items-center">
+                  <div
+                    key={p.id}
+                    className={
+                      "flex items-center rounded-full text-sm font-medium transition-colors " +
+                      (p.id === selectedProfileId
+                        ? "bg-brand text-primary-foreground"
+                        : "bg-surface text-foreground hover:bg-border")
+                    }
+                  >
                     <button
                       onClick={() => selectProfile(p.id)}
-                      className={
-                        "rounded-full px-3 py-1.5 text-sm font-medium transition-colors " +
-                        (p.id === selectedProfileId
-                          ? "bg-brand text-primary-foreground"
-                          : "bg-surface text-foreground hover:bg-border")
-                      }
+                      className="py-1.5 pl-3 pr-1.5"
                     >
                       {p.name}
                     </button>
@@ -146,7 +149,7 @@ export default function SettingsSheet({
                       <button
                         onClick={() => handleRemoveProfile(p.id)}
                         aria-label={t("removeProfile", { name: p.name })}
-                        className="-ml-1 p-1 text-muted-foreground hover:text-foreground"
+                        className="p-1.5 pr-2.5 opacity-70 transition-opacity hover:opacity-100"
                       >
                         <svg
                           width="12"
@@ -201,9 +204,9 @@ export default function SettingsSheet({
                 {t("skinTypeHint")}
               </p>
 
-              <div className="flex flex-col items-center gap-4 rounded-2xl bg-card p-4 shadow-md ring-1 ring-foreground/5">
+              <div className="flex flex-col items-center gap-4 rounded-2xl border border-border bg-surface p-5">
                 <div
-                  className="h-14 w-14 rounded-full border border-black/10 shadow-inner transition-colors"
+                  className="h-14 w-14 rounded-full border border-border transition-colors"
                   style={{ backgroundColor: SKIN_TONE_SWATCH[displayedType as SkinType] }}
                   aria-hidden
                 />
@@ -249,13 +252,12 @@ export default function SettingsSheet({
               </p>
             </div>
 
-            <Button
-              variant="link"
-              className="h-auto justify-start p-0 text-brand-ink"
+            <button
               onClick={() => setShowDataSources(true)}
+              className="text-left text-sm text-brand-ink underline-offset-4 hover:underline"
             >
               {t("dataSourcesLink")}
-            </Button>
+            </button>
           </div>
         </SheetContent>
       </Sheet>
