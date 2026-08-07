@@ -15,6 +15,7 @@ import {
   getHighUvNotifPref,
   showNotification,
 } from "@/lib/notifications";
+import { getCachedUv, setCachedUv } from "@/lib/uvCache";
 import InstallPrompt from "./InstallPrompt";
 import LocationSheet, { type Place } from "./LocationSheet";
 import ReapplyTimer from "./ReapplyTimer";
@@ -36,6 +37,7 @@ export default function HomeClient() {
   const [updatedAt, setUpdatedAt] = useState<string | null>(null);
   const [safeAfter, setSafeAfter] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [stale, setStale] = useState(false);
   const [showLocation, setShowLocation] = useState(false);
   const [showScience, setShowScience] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
@@ -47,6 +49,11 @@ export default function HomeClient() {
   // notification fires on the rise past the threshold, not on every poll
   // while it stays high.
   const lastNotifiedUvRef = useRef<number | null>(null);
+  // Guards against out-of-order responses: coordinate changes, the
+  // visibility/focus refresh, and the periodic poll can all have requests
+  // in flight at once, and a slow older one resolving after a newer one
+  // must not clobber it with stale data.
+  const fetchSeqRef = useRef(0);
 
   // Restore last-used place, or fall back to GPS prompt.
   useEffect(() => {
@@ -93,31 +100,65 @@ export default function HomeClient() {
     }
   }
 
+  // Falls back to the last cached reading for this place (if any) instead
+  // of a blank error — a stale-but-real number beats nothing when offline
+  // or the upstream source is down.
+  function useCacheOrError(lat: number, lon: number, opts?: { silent?: boolean }) {
+    const cached = getCachedUv(lat, lon);
+    if (cached) {
+      setUv(cached.uv);
+      setUpdatedAt(cached.updatedAt);
+      setSafeAfter(cached.safeAfter);
+      setError(null);
+      setStale(true);
+      if (opts?.silent) setRevealed(true);
+      else requestAnimationFrame(() => setRevealed(true));
+    } else if (!opts?.silent) {
+      setError("fetch-failed");
+    }
+    // A silent refresh with nothing cached leaves whatever's already on
+    // screen alone rather than clearing a working reading over one failed
+    // background refresh.
+  }
+
   // `silent` skips the loading/reveal reset — used for background refreshes
   // so an already-visible number doesn't flash away while the new one loads.
   function fetchUv(lat: number, lon: number, opts?: { silent?: boolean }) {
+    const seq = ++fetchSeqRef.current;
     if (!opts?.silent) {
       setUv(null);
       setError(null);
+      setStale(false);
       setRevealed(false);
     }
     fetch(`/api/uv?lat=${lat}&lon=${lon}`, { cache: "no-store" })
       .then((r) => r.json())
       .then((d) => {
+        if (seq !== fetchSeqRef.current) return; // a newer request has since started
         if (typeof d.uv === "number") {
           setUv(d.uv);
           setUpdatedAt(d.updatedAt ?? null);
           setSafeAfter(d.safeAfter ?? null);
           setError(null);
+          setStale(false);
+          setCachedUv({
+            lat,
+            lon,
+            uv: d.uv,
+            updatedAt: d.updatedAt ?? null,
+            safeAfter: d.safeAfter ?? null,
+            fetchedAt: Date.now(),
+          });
           maybeNotifyHighUv(d.uv);
           if (opts?.silent) setRevealed(true);
           else requestAnimationFrame(() => setRevealed(true));
-        } else if (!opts?.silent) {
-          setError("no-data");
+        } else {
+          useCacheOrError(lat, lon, opts);
         }
       })
       .catch(() => {
-        if (!opts?.silent) setError("fetch-failed");
+        if (seq !== fetchSeqRef.current) return;
+        useCacheOrError(lat, lon, opts);
       });
   }
 
@@ -336,6 +377,14 @@ export default function HomeClient() {
               )}
 
               <div className="flex items-center gap-3 text-xs text-white/55">
+                {stale && (
+                  <>
+                    <span className="font-medium text-white/70">
+                      {t("offlineNotice")}
+                    </span>
+                    <span aria-hidden>·</span>
+                  </>
+                )}
                 {updatedAt && (
                   <span>
                     {t("updated", {

@@ -26,6 +26,7 @@
     "learnMore": "Warum?",
     "scaleLabel": "Heutige UV-Skala",
     "updated": "Aktualisiert um {time}",
+    "offlineNotice": "Offline — letzter bekannter Wert",
     "safeAfter": "Niedriges Risiko ab {time}",
     "settingsLabel": "Einstellungen"
   },
