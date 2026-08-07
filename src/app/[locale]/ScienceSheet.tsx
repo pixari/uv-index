@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
@@ -78,12 +79,14 @@ export default function ScienceSheet({
             </ul>
           </div>
 
-          <Link
-            href="/learn"
-            className="text-sm text-brand-ink underline-offset-4 hover:underline"
+          <Button
+            render={<Link href="/learn" />}
+            nativeButton={false}
+            className="w-full"
+            size="lg"
           >
             {t("learnMoreLink")}
-          </Link>
+          </Button>
         </div>
       </SheetContent>
     </Sheet>

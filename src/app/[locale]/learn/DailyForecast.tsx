@@ -24,7 +24,7 @@ export default function DailyForecast({
         return (
           <div
             key={d.date}
-            className="flex flex-1 flex-col items-center gap-1.5 rounded-xl bg-surface px-2 py-3"
+            className="flex flex-1 flex-col items-center gap-1.5 rounded-xl border border-border bg-surface px-2 py-3"
           >
             <span className="text-xs font-medium text-muted-foreground">
               {label}

@@ -22,6 +22,7 @@ import {
   setActiveProfileId,
   type Profile,
 } from "@/lib/profiles";
+import { markSettingsForReopen } from "@/lib/pendingSettingsReopen";
 import DataSourcesSheet from "./DataSourcesSheet";
 
 const LOCALE_LABEL: Record<string, string> = {
@@ -29,6 +30,27 @@ const LOCALE_LABEL: Record<string, string> = {
   en: "English",
   de: "Deutsch",
 };
+
+function ProfileAvatar({ profile }: { profile: Profile }) {
+  const tone = profile.skinType ? SKIN_TONE_SWATCH[profile.skinType] : undefined;
+  const initial = profile.name.trim().charAt(0).toUpperCase() || "?";
+  return (
+    <span
+      aria-hidden
+      className={
+        "flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold " +
+        (tone
+          ? profile.skinType! >= 4
+            ? "text-white"
+            : "text-ink"
+          : "bg-border text-muted-foreground")
+      }
+      style={tone ? { backgroundColor: tone } : undefined}
+    >
+      {initial}
+    </span>
+  );
+}
 
 export default function SettingsSheet({
   open,
@@ -38,6 +60,10 @@ export default function SettingsSheet({
   onOpenChange: (open: boolean) => void;
 }) {
   const t = useTranslations("settings");
+  // "defaultProfileName" lives under "home" (HomeClient creates the same
+  // default profile the first time the app ever runs, before Settings has
+  // been opened) — look it up from there so both call sites agree.
+  const tHome = useTranslations("home");
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
@@ -49,13 +75,16 @@ export default function SettingsSheet({
 
   useEffect(() => {
     if (!open) return;
-    const list = getProfiles(t("defaultProfileName"));
+    const list = getProfiles(tHome("defaultProfileName"));
     setProfiles(list);
-    setSelectedProfileId(resolveActiveProfileId(t("defaultProfileName")));
+    setSelectedProfileId(resolveActiveProfileId(tHome("defaultProfileName")));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   function changeLocale(next: string) {
+    // Switching language navigates to a different /[locale]/ URL, which
+    // remounts the page and would otherwise close this sheet.
+    markSettingsForReopen();
     router.replace(pathname, { locale: next });
   }
 
@@ -81,6 +110,11 @@ export default function SettingsSheet({
     selectProfile(created.id);
     setNewProfileName("");
     setAddingProfile(false);
+  }
+
+  function cancelAddProfile() {
+    setAddingProfile(false);
+    setNewProfileName("");
   }
 
   function handleRemoveProfile(id: string) {
@@ -128,7 +162,7 @@ export default function SettingsSheet({
               <h3 className="mb-2 text-sm font-medium text-muted-foreground">
                 {t("profiles")}
               </h3>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 {profiles.map((p) => (
                   <div
                     key={p.id}
@@ -141,8 +175,9 @@ export default function SettingsSheet({
                   >
                     <button
                       onClick={() => selectProfile(p.id)}
-                      className="py-1.5 pl-3 pr-1.5"
+                      className="flex items-center gap-1.5 py-1 pl-1 pr-1.5"
                     >
+                      <ProfileAvatar profile={p} />
                       {p.name}
                     </button>
                     {profiles.length > 1 && (
@@ -168,32 +203,59 @@ export default function SettingsSheet({
                   </div>
                 ))}
 
-                {!addingProfile && (
+                {addingProfile ? (
+                  <div className="flex items-center gap-1 rounded-full border border-brand bg-surface py-1 pr-1 pl-3">
+                    <input
+                      autoFocus
+                      type="text"
+                      value={newProfileName}
+                      onChange={(e) => setNewProfileName(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") confirmAddProfile();
+                        if (e.key === "Escape") {
+                          // Cancel just this composer — without stopping
+                          // propagation, Escape also bubbles to the sheet's
+                          // own dismiss handler and closes the whole panel.
+                          e.stopPropagation();
+                          cancelAddProfile();
+                        }
+                      }}
+                      placeholder={t("newProfileNamePlaceholder")}
+                      className="w-24 bg-transparent text-sm text-foreground placeholder:text-muted-foreground outline-none"
+                    />
+                    <button
+                      onClick={confirmAddProfile}
+                      aria-label={t("addProfileConfirm")}
+                      className="flex h-6 w-6 items-center justify-center rounded-full text-brand-ink transition-colors hover:bg-brand/10"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                    </button>
+                    <button
+                      onClick={cancelAddProfile}
+                      aria-label={t("cancelAddProfile")}
+                      className="flex h-6 w-6 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                      </svg>
+                    </button>
+                  </div>
+                ) : (
                   <button
                     onClick={() => setAddingProfile(true)}
-                    className="rounded-full border border-dashed border-border px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-colors"
+                    aria-label={t("addProfile")}
+                    className="flex h-8 w-8 items-center justify-center rounded-full border border-dashed border-border text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground"
                   >
-                    + {t("addProfile")}
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                      <line x1="12" y1="5" x2="12" y2="19" />
+                      <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
                   </button>
                 )}
               </div>
-
-              {addingProfile && (
-                <div className="mt-2 flex gap-2">
-                  <input
-                    autoFocus
-                    type="text"
-                    value={newProfileName}
-                    onChange={(e) => setNewProfileName(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && confirmAddProfile()}
-                    placeholder={t("newProfileNamePlaceholder")}
-                    className="flex-1 rounded-xl border border-border bg-surface px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-brand"
-                  />
-                  <Button size="sm" onClick={confirmAddProfile}>
-                    {t("addProfileConfirm")}
-                  </Button>
-                </div>
-              )}
             </div>
 
             <div>

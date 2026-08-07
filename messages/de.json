@@ -51,6 +51,7 @@
     "addProfile": "Person hinzufügen",
     "newProfileNamePlaceholder": "Name",
     "addProfileConfirm": "Hinzufügen",
+    "cancelAddProfile": "Abbrechen",
     "removeProfile": "{name} entfernen",
     "skinType": "Hauttyp",
     "skinTypeHint": "Wird verwendet, um zu berechnen, wann der Schutz erneuert werden sollte",
