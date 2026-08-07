@@ -505,6 +505,12 @@ export default function SettingsSheet({
               >
                 {t("dataSourcesLink")}
               </button>
+              <Link
+                href="/privacy"
+                className="text-sm text-brand-ink underline-offset-4 hover:underline"
+              >
+                {t("privacyLink")}
+              </Link>
               <a
                 href="https://github.com/pixari/uv-index"
                 target="_blank"

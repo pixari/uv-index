@@ -88,7 +88,8 @@
       "highUvLabel": "Benachrichtigen, wenn der UV-Index über 7 steigt",
       "unsupported": "Benachrichtigungen werden auf diesem Gerät nicht unterstützt",
       "blocked": "Benachrichtigungen sind in deinem Browser für diese Seite blockiert — erlaube sie in den Website-Einstellungen deines Browsers, um dies zu aktivieren."
-    }
+    },
+    "privacyLink": "Datenschutz & Haftungsausschluss"
   },
   "install": {
     "prompt": "App installieren für schnellen Zugriff",
@@ -131,7 +132,8 @@
       "openMeteo": "Stadtsuche bei manueller Standortsuche",
       "bigDataCloud": "Ortsname bei Verwendung des GPS"
     },
-    "analyticsNote": "Wir verwenden Umami, ein cookie-freies Analyse-Tool, das keine personenbezogenen Daten sammelt — nur aggregierte Statistiken zur Nutzung der App."
+    "analyticsNote": "Wir verwenden Umami, ein cookie-freies Analyse-Tool, das keine personenbezogenen Daten sammelt — nur aggregierte Statistiken zur Nutzung der App.",
+    "fullPolicyLink": "Vollständige Datenschutzerklärung & Haftungsausschluss lesen →"
   },
   "learn": {
     "title": "Mehr erfahren",
@@ -242,6 +244,115 @@
       "tagline": "Gemacht, um eine Frage schnell zu beantworten — und die Quellen offenzulegen.",
       "backToTop": "Nach oben",
       "backToHome": "Zurück zur Startseite",
+      "sourceLink": "Quellcode",
+      "privacyLink": "Datenschutz & Haftungsausschluss"
+    }
+  },
+  "privacy": {
+    "title": "Datenschutz & Haftungsausschluss",
+    "metaDescription": "Was die Zahlen von UV Index bedeuten — und was nicht — und was genau mit deinen Daten passiert, wenn du die App nutzt.",
+    "eyebrow": "Rechtliches",
+    "back": "← Zurück zur Startseite",
+    "intro": "Kurz gesagt: keine Konten, keine Daten zum Verkauf, und fast alles über dich bleibt auf deinem eigenen Gerät. Hier ist das vollständige Bild — was die Hinweise dieser App bedeuten und was nicht, und was genau mit deinen Daten passiert.",
+    "lastUpdated": "Zuletzt aktualisiert: 7. August 2026",
+    "toc": {
+      "title": "Auf dieser Seite",
+      "disclaimer": "Haftungsausschluss",
+      "controller": "Wer dahintersteckt",
+      "dataWeCollect": "Was wir erheben",
+      "thirdParties": "Wer eine Anfrage sonst noch sieht",
+      "cookiesStorage": "Cookies & lokaler Speicher",
+      "yourRights": "Deine Rechte",
+      "contact": "Kontakt"
+    },
+    "disclaimer": {
+      "title": "Haftungsausschluss",
+      "notMedicalAdvice": {
+        "title": "Kein medizinischer Rat",
+        "body": "UV Index gibt allgemeine Hinweise zum Sonnenschutz auf Bevölkerungsebene, basierend auf Quellen der öffentlichen Gesundheit (WHO, American Academy of Dermatology) und auf Vorhersagedaten. Das ist kein medizinischer Rat und ersetzt keinen Arzt oder Dermatologen. Schätzungen zur Zeit bis zum Sonnenbrand, Erinnerungen zum Nachcremen und Hinweise zum Hauttyp sind Näherungswerte aus veröffentlichter dermatologischer Forschung, keine persönliche Risikoeinschätzung. Wer eine Hautkrebs-Vorgeschichte hat, fotosensibilisierende Medikamente nimmt oder eine Hauterkrankung hat, sollte sich an den Rat der behandelnden Ärztin oder des behandelnden Arztes halten, nicht an den der App."
+      },
+      "dataAccuracy": {
+        "title": "Datengenauigkeit",
+        "body": "Der angezeigte UV-Index ist eine Vorhersage aus dem öffentlichen Wettermodell von MET Norway, keine direkte Sensormessung an deinem genauen Standort. Wie jede Vorhersage kann sie falsch liegen — die Bewölkung ändert sich oft schneller, als Modelle aktualisiert werden, und lokale Bedingungen (Dunst, Höhenlage, reflektierende Oberflächen in der Nähe) werden nicht immer erfasst. Verstehe sie als starken Anhaltspunkt, nicht als Garantie, und vertraue deinem eigenen Urteil — oder einer offiziellen lokalen Warnung —, wenn die Bedingungen anders wirken als in der App gezeigt."
+      },
+      "noLiability": {
+        "title": "Keine Haftung",
+        "body": "Dies ist ein unabhängiges Open-Source-Projekt, bereitgestellt wie besehen und ohne jegliche Gewährleistung. Im gesetzlich zulässigen Höchstmaß haftet der Autor nicht für Sonnenbrand, sonstige Schäden oder Folgen, die aus dem Vertrauen auf die bereitgestellten Informationen entstehen. Verlasse dich im Freien auf dein eigenes Urteilsvermögen."
+      }
+    },
+    "controller": {
+      "title": "Wer dahintersteckt",
+      "body": "UV Index ist ein unabhängiges Projekt, entwickelt und betrieben von Raffaele Pizzari — kein Unternehmen, kein Datenhändler, keine Dritten beteiligt außer der Handvoll unten aufgeführter Dienste, von denen jeder genau eine Aufgabe erfüllt. Für alles rund um Datenschutz — Fragen, Anfragen oder einfach etwas, das komisch wirkt — schreib an:"
+    },
+    "dataWeCollect": {
+      "title": "Was wir erheben, und warum",
+      "intro": "Das ist das eigentlich DSGVO-relevante Detail: welche Daten wohin fließen, auf welcher Rechtsgrundlage und wie lange.",
+      "location": {
+        "title": "Standort (GPS oder gesuchter Ort)",
+        "body": "Wenn du den Standortzugriff erlaubst oder einen Ort suchst, werden deine Koordinaten an unseren Server gesendet — nur so lange, wie nötig, um bei MET Norway (und bei der Suche bei Open-Meteo oder BigDataCloud) einen UV-Wert abzufragen — und dann verworfen. Wir schreiben sie in keine Datenbank und verknüpfen sie mit keiner Identität. Gespeichert wird nur auf deinem eigenen Gerät, damit die App deinen letzten Messwert zeigen kann, falls du sie offline erneut öffnest.",
+        "legalBasis": "Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO — erforderlich, um genau das zu tun, worum du gebeten hast.",
+        "retention": "Speicherdauer: keine — sie existieren nur für die Dauer der Anfrage."
+      },
+      "ip": {
+        "title": "IP-Adresse",
+        "body": "Unsere API-Routen halten deine IP-Adresse kurz im Speicher, um Anfragen zu begrenzen, damit die kostenlosen Kontingente der zugrunde liegenden Wetter-APIs nicht von einer einzelnen Besucherin oder einem einzelnen Besucher aufgebraucht werden. Sie existiert nur im Arbeitsspeicher des Servers, in einem Zähler, der alle paar Minuten zurückgesetzt wird, und wird nie auf Festplatte oder in eine Datenbank geschrieben.",
+        "legalBasis": "Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO — berechtigtes Interesse, den Dienst verfügbar und innerhalb der Nutzungsgrenzen seiner Anbieter zu halten.",
+        "retention": "Speicherdauer: einige Minuten, danach automatisch verworfen."
+      },
+      "profile": {
+        "title": "Profilangaben, die du einträgst (Name, Hauttyp, Baby-Option)",
+        "body": "Werden vollständig im lokalen Speicher deines Browsers abgelegt. Sie verlassen dein Gerät nie — es gibt dafür keine serverseitige Datenbank, wir könnten sie also selbst dann nicht einsehen, exportieren oder bei einem Datenleck verlieren, wenn wir wollten. Löschen der Browserdaten entfernt sie endgültig.",
+        "legalBasis": "Rechtsgrundlage: nicht anwendbar — wir verarbeiten diese Daten überhaupt nicht."
+      },
+      "analytics": {
+        "title": "Anonyme Nutzungsstatistiken",
+        "body": "Wir nutzen Umami, ein selbst gehostetes, cookie-freies Analyse-Tool, um aggregierte Zahlen zu sehen — wie viele Menschen die App nutzen, welche Seiten gelesen werden. Umami setzt keine Cookies und keine dauerhaften Kennungen und speichert weder deine IP-Adresse noch sonst etwas, das dich individuell identifiziert; eine eventuelle Statistik auf Länderebene wird aus der IP im laufenden Betrieb berechnet, die Adresse selbst wird verworfen.",
+        "legalBasis": "Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO — berechtigtes Interesse an einfachen, nicht identifizierenden Nutzungsstatistiken, mit einem Tool, das gerade deshalb gewählt wurde, weil es niemanden nachverfolgen muss.",
+        "retention": "Speicherdauer: nur aggregierte Zählwerte, solange sie nützlich sind; nichts darin identifiziert dich."
+      }
+    },
+    "thirdParties": {
+      "title": "Wer eine Anfrage sonst noch sieht",
+      "intro": "Um dir einen UV-Wert zu liefern, werden deine Koordinaten an genau den der folgenden Dienste weitergeleitet, der für diese Aufgabe zuständig ist — sonst an niemanden.",
+      "met": "MET Norway — die eigentliche UV-Vorhersage.",
+      "openMeteo": "Open-Meteo — wandelt einen eingegebenen Ortsnamen in Koordinaten um.",
+      "bigDataCloud": "BigDataCloud — wandelt GPS-Koordinaten in einen Ortsnamen um.",
+      "umami": "Umami, selbst gehostet auf unserer eigenen Infrastruktur — anonyme Nutzungszahlen.",
+      "note": "Keiner von ihnen erhält Informationen, die dich persönlich identifizieren, und wir teilen keine Daten mit Werbetreibenden, Datenhändlern oder sonst jemandem. Manche verarbeiten Anfragen eventuell auf Infrastruktur außerhalb der EU/des EWR; in diesem Fall liegt es an ihnen, dies im Rahmen ihrer eigenen Compliance-Pflichten abzusichern (z. B. Standardvertragsklauseln)."
+    },
+    "cookiesStorage": {
+      "title": "Cookies und lokaler Speicher",
+      "body": "Diese App setzt keine Cookies. Alles, woran sie sich über dich erinnert — Profile, Hauttyp, Benachrichtigungseinstellungen, gespeicherte Orte, letzter bekannter Messwert — liegt im lokalen Speicher deines Browsers, nur auf deinem Gerät, und wird nie an unsere Server übertragen. Du kannst ihn jederzeit über die Website-Einstellungen deines Browsers löschen; die App startet dann einfach wieder von vorn."
+    },
+    "yourRights": {
+      "title": "Deine Rechte",
+      "intro": "Da serverseitig kaum personenbezogene Daten verarbeitet werden, sind die meisten dieser Rechte schon durch die Bauweise der App erfüllt — formal hast du nach der DSGVO aber das Recht auf:",
+      "access": "Auskunft — zu erfahren, welche dich betreffenden Daten wir verarbeiten (wie oben, das ist minimal und meist gar nichts).",
+      "rectification": "Berichtigung — Unrichtiges zu korrigieren. Für dein lokal gespeichertes Profil ist das nur einen Klick in den Einstellungen entfernt.",
+      "erasure": "Löschung — uns zu bitten, gespeicherte Daten zu löschen. Serverseitig gibt es praktisch nichts zu löschen; für lokale Daten reicht das Löschen des Browserspeichers, sofort erledigt.",
+      "restriction": "Einschränkung & Widerspruch — der Verarbeitung auf Basis berechtigten Interesses zu widersprechen oder sie einzuschränken (die IP-Ratenbegrenzung und die Statistiken oben).",
+      "portability": "Datenübertragbarkeit — von dir bereitgestellte Daten in einem übertragbaren Format zu erhalten, soweit anwendbar.",
+      "complaint": "Beschwerde — bei deiner zuständigen Aufsichtsbehörde; in Italien ist das der Garante per la protezione dei dati personali (garanteprivacy.it).",
+      "outro": "Um eines dieser Rechte auszuüben, schreib an:"
+    },
+    "children": {
+      "title": "Kinder",
+      "body": "Die \"Baby\"-Option der App dient nur dazu, ihre Sonnenschutz-Hinweise umzuschalten — AAP/AAD-Empfehlungen zufolge sollten Babys unter 6 Monaten direkte Sonne ganz meiden, statt sich auf ein geschätztes Zeitfenster bis zum Sonnenbrand zu verlassen. Das ist kein Feature zur Datenerhebung und wird, wie der Rest der Profildaten, nur auf dem Gerät gespeichert. Wir erheben wissentlich keine personenbezogenen Daten von Kindern über das hinaus, was ohnehin lokal auf jedem Gerät verarbeitet wird."
+    },
+    "changes": {
+      "title": "Änderungen an dieser Seite",
+      "body": "Ändert sich, was diese App erhebt oder wie sie genutzt wird, ändert sich diese Seite entsprechend — oben datiert, ohne stille Umschreibungen der Historie, da der Quellcode öffentlich einsehbar ist."
+    },
+    "contact": {
+      "title": "Kontakt",
+      "body": "Fragen, Anfragen oder einfach etwas, das nicht stimmt — schreib an:",
+      "githubAlt": "oder eröffne ein Issue auf GitHub."
+    },
+    "footer": {
+      "tagline": "Gemacht, um eine Frage schnell zu beantworten — und die Quellen offenzulegen.",
+      "backToTop": "Nach oben",
+      "backToHome": "Zurück zur Startseite",
+      "learnLink": "Die Wissenschaft dahinter",
       "sourceLink": "Quellcode"
     }
   }

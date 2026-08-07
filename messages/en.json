@@ -88,7 +88,8 @@
       "highUvLabel": "Alert me when UV goes above 7",
       "unsupported": "Notifications aren't supported on this device",
       "blocked": "Notifications are blocked in your browser for this site — allow them in your browser's site settings to turn this on."
-    }
+    },
+    "privacyLink": "Privacy & disclaimer"
   },
   "install": {
     "prompt": "Install the app for quick access",
@@ -131,7 +132,8 @@
       "openMeteo": "City search when you manually look up a place",
       "bigDataCloud": "Place name when you use GPS"
     },
-    "analyticsNote": "We use Umami, a cookie-free analytics tool that doesn't collect personal data — just aggregate stats on how many people use the app."
+    "analyticsNote": "We use Umami, a cookie-free analytics tool that doesn't collect personal data — just aggregate stats on how many people use the app.",
+    "fullPolicyLink": "Read the full privacy policy & disclaimer →"
   },
   "learn": {
     "title": "Learn more",
@@ -242,6 +244,115 @@
       "tagline": "Built to answer one question quickly — and to show its work.",
       "backToTop": "Back to top",
       "backToHome": "Back to home",
+      "sourceLink": "View source",
+      "privacyLink": "Privacy & disclaimer"
+    }
+  },
+  "privacy": {
+    "title": "Privacy & disclaimer",
+    "metaDescription": "What UV Index's numbers do and don't mean, and exactly what happens to your data when you use the app.",
+    "eyebrow": "Legal",
+    "back": "← Back to home",
+    "intro": "The short version: no accounts, no data for sale, and almost everything about you stays on your own device. Here's the full picture — what this app's guidance does and doesn't mean, and exactly what happens to your data.",
+    "lastUpdated": "Last updated 7 August 2026",
+    "toc": {
+      "title": "In this page",
+      "disclaimer": "Disclaimer",
+      "controller": "Who's behind this",
+      "dataWeCollect": "What we collect",
+      "thirdParties": "Who else sees a request",
+      "cookiesStorage": "Cookies & local storage",
+      "yourRights": "Your rights",
+      "contact": "Contact"
+    },
+    "disclaimer": {
+      "title": "Disclaimer",
+      "notMedicalAdvice": {
+        "title": "Not medical advice",
+        "body": "UV Index gives general, population-level sun-safety guidance drawn from public health sources (WHO, the American Academy of Dermatology) and forecast data. It is not medical advice and isn't a substitute for a doctor or dermatologist. Burn-time estimates, reapplication timers, and skin-type guidance are approximations built from published dermatological research, not a personalized risk assessment. If you have a history of skin cancer, take photosensitizing medication, or have a skin condition, follow your clinician's guidance over this app's."
+      },
+      "dataAccuracy": {
+        "title": "Data accuracy",
+        "body": "The UV index shown is a forecast from MET Norway's public weather model, not a direct sensor reading at your exact location. Like any forecast, it can be wrong — cloud cover shifts faster than models update, and local conditions (haze, altitude, nearby reflective surfaces) aren't always captured. Treat it as a strong guide, not a guarantee, and trust your own judgement — or an official local warning — over the app if conditions look different."
+      },
+      "noLiability": {
+        "title": "No liability",
+        "body": "This is an independent, open-source project, provided as-is and without warranty of any kind. To the fullest extent permitted by law, its author is not liable for sunburn, other harm, or any damages arising from reliance on the information it provides. Use your own judgement outdoors."
+      }
+    },
+    "controller": {
+      "title": "Who's behind this",
+      "body": "UV Index is an independent project built and run by Raffaele Pizzari — no company, no data broker, no third party involved beyond the handful of services listed below, each doing exactly one job. For anything privacy-related — questions, requests, or just something that looks off — email:"
+    },
+    "dataWeCollect": {
+      "title": "What we collect, and why",
+      "intro": "This is the actual GDPR detail: what data moves, where, on what legal basis, and for how long.",
+      "location": {
+        "title": "Location (GPS or a searched place)",
+        "body": "When you allow location access or search for a place, your coordinates are sent to our server just long enough to ask MET Norway (and, for search, Open-Meteo or BigDataCloud) for a UV reading — then discarded. We don't write it to a database or attach it to any identity. It's kept only on your own device, so the app can show your last reading if you reopen it offline.",
+        "legalBasis": "Legal basis: Art. 6(1)(b) GDPR — necessary to do the specific thing you asked for.",
+        "retention": "Retention: none — it exists only for the duration of the request."
+      },
+      "ip": {
+        "title": "IP address",
+        "body": "Our API routes briefly hold your IP address in memory to rate-limit requests, so the free tiers of the upstream weather APIs can't be exhausted by one visitor. It lives in server memory only, in a counter that resets every few minutes, and is never written to disk or a database.",
+        "legalBasis": "Legal basis: Art. 6(1)(f) — legitimate interest in keeping the service available and within its providers' usage limits.",
+        "retention": "Retention: minutes, then automatically discarded."
+      },
+      "profile": {
+        "title": "Profile info you enter (name, skin type, infant toggle)",
+        "body": "Stored entirely in your browser's local storage. It never leaves your device — there's no server-side database for it, so we couldn't see it, export it, or lose it in a breach even if we wanted to. Clearing your browser data deletes it for good.",
+        "legalBasis": "Legal basis: not applicable — we don't process this data at all."
+      },
+      "analytics": {
+        "title": "Anonymous usage analytics",
+        "body": "We use Umami, a self-hosted, cookie-free analytics tool, to see aggregate numbers — how many people use the app, which pages get read. Umami sets no cookies and no persistent identifiers, and doesn't store your IP address or anything else that identifies you individually; any country-level stat it derives from IP is computed on the fly, and the address itself is discarded.",
+        "legalBasis": "Legal basis: Art. 6(1)(f) — legitimate interest in basic, non-identifying usage statistics, using a tool chosen specifically because it doesn't need to track anyone.",
+        "retention": "Retention: aggregate counts only, kept for as long as they're useful; nothing in them identifies you."
+      }
+    },
+    "thirdParties": {
+      "title": "Who else sees a request",
+      "intro": "Getting you a UV reading means forwarding your coordinates to whichever of these does that specific job — nobody else.",
+      "met": "MET Norway — the UV forecast itself.",
+      "openMeteo": "Open-Meteo — turning a typed place name into coordinates.",
+      "bigDataCloud": "BigDataCloud — turning GPS coordinates into a place name.",
+      "umami": "Umami, self-hosted on our own infrastructure — anonymous usage counts.",
+      "note": "None of these receive anything that identifies you personally, and we don't share data with advertisers, data brokers, or anyone else. Some may process requests on infrastructure outside the EU/EEA; where that's the case, it's on them to secure it under their own compliance obligations (e.g. standard contractual clauses)."
+    },
+    "cookiesStorage": {
+      "title": "Cookies and local storage",
+      "body": "This app sets no cookies. Everything it remembers about you — profiles, skin type, notification preferences, saved places, your last known reading — lives in your browser's local storage, on your device only, and is never transmitted to our servers. Clear it any time from your browser's site settings; the app just starts fresh next time."
+    },
+    "yourRights": {
+      "title": "Your rights",
+      "intro": "Because so little personal data is processed server-side, most of these are already satisfied by design — but formally, under the GDPR, you have the right to:",
+      "access": "Access — know what data concerning you we process (as above, that's minimal and mostly nothing).",
+      "rectification": "Rectification — correct anything inaccurate. For your locally-stored profile, that's a Settings screen away.",
+      "erasure": "Erasure — ask us to delete data we hold. There's essentially nothing server-side to delete; for local data, clearing your browser storage does it instantly.",
+      "restriction": "Restriction & objection — object to or restrict processing based on legitimate interest (the IP rate-limiting and analytics above).",
+      "portability": "Portability — receive data you provided in a portable format, where applicable.",
+      "complaint": "Complaint — lodge one with your local data protection authority; in Italy, that's the Garante per la protezione dei dati personali (garanteprivacy.it).",
+      "outro": "To exercise any of these, email:"
+    },
+    "children": {
+      "title": "Children",
+      "body": "The app's \"infant\" toggle exists purely to switch its sun-safety guidance — AAP/AAD recommendations are that infants under 6 months avoid direct sun entirely rather than rely on a burn-time budget. It isn't a data-collection feature, and like the rest of profile data, it's stored on-device only. We don't knowingly collect personal data from children beyond what any visitor's device already handles locally."
+    },
+    "changes": {
+      "title": "Changes to this page",
+      "body": "If what this app collects or how it's used changes, this page changes with it — dated at the top, no silent rewrites of history since the source is public."
+    },
+    "contact": {
+      "title": "Contact",
+      "body": "Questions, requests, or just something that looks wrong — email:",
+      "githubAlt": "or open an issue on GitHub."
+    },
+    "footer": {
+      "tagline": "Built to answer one question quickly — and to show its work.",
+      "backToTop": "Back to top",
+      "backToHome": "Back to home",
+      "learnLink": "Read the science",
       "sourceLink": "View source"
     }
   }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import {
   Sheet,
   SheetContent,
@@ -77,6 +78,14 @@ export default function DataSourcesSheet({
           <p className="text-sm text-muted-foreground leading-relaxed">
             {t("analyticsNote")}
           </p>
+
+          <Link
+            href="/privacy"
+            onClick={() => onOpenChange(false)}
+            className="text-sm text-brand-ink underline-offset-4 hover:underline"
+          >
+            {t("fullPolicyLink")}
+          </Link>
         </div>
       </SheetContent>
     </Sheet>
