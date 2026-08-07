@@ -81,6 +81,7 @@
     "learnMoreLink": "Mehr über UV und Sonnenschutz erfahren →",
     "scienceLink": "Warum das wichtig ist",
     "dataSourcesLink": "Wie wir deine Daten verwenden",
+    "sourceLink": "Quellcode auf GitHub ansehen",
     "notifications": {
       "title": "Benachrichtigungen",
       "reapplyLabel": "An das Erneuern des Sonnenschutzes erinnern",
@@ -240,7 +241,8 @@
     "footer": {
       "tagline": "Gemacht, um eine Frage schnell zu beantworten — und die Quellen offenzulegen.",
       "backToTop": "Nach oben",
-      "backToHome": "Zurück zur Startseite"
+      "backToHome": "Zurück zur Startseite",
+      "sourceLink": "Quellcode"
     }
   }
 }
