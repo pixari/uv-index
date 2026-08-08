@@ -70,7 +70,13 @@ export async function generateMetadata({
       type: "website",
     },
     twitter: {
-      card: "summary",
+      // "summary_large_image" is what actually gets X/Twitter to show the
+      // full 1200×630 image instead of a small square thumbnail — every
+      // page below sets this explicitly too rather than relying on
+      // inheriting it, since a child page that defines its own `twitter`
+      // object (for its own title/description) would otherwise need to
+      // remember to repeat this on every route.
+      card: "summary_large_image",
       title: t("title"),
       description: t("description"),
     },

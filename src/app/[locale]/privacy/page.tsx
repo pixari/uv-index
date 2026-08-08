@@ -26,6 +26,24 @@ export async function generateMetadata({
       canonical: `${SITE_URL}/${locale}/privacy`,
       languages,
     },
+    // Previously absent here — without its own openGraph/twitter, this
+    // page silently inherited Home's title, description, URL, *and*
+    // image (the opengraph-image file convention falls back up the route
+    // tree too), so sharing the privacy policy looked exactly like
+    // sharing the homepage. It now has its own of all four.
+    openGraph: {
+      title: t("title"),
+      description: t("metaDescription"),
+      url: `${SITE_URL}/${locale}/privacy`,
+      siteName: "UV Index",
+      locale,
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t("title"),
+      description: t("metaDescription"),
+    },
     robots: {
       // Legal boilerplate isn't worth ranking for and would just dilute
       // the site's actual content in search results.

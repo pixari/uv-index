@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
+import { BRAND_MARK_GRADIENT } from "@/lib/brandGradient";
 
 export const dynamic = "force-static";
 
@@ -36,8 +37,7 @@ export async function GET(
             width: px * markScale,
             height: px * markScale,
             borderRadius: "50%",
-            background:
-              "linear-gradient(135deg, #3EA72D 0%, #FFF300 35%, #F18B00 65%, #E53210 100%)",
+            background: BRAND_MARK_GRADIENT,
           }}
         />
       </div>

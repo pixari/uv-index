@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { BRAND_MARK_GRADIENT } from "@/lib/brandGradient";
 import WhoGradientBar from "../learn/WhoGradientBar";
 
 const CONTACT_EMAIL = "raffaele.pizzari@gmail.com";
@@ -270,10 +271,7 @@ export default function PrivacyClient() {
           <div
             aria-hidden
             className="h-6 w-6 shrink-0 rounded-full"
-            style={{
-              background:
-                "linear-gradient(135deg, #3EA72D 0%, #FFF300 35%, #F18B00 65%, #E53210 100%)",
-            }}
+            style={{ background: BRAND_MARK_GRADIENT }}
           />
           <span className="font-display text-base text-foreground">UV Index</span>
         </div>
