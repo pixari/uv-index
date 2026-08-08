@@ -25,6 +25,11 @@ const SOURCES = [
     url: "https://www.bigdatacloud.com/geocoding-apis/free-reverse-geocode-to-city-api",
     key: "bigDataCloud",
   },
+  {
+    name: "Open-Meteo Air Quality",
+    url: "https://open-meteo.com/en/docs/air-quality-api",
+    key: "openMeteoAir",
+  },
 ];
 
 export default function DataSourcesSheet({

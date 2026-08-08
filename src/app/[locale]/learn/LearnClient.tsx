@@ -221,7 +221,7 @@ export default function LearnClient() {
           <p className="mb-4 text-sm text-muted-foreground">
             {t("forecast.subtitle")}
           </p>
-          <DailyForecast days={dailyPeaks} locale={locale} />
+          <DailyForecast days={dailyPeaks} locale={locale} todayLabel={t("forecast.today")} />
         </section>
       )}
 

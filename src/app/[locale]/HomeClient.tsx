@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { uvLevel, skyGradientCss } from "@/lib/uvLevel";
 import { cloudCoverLevel } from "@/lib/cloudCover";
+import { aqiLevel } from "@/lib/airQuality";
 import {
   getProfiles,
   resolveActiveProfileId,
@@ -19,6 +20,7 @@ import { reapplyStatus, type ReapplyStatus } from "@/lib/reapplyTimer";
 import { setAppBadgeCount } from "@/lib/appBadge";
 import { getLastPlace, setLastPlace, type LastPlace } from "@/lib/lastPlace";
 import { Link } from "@/i18n/navigation";
+import ForecastSheet from "./ForecastSheet";
 import InstallPrompt from "./InstallPrompt";
 import LocationSheet, { type Place } from "./LocationSheet";
 import ReapplyTimer from "./ReapplyTimer";
@@ -37,10 +39,12 @@ export default function HomeClient() {
   const [safeAfter, setSafeAfter] = useState<string | null>(null);
   const [temperature, setTemperature] = useState<number | null>(null);
   const [cloudCover, setCloudCover] = useState<number | null>(null);
+  const [aqi, setAqi] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [stale, setStale] = useState(false);
   const [showLocation, setShowLocation] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showForecast, setShowForecast] = useState(false);
   const [revealed, setRevealed] = useState(false);
   const [settingsVersion, setSettingsVersion] = useState(0);
   const [profiles, setProfiles] = useState<Profile[]>([]);
@@ -138,6 +142,7 @@ export default function HomeClient() {
       setSafeAfter(cached.safeAfter);
       setTemperature(cached.temperature ?? null);
       setCloudCover(cached.cloudCover ?? null);
+      setAqi(cached.aqi ?? null);
       setError(null);
       setStale(true);
       if (opts?.silent) setRevealed(true);
@@ -178,6 +183,7 @@ export default function HomeClient() {
           setSafeAfter(d.safeAfter ?? null);
           setTemperature(typeof d.temperature === "number" ? d.temperature : null);
           setCloudCover(typeof d.cloudCover === "number" ? d.cloudCover : null);
+          setAqi(typeof d.aqi === "number" ? d.aqi : null);
           setError(null);
           setStale(false);
           setCachedUv({
@@ -189,6 +195,7 @@ export default function HomeClient() {
             fetchedAt,
             temperature: typeof d.temperature === "number" ? d.temperature : null,
             cloudCover: typeof d.cloudCover === "number" ? d.cloudCover : null,
+            aqi: typeof d.aqi === "number" ? d.aqi : null,
           });
           maybeNotifyHighUv(d.uv);
           if (opts?.silent) setRevealed(true);
@@ -384,7 +391,7 @@ export default function HomeClient() {
                     extra request, just fields the app used to ignore.
                     Quiet/secondary on purpose: DESIGN.md reserves color
                     for the WHO risk signal, this is just context. */}
-                {(temperature !== null || cloudCover !== null) && (
+                {(temperature !== null || cloudCover !== null || aqi !== null) && (
                   <p className="text-sm font-medium text-white/60">
                     {[
                       temperature !== null
@@ -393,6 +400,7 @@ export default function HomeClient() {
                       cloudCover !== null
                         ? t(`weather.cloud.${cloudCoverLevel(cloudCover)}`)
                         : null,
+                      aqi !== null ? t(`weather.aqi.${aqiLevel(aqi)}`) : null,
                     ]
                       .filter(Boolean)
                       .join(" · ")}
@@ -405,11 +413,34 @@ export default function HomeClient() {
               </p>
 
               {/* Secondary: today's forecast — frosted glass, not a white
-                  card; depth comes from blur + translucency here. */}
-              <div className={`flex w-full max-w-xs flex-col gap-3 px-5 py-5 ${GLASS_CARD}`}>
-                <span className="text-xs font-semibold uppercase tracking-wide text-white/60">
-                  {t("scaleLabel")}
-                </span>
+                  card; depth comes from blur + translucency here. Tappable:
+                  opens the richer forecast panel (chart, upcoming days,
+                  vitamin D window) rather than crowding those onto this
+                  single-glance screen. */}
+              <button
+                onClick={() => setShowForecast(true)}
+                aria-label={t("openForecastLabel")}
+                className={`flex w-full max-w-xs flex-col gap-3 px-5 py-5 text-left transition-colors hover:bg-white/16 ${GLASS_CARD}`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold uppercase tracking-wide text-white/60">
+                    {t("scaleLabel")}
+                  </span>
+                  <svg
+                    aria-hidden
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="text-white/50"
+                  >
+                    <path d="m9 18 6-6-6-6" />
+                  </svg>
+                </div>
                 <UvScaleBar uv={uv} />
                 {safeAfter && (
                   <p className="text-center text-xs font-medium text-white/80">
@@ -421,7 +452,7 @@ export default function HomeClient() {
                     })}
                   </p>
                 )}
-              </div>
+              </button>
 
               {profiles.length > 1 && (
                 <div className="flex flex-wrap justify-center gap-1.5">
@@ -550,6 +581,13 @@ export default function HomeClient() {
           setShowSettings(next);
           if (!next) setSettingsVersion((v) => v + 1);
         }}
+      />
+      <ForecastSheet
+        open={showForecast}
+        onOpenChange={setShowForecast}
+        coords={coords}
+        uv={uv}
+        skinType={profiles.find((p) => p.id === activeProfileId)?.skinType ?? null}
       />
       <InstallPrompt />
     </div>

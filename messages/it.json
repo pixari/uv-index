@@ -39,6 +39,33 @@
         "partlyCloudy": "Poco nuvoloso",
         "mostlyCloudy": "Nuvoloso",
         "cloudy": "Molto nuvoloso"
+      },
+      "aqi": {
+        "good": "Aria buona",
+        "fair": "Aria discreta",
+        "moderate": "Aria moderata",
+        "poor": "Aria scarsa",
+        "veryPoor": "Aria molto scarsa",
+        "extremelyPoor": "Aria pessima"
+      }
+    },
+    "openForecastLabel": "Apri le previsioni",
+    "forecastSheet": {
+      "title": "Previsioni",
+      "todayLabel": "Oggi",
+      "chartTitle": "UV di oggi",
+      "daysTitle": "Prossimi giorni",
+      "bestWindow": {
+        "title": "Momento migliore per stare all'aperto",
+        "none": "Nessuna finestra a basso rischio nelle prossime 24 ore — porta comunque la protezione"
+      },
+      "vitaminD": {
+        "title": "Finestra vitamina D",
+        "body": "Con il tuo fototipo, in media bastano circa {minutes} min di sole diretto a mezzogiorno per produrne una quantità utile.",
+        "compare": "Con l'UV di oggi, il rischio scottatura scatta invece dopo circa {burnMinutes} min.",
+        "noSkinType": "Imposta il tuo fototipo nelle impostazioni per vedere una stima personalizzata.",
+        "disclaimer": "Non è un consiglio medico — una stima di popolazione, non personalizzata. Vedi la nota su /privacy.",
+        "sourceLabel": "Fonte"
       }
     }
   },
@@ -141,7 +168,8 @@
     "uses": {
       "met": "Indice UV in tempo reale — gratuito, aggiornato circa ogni ora",
       "openMeteo": "Ricerca città quando cerchi manualmente una località",
-      "bigDataCloud": "Nome del luogo quando usi il GPS"
+      "bigDataCloud": "Nome del luogo quando usi il GPS",
+      "openMeteoAir": "Qualità dell'aria (indice europeo) per la stessa posizione"
     },
     "analyticsNote": "Usiamo Umami, uno strumento di analisi che non usa cookie e non raccoglie dati personali — solo statistiche aggregate su quante persone usano l'app.",
     "fullPolicyLink": "Leggi l'informativa completa su privacy e disclaimer →"
@@ -296,7 +324,7 @@
     "eyebrow": "Legale",
     "back": "← Torna alla home",
     "intro": "In breve: nessun account, nessun dato in vendita, e — a meno che tu non attivi gli avvisi push in background — tutto quello che ti riguarda resta sul tuo dispositivo. Qui trovi il quadro completo — cosa significano e cosa non significano i consigli dell'app, e cosa succede esattamente ai tuoi dati.",
-    "lastUpdated": "Ultimo aggiornamento: 7 agosto 2026",
+    "lastUpdated": "Ultimo aggiornamento: 8 agosto 2026",
     "toc": {
       "title": "In questa pagina",
       "disclaimer": "Disclaimer",
@@ -331,7 +359,7 @@
       "intro": "Questo è il dettaglio rilevante ai fini del GDPR: quali dati si muovono, dove vanno, su quale base giuridica e per quanto tempo.",
       "location": {
         "title": "Posizione (GPS o luogo cercato)",
-        "body": "Quando consenti l'accesso alla posizione o cerchi un luogo, le tue coordinate vengono inviate al nostro server solo per il tempo necessario a interrogare MET Norway (e, per la ricerca, Open-Meteo o BigDataCloud) e ottenere una lettura UV — poi vengono scartate. Non le scriviamo in nessun database né le colleghiamo a un'identità. Restano solo sul tuo dispositivo, così l'app può mostrarti l'ultima lettura se la riapri offline.",
+        "body": "Quando consenti l'accesso alla posizione o cerchi un luogo, le tue coordinate vengono inviate al nostro server solo per il tempo necessario a interrogare MET Norway (per la lettura UV), Open-Meteo Air Quality (per la qualità dell'aria) e, per la ricerca, Open-Meteo o BigDataCloud — poi vengono scartate. Non le scriviamo in nessun database né le colleghiamo a un'identità. Restano solo sul tuo dispositivo, così l'app può mostrarti l'ultima lettura se la riapri offline.",
         "legalBasis": "Base giuridica: art. 6(1)(b) GDPR — necessaria per fare esattamente quello che hai chiesto.",
         "retention": "Conservazione: nessuna — esiste solo per la durata della richiesta."
       },
@@ -367,7 +395,8 @@
       "bigDataCloud": "BigDataCloud — trasforma coordinate GPS in un nome di luogo.",
       "umami": "Umami, self-hosted sulla nostra infrastruttura — conteggi d'uso anonimi.",
       "note": "Nessuno di questi riceve informazioni che ti identifichino personalmente, e non condividiamo dati con inserzionisti, broker di dati o chiunque altro. Alcuni potrebbero elaborare le richieste su infrastrutture fuori dall'UE/SEE; in quel caso, spetta a loro proteggerle secondo i propri obblighi di conformità (ad es. clausole contrattuali standard).",
-      "pushService": "Il servizio push del tuo browser (es. Google per Chrome, Mozilla per Firefox, Apple per Safari) — consegna l'avviso al tuo dispositivo se hai attivato gli avvisi in background. Vede che una notifica è stata inviata, non il suo contenuto: i payload Web Push sono cifrati end-to-end con chiavi generate dal tuo stesso browser."
+      "pushService": "Il servizio push del tuo browser (es. Google per Chrome, Mozilla per Firefox, Apple per Safari) — consegna l'avviso al tuo dispositivo se hai attivato gli avvisi in background. Vede che una notifica è stata inviata, non il suo contenuto: i payload Web Push sono cifrati end-to-end con chiavi generate dal tuo stesso browser.",
+      "openMeteoAir": "Open-Meteo Air Quality — la stessa qualità dell'aria che vedi nell'app, per le tue coordinate."
     },
     "cookiesStorage": {
       "title": "Cookie e archiviazione locale",
