@@ -179,6 +179,20 @@
     "eyebrow": "Die Wissenschaft des Sonnenschutzes",
     "metaDescription": "Wie der UV-Index wirklich funktioniert, die Wissenschaft des Sonnenschutzes und was LSF wirklich bedeutet — mit überprüfbaren Quellen.",
     "back": "← Zurück zur Startseite",
+    "disclaimer": {
+      "linkLabel": "Vollständigen Haftungsausschluss lesen →"
+    },
+    "quickFacts": {
+      "title": "Auf einen Blick",
+      "items": {
+        "cloudUv": "Bewölkter Himmel blockiert die meiste UV-Strahlung nicht — bis zu 80% kommen trotzdem durch.",
+        "spf": "LSF30 blockiert etwa 97% der UVB-Strahlen, LSF50 etwa 98% — ein kleiner Unterschied.",
+        "altitude": "Die UV-Intensität steigt um etwa {percent}% pro 1000 Meter Höhe.",
+        "snow": "Frischer Schnee reflektiert bis zu {percent}% der UV-Strahlung zurück — auch im Schatten.",
+        "ozone": "Das antarktische Ozonloch ist seit den frühen 2000ern von fast 30 auf etwa {area} Millionen km² geschrumpft.",
+        "iarc": "Solare UV-Strahlung ist ein Gruppe-1-Karzinogen der IARC — dieselbe Kategorie wie Tabakrauch."
+      }
+    },
     "openApp": {
       "title": "Dein UV live, in Echtzeit",
       "body": "Stündliches Diagramm, kommende Tage, risikoarmes Zeitfenster und ein persönliches Vitamin-D-Fenster gibt es in der App, nicht hier — tippe auf die Karte „Heutige UV-Skala“ auf dem Hauptbildschirm.",
@@ -280,6 +294,7 @@
       "airQuality": "Luftqualität erklärt",
       "ozone": "Die Ozonschicht erholt sich",
       "iarc": "Warum es ein Gruppe-1-Karzinogen ist",
+      "glossary": "Glossar",
       "sources": "Quellen"
     },
     "burnHeatmap": {
@@ -330,10 +345,51 @@
       },
       "shareText": "Solare UV-Strahlung ist offiziell ein Gruppe-1-Karzinogen — hier ist wann und warum:"
     },
+    "glossary": {
+      "title": "Glossar",
+      "shareText": "Was bedeuten UVA, UVB, LSF und Hauttyp wirklich? Ein kurzes Glossar:",
+      "intro": "Fachbegriffe dieser Seite, kurz erklärt.",
+      "terms": {
+        "uvIndex": {
+          "term": "UV-Index",
+          "definition": "Die internationale WHO-Skala für die UV-Strahlungsintensität am Boden, von 0 (kein Risiko) aufwärts."
+        },
+        "uva": {
+          "term": "UVA",
+          "definition": "Langwellige UV-Strahlung: dringt tiefer in die Haut ein und trägt zu Hautalterung und Krebsrisiko bei, auch ohne sichtbaren Sonnenbrand."
+        },
+        "uvb": {
+          "term": "UVB",
+          "definition": "Mittelwellige UV-Strahlung: die Hauptursache für Sonnenbrand und zugleich Auslöser der Vitamin-D-Synthese in der Haut."
+        },
+        "spf": {
+          "term": "LSF (SPF)",
+          "definition": "Lichtschutzfaktor: misst, wie stark ein Produkt UVB-bedingten Sonnenbrand im Vergleich zu ungeschützter Haut verzögert."
+        },
+        "broadSpectrum": {
+          "term": "Breitband (broad spectrum)",
+          "definition": "Bedeutet, dass ein Produkt sowohl vor UVB- als auch vor UVA-Strahlen schützt, nicht nur vor UVB wie der LSF allein."
+        },
+        "fitzpatrick": {
+          "term": "Fitzpatrick-Skala",
+          "definition": "Eine dermatologische Einteilung in 6 Hauttypen danach, wie die Haut natürlich auf Sonne reagiert — in dieser App genutzt, um Sonnenbrand-Zeit und Vitamin D zu schätzen."
+        },
+        "erythema": {
+          "term": "Erythem",
+          "definition": "Der medizinische Begriff für Sonnenbrand: Hautrötung durch übermäßige UV-Belastung."
+        },
+        "europeanAqi": {
+          "term": "European AQI",
+          "definition": "Der europäische Luftqualitätsindex, eine einzige Zahl, die die Konzentration von fünf Luftschadstoffen zusammenfasst."
+        }
+      }
+    },
     "sources": {
       "title": "Quellen",
       "intro": "Jede wissenschaftliche Aussage auf dieser Seite ist überprüfbar — die vollständige Liste an einem Ort."
     },
+    "nextSectionCta": "Weiterlesen: {section} →",
+    "readingLabel": "Du liest",
     "footer": {
       "tagline": "Gemacht, um eine Frage schnell zu beantworten — und die Quellen offenzulegen.",
       "backToTop": "Nach oben",

@@ -25,6 +25,40 @@ import ScrollProgress from "./ScrollProgress";
 
 type ReferenceReading = { key: string; uv: number | null };
 
+// Every section in reading order — drives the TOC, the "keep reading"
+// links, and which section counts as "active" while scrolling. worldCompare
+// is the only one that isn't always rendered (needs live data to have
+// loaded), so it's filtered out of `visibleSections` below when it's empty
+// — everything else (the next-link target, the active-TOC highlight)
+// derives from that one filtered list instead of re-deriving the same
+// exception in three different places.
+const SECTION_KEYS = [
+  "methodology",
+  "physics",
+  "vitaminD",
+  "worldCompare",
+  "spf",
+  "myths",
+  "burnHeatmap",
+  "airQuality",
+  "ozone",
+  "iarc",
+  "glossary",
+  "sources",
+] as const;
+type SectionKey = (typeof SECTION_KEYS)[number];
+
+const GLOSSARY_TERMS = [
+  "uvIndex",
+  "uva",
+  "uvb",
+  "spf",
+  "broadSpectrum",
+  "fitzpatrick",
+  "erythema",
+  "europeanAqi",
+] as const;
+
 // Every scientific claim in this section has its own inline citation
 // already (see each article's "Source:" line) — this list exists so
 // someone can also scan every source in one place, deduped by URL since a
@@ -77,6 +111,10 @@ function ArticleHeader({
 
 export default function LearnClient() {
   const t = useTranslations("learn");
+  // Reused verbatim, not re-authored — a page that adds a "quick facts"
+  // card and a glossary shouldn't end up with its own, slightly different
+  // medical disclaimer than the one /privacy already carries.
+  const tPrivacy = useTranslations("privacy");
   // "defaultProfileName" lives under "home" — same cross-namespace lookup
   // SettingsSheet already does, for the same reason (the default profile
   // is created by HomeClient, before this page has ever run).
@@ -84,6 +122,7 @@ export default function LearnClient() {
   const [yourUv, setYourUv] = useState<number | null>(null);
   const [referenceReadings, setReferenceReadings] = useState<ReferenceReading[]>([]);
   const [activeSkinType, setActiveSkinType] = useState<SkinType | null>(null);
+  const [activeSection, setActiveSection] = useState<SectionKey | null>(null);
 
   useEffect(() => {
     const parsed = getLastPlace();
@@ -126,6 +165,74 @@ export default function LearnClient() {
         ]
       : [];
 
+  const visibleSections = SECTION_KEYS.filter(
+    (key) => key !== "worldCompare" || worldCompareEntries.length > 1,
+  );
+
+  function nextSection(id: SectionKey): SectionKey | null {
+    const idx = visibleSections.indexOf(id);
+    if (idx === -1 || idx === visibleSections.length - 1) return null;
+    return visibleSections[idx + 1];
+  }
+
+  // "Keep reading" link at the end of each section — otherwise a reader
+  // has to scroll all the way back to the TOC to find what's next.
+  function renderNextLink(id: SectionKey) {
+    const next = nextSection(id);
+    if (!next) return null;
+    return (
+      <a
+        href={`#${next}`}
+        className="mt-4 inline-block text-sm font-medium text-brand-ink hover:underline"
+      >
+        {t("nextSectionCta", { section: t(`toc.${next}`) })}
+      </a>
+    );
+  }
+
+  // Tracks which section is currently at the top of the viewport, to
+  // highlight it in the TOC and drive the small "you are here" pill —
+  // re-runs when the set of rendered sections changes (worldCompare only
+  // exists once its data has loaded).
+  useEffect(() => {
+    const elements = visibleSections
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+    if (elements.length === 0) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((e) => e.isIntersecting);
+        if (visible.length === 0) return;
+        const topmost = visible.reduce((a, b) =>
+          a.boundingClientRect.top < b.boundingClientRect.top ? a : b,
+        );
+        setActiveSection(topmost.target.id as SectionKey);
+      },
+      { rootMargin: "-96px 0px -70% 0px", threshold: 0 },
+    );
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visibleSections.length]);
+
+  const snowReflectance = UV_REFLECTANCE.find((s) => s.key === "freshSnow")?.percent ?? 80;
+  const latestOzoneArea = Math.round(OZONE_HOLE_AREA[OZONE_HOLE_AREA.length - 1].areaMillionKm2);
+
+  // Reuses the same real constants cited later in their own articles
+  // (UV_INCREASE_PERCENT_PER_1000M, UV_REFLECTANCE, OZONE_HOLE_AREA)
+  // rather than re-typing the numbers here.
+  const quickFactItems: {
+    key: "cloudUv" | "spf" | "altitude" | "snow" | "ozone" | "iarc";
+    values?: Record<string, number>;
+  }[] = [
+    { key: "cloudUv" },
+    { key: "spf" },
+    { key: "altitude", values: { percent: UV_INCREASE_PERCENT_PER_1000M } },
+    { key: "snow", values: { percent: snowReflectance } },
+    { key: "ozone", values: { area: latestOzoneArea } },
+    { key: "iarc" },
+  ];
+
   return (
     // A soft brand-tinted wash behind just the hero, fading out well
     // before the TOC — a nod to Home's colorful sky without turning a
@@ -141,6 +248,18 @@ export default function LearnClient() {
       }}
     >
       <ScrollProgress />
+
+      {/* "You are here" — only once there's an active section to report,
+          i.e. once the reader has actually scrolled into content. Jumps
+          back to the full TOC rather than duplicating its navigation. */}
+      {activeSection && (
+        <a
+          href="#toc"
+          className="fixed right-3 top-3 z-40 max-w-[65%] truncate rounded-full border border-border bg-bg/95 px-3 py-1.5 text-xs font-medium text-muted-foreground shadow-sm backdrop-blur-sm hover:text-brand-ink"
+        >
+          {t("readingLabel")}: {t(`toc.${activeSection}`)}
+        </a>
+      )}
 
       <Link
         href="/"
@@ -163,6 +282,58 @@ export default function LearnClient() {
         <WhoGradientBar />
       </div>
 
+      {/* Prominent and early on purpose — a page adding a quick-facts card
+          and a glossary reads more "authoritative" than before, so the
+          "this isn't medical advice" framing needs to land before any of
+          that, not be buried at the bottom. Text is /privacy's own
+          disclaimer, reused verbatim (see the note on tPrivacy above). */}
+      <div className="mb-8 rounded-2xl border border-border bg-surface p-4">
+        <div className="mb-1.5 flex items-center gap-2">
+          <svg
+            aria-hidden
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="shrink-0 text-muted-foreground"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="16" x2="12" y2="12" />
+            <line x1="12" y1="8" x2="12.01" y2="8" />
+          </svg>
+          <p className="text-sm font-semibold text-foreground">
+            {tPrivacy("disclaimer.notMedicalAdvice.title")}
+          </p>
+        </div>
+        <p className="text-sm leading-relaxed text-muted-foreground">
+          {tPrivacy("disclaimer.notMedicalAdvice.body")}
+        </p>
+        <Link
+          href="/privacy#disclaimer"
+          className="mt-2 inline-block text-sm font-medium text-brand-ink hover:underline"
+        >
+          {t("disclaimer.linkLabel")}
+        </Link>
+      </div>
+
+      <div className="mb-8 rounded-2xl border border-border bg-surface p-4">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          {t("quickFacts.title")}
+        </p>
+        <ul className="space-y-2.5">
+          {quickFactItems.map(({ key, values }) => (
+            <li key={key} className="flex gap-2.5 text-sm leading-relaxed text-ink">
+              <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rounded-full bg-brand" />
+              <span>{t(`quickFacts.items.${key}`, values)}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
       {/* Live personal data (hourly chart, upcoming days, vitamin D
           window) now lives in the app's own Forecast panel, not here —
           this page stays the citable, shareable reading, and doesn't
@@ -182,30 +353,24 @@ export default function LearnClient() {
       </div>
 
       <nav
-        className="mb-12 rounded-2xl border border-brand/15 bg-brand/[0.04] p-4"
+        id="toc"
+        className="mb-12 scroll-mt-20 rounded-2xl border border-brand/15 bg-brand/[0.04] p-4"
         aria-label={t("toc.title")}
       >
         <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
           {t("toc.title")}
         </p>
         <ul className="grid grid-cols-1 gap-x-4 gap-y-1.5 sm:grid-cols-2">
-          {(
-            [
-              "methodology",
-              "physics",
-              "vitaminD",
-              "worldCompare",
-              "spf",
-              "myths",
-              "burnHeatmap",
-              "airQuality",
-              "ozone",
-              "iarc",
-              "sources",
-            ] as const
-          ).map((key) => (
+          {SECTION_KEYS.map((key) => (
             <li key={key}>
-              <a href={`#${key}`} className="text-sm text-ink hover:text-brand-ink hover:underline">
+              <a
+                href={`#${key}`}
+                className={
+                  key === activeSection
+                    ? "text-sm font-semibold text-brand-ink"
+                    : "text-sm text-ink hover:text-brand-ink hover:underline"
+                }
+              >
                 {t(`toc.${key}`)}
               </a>
             </li>
@@ -231,6 +396,7 @@ export default function LearnClient() {
             WHO/WMO/UNEP/ICNIRP
           </a>
         </p>
+        {renderNextLink("methodology")}
       </article>
 
       <article id="physics" className="mb-14 scroll-mt-20">
@@ -256,6 +422,7 @@ export default function LearnClient() {
             WHO/WMO/UNEP/ICNIRP
           </a>
         </p>
+        {renderNextLink("physics")}
       </article>
 
       <article id="vitaminD" className="mb-14 scroll-mt-20">
@@ -282,6 +449,7 @@ export default function LearnClient() {
             Scientific Reports (Nature), 2024
           </a>
         </p>
+        {renderNextLink("vitaminD")}
       </article>
 
       {worldCompareEntries.length > 1 && (
@@ -296,6 +464,7 @@ export default function LearnClient() {
             <ReferenceCitiesChart entries={worldCompareEntries} />
           </div>
           <p className="mt-4 text-sm text-muted-foreground">{t("worldCompare.note")}</p>
+          {renderNextLink("worldCompare")}
         </article>
       )}
 
@@ -317,6 +486,7 @@ export default function LearnClient() {
             American Academy of Dermatology
           </a>
         </p>
+        {renderNextLink("spf")}
       </article>
 
       <article id="myths" className="mb-14 scroll-mt-20">
@@ -348,6 +518,7 @@ export default function LearnClient() {
             </div>
           ))}
         </div>
+        {renderNextLink("myths")}
       </article>
 
       <article id="burnHeatmap" className="mb-14 scroll-mt-20">
@@ -359,6 +530,7 @@ export default function LearnClient() {
         <p className="mb-4 text-ink leading-relaxed">{t("burnHeatmap.p1")}</p>
         <BurnHeatmap highlightSkinType={activeSkinType} />
         <p className="mt-4 text-sm text-muted-foreground">{t("burnHeatmap.source")}</p>
+        {renderNextLink("burnHeatmap")}
       </article>
 
       <article id="airQuality" className="mb-14 scroll-mt-20">
@@ -398,6 +570,7 @@ export default function LearnClient() {
             Open-Meteo
           </a>
         </p>
+        {renderNextLink("airQuality")}
       </article>
 
       <article id="ozone" className="mb-14 scroll-mt-20">
@@ -423,12 +596,32 @@ export default function LearnClient() {
             NASA Ozone Watch
           </a>
         </p>
+        {renderNextLink("ozone")}
       </article>
 
       <article id="iarc" className="mb-14 scroll-mt-20">
         <ArticleHeader title={t("iarc.title")} shareText={t("iarc.shareText")} anchor="iarc" />
         <p className="mb-6 text-ink leading-relaxed">{t("iarc.intro")}</p>
         <IarcTimeline milestones={IARC_TIMELINE} />
+        {renderNextLink("iarc")}
+      </article>
+
+      <article id="glossary" className="mb-14 scroll-mt-20">
+        <ArticleHeader title={t("glossary.title")} shareText={t("glossary.shareText")} anchor="glossary" />
+        <p className="mb-5 text-ink leading-relaxed">{t("glossary.intro")}</p>
+        <dl className="flex flex-col gap-3">
+          {GLOSSARY_TERMS.map((key) => (
+            <div key={key} className="rounded-xl border border-border bg-surface p-4">
+              <dt className="text-sm font-semibold text-foreground">
+                {t(`glossary.terms.${key}.term`)}
+              </dt>
+              <dd className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                {t(`glossary.terms.${key}.definition`)}
+              </dd>
+            </div>
+          ))}
+        </dl>
+        {renderNextLink("glossary")}
       </article>
 
       <section id="sources" className="mb-14 scroll-mt-20">
