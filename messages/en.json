@@ -179,6 +179,20 @@
     "eyebrow": "The science of sun safety",
     "metaDescription": "How the UV index actually works, the science of sun protection, and what SPF really means — with verifiable sources.",
     "back": "← Back to home",
+    "disclaimer": {
+      "linkLabel": "Read the full disclaimer →"
+    },
+    "quickFacts": {
+      "title": "At a glance",
+      "items": {
+        "cloudUv": "Cloudy skies don't block most UV — up to 80% still gets through.",
+        "spf": "SPF30 blocks about 97% of UVB, SPF50 about 98% — a small numerical gap.",
+        "altitude": "UV intensity increases roughly {percent}% for every 1,000 meters of altitude.",
+        "snow": "Fresh snow reflects up to {percent}% of UV back at you, even in the shade.",
+        "ozone": "The Antarctic ozone hole has shrunk from nearly 30 to roughly {area} million km² since the early 2000s.",
+        "iarc": "Solar UV radiation is an IARC Group 1 carcinogen — the same category as tobacco smoke."
+      }
+    },
     "openApp": {
       "title": "Your live UV, in real time",
       "body": "The hourly chart, upcoming days, low-risk window, and a personalized vitamin D window live in the app, not here — tap the \"Today's UV scale\" card on the main screen.",
@@ -280,6 +294,7 @@
       "airQuality": "Air quality, explained",
       "ozone": "The ozone layer, healing",
       "iarc": "Why it's a Group 1 carcinogen",
+      "glossary": "Glossary",
       "sources": "Sources"
     },
     "burnHeatmap": {
@@ -330,10 +345,51 @@
       },
       "shareText": "Solar UV radiation is officially a Group 1 carcinogen — here's when and why:"
     },
+    "glossary": {
+      "title": "Glossary",
+      "shareText": "What do UVA, UVB, SPF, and skin phototype actually mean? A quick glossary:",
+      "intro": "Technical terms used on this page, in brief.",
+      "terms": {
+        "uvIndex": {
+          "term": "UV Index",
+          "definition": "The WHO's international scale measuring UV radiation intensity at ground level, from 0 (no risk) upward."
+        },
+        "uva": {
+          "term": "UVA",
+          "definition": "Long-wave UV radiation: penetrates deeper into skin, contributing to skin aging and cancer risk even without causing a visible sunburn."
+        },
+        "uvb": {
+          "term": "UVB",
+          "definition": "Medium-wave UV radiation: the main cause of sunburn, and also what triggers vitamin D synthesis in skin."
+        },
+        "spf": {
+          "term": "SPF",
+          "definition": "Sun Protection Factor: measures how much a product slows UVB-caused sunburn compared to unprotected skin."
+        },
+        "broadSpectrum": {
+          "term": "Broad spectrum",
+          "definition": "Means a product protects against both UVB and UVA rays, not just UVB the way SPF alone measures."
+        },
+        "fitzpatrick": {
+          "term": "Fitzpatrick scale",
+          "definition": "A 6-type dermatological classification based on how skin naturally responds to sun, used in this app to estimate burn time and vitamin D."
+        },
+        "erythema": {
+          "term": "Erythema",
+          "definition": "The medical term for sunburn: skin reddening caused by overexposure to UV radiation."
+        },
+        "europeanAqi": {
+          "term": "European AQI",
+          "definition": "The European Air Quality Index, a single number summarizing the concentration of five air pollutants."
+        }
+      }
+    },
     "sources": {
       "title": "Sources",
       "intro": "Every scientific claim on this page is checkable — the full list, in one place."
     },
+    "nextSectionCta": "Keep reading: {section} →",
+    "readingLabel": "Reading",
     "footer": {
       "tagline": "Built to answer one question quickly — and to show its work.",
       "backToTop": "Back to top",

@@ -179,6 +179,20 @@
     "eyebrow": "La scienza della protezione solare",
     "metaDescription": "Come funziona davvero l'indice UV, la scienza della protezione solare e cosa significa SPF — con fonti verificabili.",
     "back": "← Torna alla home",
+    "disclaimer": {
+      "linkLabel": "Leggi il disclaimer completo →"
+    },
+    "quickFacts": {
+      "title": "In breve",
+      "items": {
+        "cloudUv": "Il cielo nuvoloso non blocca gran parte dei raggi UV: ne passa comunque fino all'80%.",
+        "spf": "SPF30 blocca circa il 97% dei raggi UVB, SPF50 circa il 98% — una differenza minima.",
+        "altitude": "L'intensità UV aumenta di circa il {percent}% ogni 1000 metri di altitudine.",
+        "snow": "La neve fresca riflette verso di te fino al {percent}% dei raggi UV, anche all'ombra.",
+        "ozone": "Il buco dell'ozono antartico si è ridotto da quasi 30 a circa {area} milioni di km² dai primi anni 2000 a oggi.",
+        "iarc": "Le radiazioni UV solari sono un cancerogeno di Gruppo 1 IARC — la stessa categoria del fumo di tabacco."
+      }
+    },
     "openApp": {
       "title": "Il tuo UV in tempo reale",
       "body": "Grafico orario, prossimi giorni, finestra a basso rischio e finestra vitamina D personalizzata sono nell'app, non qui — tocca la card \"Scala UV di oggi\" nella schermata principale.",
@@ -280,6 +294,7 @@
       "airQuality": "Qualità dell'aria, spiegata",
       "ozone": "Lo strato di ozono si sta riprendendo",
       "iarc": "Perché è un cancerogeno di Gruppo 1",
+      "glossary": "Glossario",
       "sources": "Fonti"
     },
     "burnHeatmap": {
@@ -330,10 +345,51 @@
       },
       "shareText": "Le radiazioni UV solari sono ufficialmente un cancerogeno di Gruppo 1 — ecco quando e perché:"
     },
+    "glossary": {
+      "title": "Glossario",
+      "shareText": "Cosa significano davvero UVA, UVB, SPF e fototipo? Un piccolo glossario:",
+      "intro": "Termini tecnici usati in questa pagina, in breve.",
+      "terms": {
+        "uvIndex": {
+          "term": "Indice UV",
+          "definition": "La scala internazionale OMS che misura l'intensità dei raggi UV al suolo, da 0 (nessun rischio) in su."
+        },
+        "uva": {
+          "term": "UVA",
+          "definition": "Raggi UV a onda lunga: penetrano più in profondità nella pelle e contribuiscono a invecchiamento cutaneo e rischio di cancro, anche senza causare scottature visibili."
+        },
+        "uvb": {
+          "term": "UVB",
+          "definition": "Raggi UV a onda media: la causa principale delle scottature, e anche l'innesco per la sintesi di vitamina D nella pelle."
+        },
+        "spf": {
+          "term": "SPF",
+          "definition": "Sun Protection Factor: misura quanto un prodotto rallenta la scottatura da raggi UVB rispetto alla pelle non protetta."
+        },
+        "broadSpectrum": {
+          "term": "Ampio spettro (broad spectrum)",
+          "definition": "Indica che un prodotto protegge sia dai raggi UVB sia dai raggi UVA, non solo dai primi come farebbe l'SPF da solo."
+        },
+        "fitzpatrick": {
+          "term": "Scala di Fitzpatrick",
+          "definition": "Classificazione dermatologica in 6 fototipi in base a come la pelle reagisce naturalmente al sole, usata in questa app per stimare tempi di scottatura e vitamina D."
+        },
+        "erythema": {
+          "term": "Eritema",
+          "definition": "Il termine medico per la scottatura: arrossamento della pelle causato da un'eccessiva esposizione ai raggi UV."
+        },
+        "europeanAqi": {
+          "term": "European AQI",
+          "definition": "L'indice europeo di qualità dell'aria, un numero unico che riassume la concentrazione di cinque inquinanti atmosferici."
+        }
+      }
+    },
     "sources": {
       "title": "Fonti",
       "intro": "Ogni affermazione scientifica in questa pagina è verificabile — l'elenco completo, in un unico posto."
     },
+    "nextSectionCta": "Continua con: {section} →",
+    "readingLabel": "Stai leggendo",
     "footer": {
       "tagline": "Pensata per rispondere a una domanda in fretta — e per mostrare le fonti.",
       "backToTop": "Torna all'inizio",
