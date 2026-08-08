@@ -6,6 +6,20 @@
 // composite number to the six EEA category names is what's bucketed here.
 export type AqiLevel = "good" | "fair" | "moderate" | "poor" | "veryPoor" | "extremelyPoor";
 
+// Least to most severe — lets /learn render the six bands as an ordered
+// legend without re-deriving that order from aqiLevel's if/else chain.
+export const AQI_LEVELS: AqiLevel[] = [
+  "good",
+  "fair",
+  "moderate",
+  "poor",
+  "veryPoor",
+  "extremelyPoor",
+];
+
+export const EEA_AQI_SOURCE_URL = "https://airindex.eea.europa.eu/AQI/index.html";
+export const OPEN_METEO_AIR_QUALITY_DOCS_URL = "https://open-meteo.com/en/docs/air-quality-api";
+
 export function aqiLevel(europeanAqi: number): AqiLevel {
   if (europeanAqi < 20) return "good";
   if (europeanAqi < 40) return "fair";
