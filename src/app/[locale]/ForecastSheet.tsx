@@ -41,15 +41,21 @@ export default function ForecastSheet({
   coords,
   uv,
   skinType,
+  isInfant,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   coords: LastPlace | null;
   uv: number | null;
   skinType: SkinType | null;
+  isInfant: boolean;
 }) {
   const t = useTranslations("home.forecastSheet");
   const tHome = useTranslations("home");
+  // Infant advisory copy already exists and is fully translated (see
+  // ReapplyTimer, which shows the same thing for the same reason) — reused
+  // here rather than duplicated under home.forecastSheet.
+  const tReapply = useTranslations("reapply");
   const locale = useLocale();
   const [points, setPoints] = useState<Point[] | null>(null);
   const [dailyPeaks, setDailyPeaks] = useState<DailyPeak[]>([]);
@@ -74,8 +80,13 @@ export default function ForecastSheet({
   }, [open, coords]);
 
   const windows = points ? findLowRiskWindows(points) : [];
-  const burn = uv !== null && skinType ? burnMinutes(skinType, uv) : null;
-  const vitD = skinType ? vitaminDMinutes(skinType) : null;
+  // Infants under 6 months: AAP/AAD guidance is to keep them out of direct
+  // sun entirely, not to compute a burn-time/vitamin-D window for them —
+  // same reasoning ReapplyTimer already applies. Not just hidden in the
+  // JSX below but not computed at all, since neither number means
+  // anything for this age group.
+  const burn = !isInfant && uv !== null && skinType ? burnMinutes(skinType, uv) : null;
+  const vitD = !isInfant && skinType ? vitaminDMinutes(skinType) : null;
   const level = uv !== null ? uvLevel(uv) : null;
 
   return (
@@ -132,31 +143,40 @@ export default function ForecastSheet({
 
           <div className={`flex flex-col gap-2 px-5 py-5 ${GLASS_CARD}`}>
             <span className={EYEBROW}>{t("vitaminD.title")}</span>
-            {skinType && vitD !== null ? (
+            {isInfant ? (
               <>
-                <p className="text-sm text-white/85">
-                  {t("vitaminD.body", { minutes: vitD })}
-                </p>
-                {burn !== null && (
-                  <p className="text-sm text-white/70">
-                    {t("vitaminD.compare", { burnMinutes: burn })}
-                  </p>
-                )}
+                <p className="text-sm text-white/85">{tReapply("infantAdvisory")}</p>
+                <p className="text-xs text-white/70">{tReapply("infantAdvisorySource")}</p>
               </>
             ) : (
-              <p className="text-sm text-white/85">{t("vitaminD.noSkinType")}</p>
+              <>
+                {skinType && vitD !== null ? (
+                  <>
+                    <p className="text-sm text-white/85">
+                      {t("vitaminD.body", { minutes: vitD })}
+                    </p>
+                    {burn !== null && (
+                      <p className="text-sm text-white/70">
+                        {t("vitaminD.compare", { burnMinutes: burn })}
+                      </p>
+                    )}
+                  </>
+                ) : (
+                  <p className="text-sm text-white/85">{t("vitaminD.noSkinType")}</p>
+                )}
+                <p className="mt-1 text-xs leading-snug text-white/55">
+                  {t("vitaminD.disclaimer")}
+                </p>
+                <a
+                  href={VITAMIN_D_SOURCE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-white/55 underline-offset-2 hover:text-white/80 hover:underline"
+                >
+                  {t("vitaminD.sourceLabel")}: Scientific Reports (Nature), 2024
+                </a>
+              </>
             )}
-            <p className="mt-1 text-xs leading-snug text-white/55">
-              {t("vitaminD.disclaimer")}
-            </p>
-            <a
-              href={VITAMIN_D_SOURCE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-white/55 underline-offset-2 hover:text-white/80 hover:underline"
-            >
-              {t("vitaminD.sourceLabel")}: Scientific Reports (Nature), 2024
-            </a>
           </div>
         </div>
       </SheetContent>

@@ -588,6 +588,7 @@ export default function HomeClient() {
         coords={coords}
         uv={uv}
         skinType={profiles.find((p) => p.id === activeProfileId)?.skinType ?? null}
+        isInfant={profiles.find((p) => p.id === activeProfileId)?.isInfant ?? false}
       />
       <InstallPrompt />
     </div>
