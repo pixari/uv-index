@@ -179,18 +179,10 @@
     "eyebrow": "Die Wissenschaft des Sonnenschutzes",
     "metaDescription": "Wie der UV-Index wirklich funktioniert, die Wissenschaft des Sonnenschutzes und was LSF wirklich bedeutet — mit überprüfbaren Quellen.",
     "back": "← Zurück zur Startseite",
-    "chart": {
-      "title": "UV-Verlauf der nächsten 24 Stunden",
-      "subtitle": "In {place}, Stunde für Stunde"
-    },
-    "bestWindow": {
-      "title": "Beste Zeit zum Draußensein",
-      "none": "Kein risikoarmes Zeitfenster in den nächsten 24 Stunden — trotzdem schützen"
-    },
-    "forecast": {
-      "title": "Kommende Tage",
-      "subtitle": "Erwarteter UV-Höchstwert pro Tag",
-      "today": "Heute"
+    "openApp": {
+      "title": "Dein UV live, in Echtzeit",
+      "body": "Stündliches Diagramm, kommende Tage, risikoarmes Zeitfenster und ein persönliches Vitamin-D-Fenster gibt es in der App, nicht hier — tippe auf die Karte „Heutige UV-Skala“ auf dem Hauptbildschirm.",
+      "cta": "App öffnen →"
     },
     "methodology": {
       "title": "Wie der UV-Index funktioniert",
@@ -199,6 +191,44 @@
       "p3": "Die in dieser App angezeigte Zahl wird in Echtzeit berechnet, indem diese Faktoren mit Wettermodellen kombiniert werden — deshalb ändert sie sich stündlich, mit einem Höhepunkt nahe der Sonnenmittagszeit und Werten nahe Null bei Sonnenauf- und -untergang, wie im obigen Diagramm zu sehen ist.",
       "source": "Quelle:",
       "shareText": "Wolken blockieren die meiste UV-Strahlung nicht — so funktioniert der UV-Index wirklich:"
+    },
+    "physics": {
+      "title": "Die Physik hinter der Zahl",
+      "p1": "Die UV-Intensität steigt um etwa {percent}% pro 1000 Meter Höhe — es liegt einfach weniger Atmosphäre über dir, die sie filtert. Ein Skigebiet auf 2000m kann an einem klaren Tag einen deutlich höheren UV-Index haben als das Tal darunter.",
+      "p2": "Die Sonne ist auch nicht die einzige Quelle — Oberflächen werfen einen echten Anteil der Strahlung zurück. Frischer Schnee reflektiert das meiste davon; Sand und Meeresschaum spielen ebenfalls eine Rolle, wenn auch weniger drastisch. Deshalb sind reflektierter Sonnenbrand (und Schneeblindheit) auch im Schatten ein echtes Risiko.",
+      "chartCaption": "Anteil der zurückgeworfenen UV-Strahlung, nach Oberfläche",
+      "source": "Quelle:",
+      "surfaces": {
+        "freshSnow": "Frischer Schnee",
+        "seaFoam": "Meeresschaum",
+        "drySand": "Trockener Sand",
+        "concrete": "Beton",
+        "grassSoil": "Gras, Erde"
+      },
+      "shareText": "Frischer Schnee reflektiert bis zu 80% der UV-Strahlung zurück — und die Höhenlage allein addiert ~10% pro 1000m. Die Physik hinter der Zahl:"
+    },
+    "vitaminD": {
+      "title": "Das Vitamin-D-Fenster",
+      "p1": "UV-Strahlung ist nicht nur ein Risiko, das es zu managen gilt: Dieselbe UVB-Strahlung, die Sonnenbrand verursacht, löst im Körper auch die Synthese von Vitamin D aus — essenziell für die Kalziumaufnahme und gesunde Knochen. Deshalb ist vollständiger, rund um die Uhr geltender Schutz nicht das Ziel dieser App.",
+      "p2": "Eine Studie aus dem Jahr 2024 hat numerisch modelliert, wie viel Mittagssonne (10:00–16:00 Uhr, die aktive Saison von März bis Oktober im Mittelmeerraum) nötig ist, um 1000 IE Vitamin D zu produzieren — für jeden Fitzpatrick-Hauttyp einzeln. Hellere Haut synthetisiert schneller, dunklere Haut braucht mehr Zeit für dieselbe Menge.",
+      "p3": "Das sind saisonale Durchschnittswerte, nicht auf den heutigen UV-Index skaliert wie die Sonnenbrand-Zeitschätzung oben — die App zeigt beide nebeneinander im Vorhersage-Panel, damit du eine Vorstellung vom tatsächlichen Spielraum zwischen beiden bekommst.",
+      "chartCaption": "Durchschnittliche Minuten direkter Mittagssonne für 1000 IE, nach Hauttyp",
+      "skinTypeLabel": "Typ {skinType}",
+      "source": "Quelle:",
+      "shareText": "Wie viel Sonne braucht es wirklich für Vitamin D, nach Hauttyp? Eine Studie aus 2024 hat es berechnet:"
+    },
+    "worldCompare": {
+      "title": "Dein UV-Index vs. die Welt, gerade jetzt",
+      "subtitle": "Derselbe klare Himmel erzeugt je nach Ort — und Höhenlage — sehr unterschiedliche UV-Werte.",
+      "note": "Nairobi und Denver liegen auf etwa 1600–1800m Höhe — auch deshalb sind ihre Werte höher, als es der Breitengrad allein vermuten lässt.",
+      "you": "Du",
+      "cities": {
+        "singapore": "Singapur",
+        "nairobi": "Nairobi",
+        "denver": "Denver",
+        "reykjavik": "Reykjavík"
+      },
+      "shareText": "So vergleicht sich der UV-Index zwischen meinem Standort und einigen Orten weltweit, gerade jetzt:"
     },
     "spf": {
       "title": "Wie LSF wirklich funktioniert",
@@ -240,44 +270,17 @@
     },
     "toc": {
       "title": "In diesem Beitrag",
-      "chart": "Heutige UV-Kurve",
-      "forecast": "Kommende Tage",
       "methodology": "Wie der Index funktioniert",
       "physics": "Die Physik dahinter",
+      "vitaminD": "Das Vitamin-D-Fenster",
       "worldCompare": "Du vs. die Welt",
       "spf": "Wie LSF funktioniert",
       "myths": "Mythen, die ausgedient haben",
       "burnHeatmap": "Sonnenbrand-Zeit nach Hauttyp",
+      "airQuality": "Luftqualität erklärt",
       "ozone": "Die Ozonschicht erholt sich",
-      "iarc": "Warum es ein Gruppe-1-Karzinogen ist"
-    },
-    "physics": {
-      "title": "Die Physik hinter der Zahl",
-      "p1": "Die UV-Intensität steigt um etwa {percent}% pro 1000 Meter Höhe — es liegt einfach weniger Atmosphäre über dir, die sie filtert. Ein Skigebiet auf 2000m kann an einem klaren Tag einen deutlich höheren UV-Index haben als das Tal darunter.",
-      "p2": "Die Sonne ist auch nicht die einzige Quelle — Oberflächen werfen einen echten Anteil der Strahlung zurück. Frischer Schnee reflektiert das meiste davon; Sand und Meeresschaum spielen ebenfalls eine Rolle, wenn auch weniger drastisch. Deshalb sind reflektierter Sonnenbrand (und Schneeblindheit) auch im Schatten ein echtes Risiko.",
-      "chartCaption": "Anteil der zurückgeworfenen UV-Strahlung, nach Oberfläche",
-      "source": "Quelle:",
-      "surfaces": {
-        "freshSnow": "Frischer Schnee",
-        "seaFoam": "Meeresschaum",
-        "drySand": "Trockener Sand",
-        "concrete": "Beton",
-        "grassSoil": "Gras, Erde"
-      },
-      "shareText": "Frischer Schnee reflektiert bis zu 80% der UV-Strahlung zurück — und die Höhenlage allein addiert ~10% pro 1000m. Die Physik hinter der Zahl:"
-    },
-    "worldCompare": {
-      "title": "Dein UV-Index vs. die Welt, gerade jetzt",
-      "subtitle": "Derselbe klare Himmel erzeugt je nach Ort — und Höhenlage — sehr unterschiedliche UV-Werte.",
-      "note": "Nairobi und Denver liegen auf etwa 1600–1800m Höhe — auch deshalb sind ihre Werte höher, als es der Breitengrad allein vermuten lässt.",
-      "you": "Du",
-      "cities": {
-        "singapore": "Singapur",
-        "nairobi": "Nairobi",
-        "denver": "Denver",
-        "reykjavik": "Reykjavík"
-      },
-      "shareText": "So vergleicht sich der UV-Index zwischen meinem Standort und einigen Orten weltweit, gerade jetzt:"
+      "iarc": "Warum es ein Gruppe-1-Karzinogen ist",
+      "sources": "Quellen"
     },
     "burnHeatmap": {
       "title": "Minuten bis zum Sonnenbrand, nach Hauttyp und UV-Index",
@@ -286,6 +289,23 @@
       "skinTypeHeader": "Typ {skinType}",
       "source": "Siehe \"Wie der Index funktioniert\" oben für die Fitzpatrick-Skala selbst.",
       "shareText": "Wie schnell verbrennt ungeschützte Haut wirklich, nach Hauttyp und UV-Index? Die echten Zahlen:"
+    },
+    "airQuality": {
+      "title": "Was „gute Luftqualität“ wirklich bedeutet",
+      "p1": "Neben UV zeigt diese App auch den europäischen Luftqualitätsindex (European AQI) für deinen Standort — eine einzige Zahl, die fünf getrennt gemessene Schadstoffe zusammenfasst: PM2,5, PM10, bodennahes Ozon, Stickstoffdioxid und Schwefeldioxid.",
+      "p2": "Der Index zeigt immer den Wert des in diesem Moment schlechtesten Schadstoffs, nicht einen Durchschnitt — und seine sechs Stufen (Gut, Mäßig, Mittelmäßig, Schlecht, Sehr schlecht, Extrem schlecht) sind an den WHO-Luftqualitätsleitlinien von 2021 kalibriert, sodass jede Stufe unabhängig vom auslösenden Schadstoff einem vergleichbaren Gesundheitsrisiko entspricht.",
+      "p3": "Langfristige Belastung durch diese Schadstoffe wird mit Atemwegs- und Herz-Kreislauf-Erkrankungen in Verbindung gebracht — die Europäische Umweltagentur schätzt, dass der Großteil der europäischen Stadtbevölkerung bei mindestens einem dieser fünf Schadstoffe Werte über den WHO-Leitlinien einatmet.",
+      "categoriesCaption": "Die sechs Stufen des europäischen Luftqualitätsindex",
+      "categories": {
+        "good": "Gut",
+        "fair": "Mäßig",
+        "moderate": "Mittelmäßig",
+        "poor": "Schlecht",
+        "veryPoor": "Sehr schlecht",
+        "extremelyPoor": "Extrem schlecht"
+      },
+      "source": "Quelle:",
+      "shareText": "Was bedeutet „Gute Luft“ in der App wirklich? So funktioniert der europäische Luftqualitätsindex:"
     },
     "ozone": {
       "title": "Die Ozonschicht erholt sich — hier ist das echte Diagramm",
@@ -309,6 +329,10 @@
         }
       },
       "shareText": "Solare UV-Strahlung ist offiziell ein Gruppe-1-Karzinogen — hier ist wann und warum:"
+    },
+    "sources": {
+      "title": "Quellen",
+      "intro": "Jede wissenschaftliche Aussage auf dieser Seite ist überprüfbar — die vollständige Liste an einem Ort."
     },
     "footer": {
       "tagline": "Gemacht, um eine Frage schnell zu beantworten — und die Quellen offenzulegen.",

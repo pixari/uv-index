@@ -8,11 +8,12 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { Link } from "@/i18n/navigation";
 import { skyGradientCss, uvLevel } from "@/lib/uvLevel";
 import { findLowRiskWindows } from "@/lib/bestWindow";
 import { groupDailyPeaks, type DailyPeak } from "@/lib/dailyForecast";
 import { burnMinutes, type SkinType } from "@/lib/skinType";
-import { vitaminDMinutes, VITAMIN_D_SOURCE_URL } from "@/lib/vitaminD";
+import { vitaminDMinutes } from "@/lib/vitaminD";
 import type { LastPlace } from "@/lib/lastPlace";
 import UvDayChart from "./learn/UvDayChart";
 import DailyForecast from "./learn/DailyForecast";
@@ -167,14 +168,17 @@ export default function ForecastSheet({
                 <p className="mt-1 text-xs leading-snug text-white/55">
                   {t("vitaminD.disclaimer")}
                 </p>
-                <a
-                  href={VITAMIN_D_SOURCE_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                {/* The full article (including the actual Nature paper
+                    link) now lives on /learn — same "why trust this"
+                    pattern ReapplyTimer's spfNote already uses for /learn#spf,
+                    rather than sending people straight to a raw PDF. */}
+                <Link
+                  href="/learn#vitaminD"
+                  onClick={() => onOpenChange(false)}
                   className="text-xs text-white/55 underline-offset-2 hover:text-white/80 hover:underline"
                 >
                   {t("vitaminD.sourceLabel")}: Scientific Reports (Nature), 2024
-                </a>
+                </Link>
               </>
             )}
           </div>

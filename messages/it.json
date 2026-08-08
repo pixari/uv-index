@@ -179,18 +179,10 @@
     "eyebrow": "La scienza della protezione solare",
     "metaDescription": "Come funziona davvero l'indice UV, la scienza della protezione solare e cosa significa SPF — con fonti verificabili.",
     "back": "← Torna alla home",
-    "chart": {
-      "title": "Andamento UV nelle prossime 24 ore",
-      "subtitle": "A {place}, ora per ora"
-    },
-    "bestWindow": {
-      "title": "Momento migliore per stare all'aperto",
-      "none": "Nessuna finestra a basso rischio nelle prossime 24 ore — porta comunque la protezione"
-    },
-    "forecast": {
-      "title": "Prossimi giorni",
-      "subtitle": "Picco UV previsto per ogni giornata",
-      "today": "Oggi"
+    "openApp": {
+      "title": "Il tuo UV in tempo reale",
+      "body": "Grafico orario, prossimi giorni, finestra a basso rischio e finestra vitamina D personalizzata sono nell'app, non qui — tocca la card \"Scala UV di oggi\" nella schermata principale.",
+      "cta": "Apri l'app →"
     },
     "methodology": {
       "title": "Come funziona l'indice UV",
@@ -199,6 +191,44 @@
       "p3": "Il numero che vedi in questa app è calcolato in tempo reale combinando questi fattori con modelli meteorologici — per questo cambia ora per ora, con un picco vicino al mezzogiorno solare e valori vicini a zero all'alba e al tramonto, come puoi vedere nel grafico qui sopra.",
       "source": "Fonte:",
       "shareText": "Il cielo nuvoloso non blocca gran parte dei raggi UV — ecco come funziona davvero l'indice UV:"
+    },
+    "physics": {
+      "title": "La fisica dietro il numero",
+      "p1": "L'intensità UV aumenta di circa il {percent}% ogni 1000 metri di altitudine — semplicemente c'è meno atmosfera sopra di te a filtrarla. Una stazione sciistica a 2000m può avere un UV nettamente più alto della valle sottostante, nella stessa giornata di sole.",
+      "p2": "Il sole non è l'unica fonte, però — le superfici rimandano indietro una quota reale di raggi UV. La neve fresca ne riflette la maggior parte; anche sabbia e schiuma del mare contano, anche se in modo meno drastico. Per questo le scottature da riflesso (e l'abbagliamento da neve) sono un rischio reale anche all'ombra.",
+      "chartCaption": "Quota di UV riflessa verso l'alto, per superficie",
+      "source": "Fonte:",
+      "surfaces": {
+        "freshSnow": "Neve fresca",
+        "seaFoam": "Schiuma di mare",
+        "drySand": "Sabbia asciutta",
+        "concrete": "Cemento",
+        "grassSoil": "Erba, terreno"
+      },
+      "shareText": "La neve fresca riflette fino all'80% dei raggi UV — e l'altitudine da sola aggiunge ~10% ogni 1000m. La fisica dietro il numero:"
+    },
+    "vitaminD": {
+      "title": "La finestra vitamina D",
+      "p1": "L'esposizione UV non è solo un rischio da gestire: la stessa radiazione UVB che scotta la pelle è anche l'innesco che permette al corpo di sintetizzare la vitamina D, essenziale per assorbire il calcio e mantenere le ossa sane — motivo per cui la protezione totale, 24 ore su 24, non è l'obiettivo di questa app.",
+      "p2": "Uno studio del 2024 ha modellato numericamente quanto sole di mezzogiorno (10:00–16:00, la stagione attiva marzo-ottobre nel bacino del Mediterraneo) serve per produrre 1000 UI di vitamina D, per ciascun fototipo Fitzpatrick — la pelle più chiara sintetizza più in fretta, quella più scura ha bisogno di più tempo per la stessa quantità.",
+      "p3": "Sono medie stagionali, non un calcolo scalato sull'UV di oggi come il tempo di scottatura qui sopra — l'app le mostra affiancate nel pannello Previsioni, così puoi farti un'idea del margine reale tra le due.",
+      "chartCaption": "Minuti medi di sole diretto a mezzogiorno per produrre 1000 UI, per fototipo",
+      "skinTypeLabel": "Tipo {skinType}",
+      "source": "Fonte:",
+      "shareText": "Quanto sole serve davvero per produrre vitamina D, per fototipo? Uno studio del 2024 lo ha calcolato:"
+    },
+    "worldCompare": {
+      "title": "Il tuo UV vs. il mondo, in questo momento",
+      "subtitle": "Lo stesso cielo sereno produce UV molto diversi a seconda di dove — e a che altitudine — ti trovi.",
+      "note": "Nairobi e Denver si trovano a circa 1600–1800m sul livello del mare — anche per questo hanno valori più alti di quanto suggerirebbe la sola latitudine.",
+      "you": "Tu",
+      "cities": {
+        "singapore": "Singapore",
+        "nairobi": "Nairobi",
+        "denver": "Denver",
+        "reykjavik": "Reykjavík"
+      },
+      "shareText": "Ecco come si confronta l'indice UV tra dove sono io e alcuni posti nel mondo, in questo momento:"
     },
     "spf": {
       "title": "Come funziona davvero l'SPF",
@@ -240,44 +270,17 @@
     },
     "toc": {
       "title": "In questo articolo",
-      "chart": "Curva UV di oggi",
-      "forecast": "Prossimi giorni",
       "methodology": "Come funziona l'indice",
       "physics": "La fisica dietro il numero",
+      "vitaminD": "La finestra vitamina D",
       "worldCompare": "Tu vs. il mondo",
       "spf": "Come funziona l'SPF",
       "myths": "Miti da sfatare",
       "burnHeatmap": "Tempo di scottatura, per fototipo",
+      "airQuality": "Qualità dell'aria, spiegata",
       "ozone": "Lo strato di ozono si sta riprendendo",
-      "iarc": "Perché è un cancerogeno di Gruppo 1"
-    },
-    "physics": {
-      "title": "La fisica dietro il numero",
-      "p1": "L'intensità UV aumenta di circa il {percent}% ogni 1000 metri di altitudine — semplicemente c'è meno atmosfera sopra di te a filtrarla. Una stazione sciistica a 2000m può avere un UV nettamente più alto della valle sottostante, nella stessa giornata di sole.",
-      "p2": "Il sole non è l'unica fonte, però — le superfici rimandano indietro una quota reale di raggi UV. La neve fresca ne riflette la maggior parte; anche sabbia e schiuma del mare contano, anche se in modo meno drastico. Per questo le scottature da riflesso (e l'abbagliamento da neve) sono un rischio reale anche all'ombra.",
-      "chartCaption": "Quota di UV riflessa verso l'alto, per superficie",
-      "source": "Fonte:",
-      "surfaces": {
-        "freshSnow": "Neve fresca",
-        "seaFoam": "Schiuma di mare",
-        "drySand": "Sabbia asciutta",
-        "concrete": "Cemento",
-        "grassSoil": "Erba, terreno"
-      },
-      "shareText": "La neve fresca riflette fino all'80% dei raggi UV — e l'altitudine da sola aggiunge ~10% ogni 1000m. La fisica dietro il numero:"
-    },
-    "worldCompare": {
-      "title": "Il tuo UV vs. il mondo, in questo momento",
-      "subtitle": "Lo stesso cielo sereno produce UV molto diversi a seconda di dove — e a che altitudine — ti trovi.",
-      "note": "Nairobi e Denver si trovano a circa 1600–1800m sul livello del mare — anche per questo hanno valori più alti di quanto suggerirebbe la sola latitudine.",
-      "you": "Tu",
-      "cities": {
-        "singapore": "Singapore",
-        "nairobi": "Nairobi",
-        "denver": "Denver",
-        "reykjavik": "Reykjavík"
-      },
-      "shareText": "Ecco come si confronta l'indice UV tra dove sono io e alcuni posti nel mondo, in questo momento:"
+      "iarc": "Perché è un cancerogeno di Gruppo 1",
+      "sources": "Fonti"
     },
     "burnHeatmap": {
       "title": "Minuti prima di scottarsi, per fototipo e indice UV",
@@ -286,6 +289,23 @@
       "skinTypeHeader": "Tipo {skinType}",
       "source": "Vedi \"Come funziona l'indice\" qui sopra per la scala di Fitzpatrick.",
       "shareText": "Quanto velocemente si scotta davvero la pelle non protetta, per fototipo e indice UV? I numeri reali:"
+    },
+    "airQuality": {
+      "title": "Cosa significa \"qualità dell'aria buona\"",
+      "p1": "Oltre ai raggi UV, questa app mostra anche l'indice europeo di qualità dell'aria (European AQI) per la tua posizione — un numero unico che riassume cinque inquinanti misurati separatamente: PM2.5, PM10, ozono troposferico, biossido di azoto e biossido di zolfo.",
+      "p2": "L'indice riporta sempre il valore dell'inquinante messo peggio in quel momento, non una media — e le sue sei fasce (Buona, Discreta, Moderata, Scarsa, Molto scarsa, Pessima) sono tarate sulle linee guida OMS 2021 sulla qualità dell'aria, in modo che ogni fascia corrisponda a un livello di rischio sanitario paragonabile, indipendentemente da quale inquinante la determina.",
+      "p3": "L'esposizione a lungo termine a questi inquinanti è collegata a malattie respiratorie e cardiovascolari — l'Agenzia Europea dell'Ambiente stima che la maggioranza della popolazione urbana europea respiri livelli superiori alle linee guida OMS per almeno uno di questi cinque inquinanti.",
+      "categoriesCaption": "Le sei fasce dell'indice europeo di qualità dell'aria",
+      "categories": {
+        "good": "Buona",
+        "fair": "Discreta",
+        "moderate": "Moderata",
+        "poor": "Scarsa",
+        "veryPoor": "Molto scarsa",
+        "extremelyPoor": "Pessima"
+      },
+      "source": "Fonte:",
+      "shareText": "Cosa significa davvero \"Aria buona\" nell'app? Ecco come funziona l'indice europeo di qualità dell'aria:"
     },
     "ozone": {
       "title": "Lo strato di ozono si sta riprendendo — ecco il grafico reale",
@@ -309,6 +329,10 @@
         }
       },
       "shareText": "Le radiazioni UV solari sono ufficialmente un cancerogeno di Gruppo 1 — ecco quando e perché:"
+    },
+    "sources": {
+      "title": "Fonti",
+      "intro": "Ogni affermazione scientifica in questa pagina è verificabile — l'elenco completo, in un unico posto."
     },
     "footer": {
       "tagline": "Pensata per rispondere a una domanda in fretta — e per mostrare le fonti.",

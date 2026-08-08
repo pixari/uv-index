@@ -179,18 +179,10 @@
     "eyebrow": "The science of sun safety",
     "metaDescription": "How the UV index actually works, the science of sun protection, and what SPF really means — with verifiable sources.",
     "back": "← Back to home",
-    "chart": {
-      "title": "UV over the next 24 hours",
-      "subtitle": "In {place}, hour by hour"
-    },
-    "bestWindow": {
-      "title": "Best time to be outside",
-      "none": "No low-risk window in the next 24 hours — bring protection regardless"
-    },
-    "forecast": {
-      "title": "Upcoming days",
-      "subtitle": "Peak UV expected each day",
-      "today": "Today"
+    "openApp": {
+      "title": "Your live UV, in real time",
+      "body": "The hourly chart, upcoming days, low-risk window, and a personalized vitamin D window live in the app, not here — tap the \"Today's UV scale\" card on the main screen.",
+      "cta": "Open the app →"
     },
     "methodology": {
       "title": "How the UV index works",
@@ -199,6 +191,44 @@
       "p3": "The number shown in this app is calculated in real time by combining these factors with weather models — that's why it changes hour by hour, peaking near solar noon and dropping close to zero at dawn and dusk, as you can see in the chart above.",
       "source": "Source:",
       "shareText": "Cloudy skies don't block most UV — here's how the UV index actually works:"
+    },
+    "physics": {
+      "title": "The physics behind the number",
+      "p1": "UV intensity increases by roughly {percent}% for every 1,000 meters of altitude — there's simply less atmosphere above you to filter it. A ski resort at 2,000m can see meaningfully higher UV than the valley below it, on the same clear day.",
+      "p2": "The sun isn't the only source, either — surfaces bounce a real share of it back up at you. Fresh snow reflects most of it; sand and sea foam matter too, just less dramatically. It's why reflected sunburn (and snow-blindness) are real risks even in the shade.",
+      "chartCaption": "Share of UV reflected back up, by surface",
+      "source": "Source:",
+      "surfaces": {
+        "freshSnow": "Fresh snow",
+        "seaFoam": "Sea foam",
+        "drySand": "Dry sand",
+        "concrete": "Concrete",
+        "grassSoil": "Grass, soil"
+      },
+      "shareText": "Fresh snow reflects up to 80% of UV back at you — and altitude alone adds ~10% per 1000m. The physics behind the number:"
+    },
+    "vitaminD": {
+      "title": "The vitamin D window",
+      "p1": "UV exposure isn't only a risk to manage: the same UVB radiation that causes sunburn is also what triggers the body to synthesize vitamin D, essential for absorbing calcium and keeping bones healthy — which is why total, round-the-clock protection isn't this app's goal.",
+      "p2": "A 2024 study numerically modeled how much midday sun (10:00–16:00, the March–October active season in the Mediterranean basin) is needed to produce 1000 IU of vitamin D, for each Fitzpatrick skin type — lighter skin synthesizes it faster, darker skin needs more time for the same amount.",
+      "p3": "These are seasonal averages, not scaled to today's UV the way the burn-time estimate above is — the app shows them side by side in the Forecast panel, so you can get a sense of the real margin between the two.",
+      "chartCaption": "Average minutes of midday direct sun to produce 1000 IU, by skin type",
+      "skinTypeLabel": "Type {skinType}",
+      "source": "Source:",
+      "shareText": "How much sun does it actually take to make vitamin D, by skin type? A 2024 study worked it out:"
+    },
+    "worldCompare": {
+      "title": "Your UV vs. the world, right now",
+      "subtitle": "The same clear sky produces very different UV depending on where — and how high — you are.",
+      "note": "Nairobi and Denver sit roughly 1,600–1,800m above sea level — part of why they read higher than latitude alone would suggest.",
+      "you": "You",
+      "cities": {
+        "singapore": "Singapore",
+        "nairobi": "Nairobi",
+        "denver": "Denver",
+        "reykjavik": "Reykjavík"
+      },
+      "shareText": "Here's how the UV index compares between where I am and a few places around the world, right now:"
     },
     "spf": {
       "title": "How SPF actually works",
@@ -240,44 +270,17 @@
     },
     "toc": {
       "title": "In this piece",
-      "chart": "Today's UV curve",
-      "forecast": "Upcoming days",
       "methodology": "How the index works",
       "physics": "The physics behind it",
+      "vitaminD": "The vitamin D window",
       "worldCompare": "You vs. the world",
       "spf": "How SPF works",
       "myths": "Myths worth retiring",
       "burnHeatmap": "Burn time, by skin type",
+      "airQuality": "Air quality, explained",
       "ozone": "The ozone layer, healing",
-      "iarc": "Why it's a Group 1 carcinogen"
-    },
-    "physics": {
-      "title": "The physics behind the number",
-      "p1": "UV intensity increases by roughly {percent}% for every 1,000 meters of altitude — there's simply less atmosphere above you to filter it. A ski resort at 2,000m can see meaningfully higher UV than the valley below it, on the same clear day.",
-      "p2": "The sun isn't the only source, either — surfaces bounce a real share of it back up at you. Fresh snow reflects most of it; sand and sea foam matter too, just less dramatically. It's why reflected sunburn (and snow-blindness) are real risks even in the shade.",
-      "chartCaption": "Share of UV reflected back up, by surface",
-      "source": "Source:",
-      "surfaces": {
-        "freshSnow": "Fresh snow",
-        "seaFoam": "Sea foam",
-        "drySand": "Dry sand",
-        "concrete": "Concrete",
-        "grassSoil": "Grass, soil"
-      },
-      "shareText": "Fresh snow reflects up to 80% of UV back at you — and altitude alone adds ~10% per 1000m. The physics behind the number:"
-    },
-    "worldCompare": {
-      "title": "Your UV vs. the world, right now",
-      "subtitle": "The same clear sky produces very different UV depending on where — and how high — you are.",
-      "note": "Nairobi and Denver sit roughly 1,600–1,800m above sea level — part of why they read higher than latitude alone would suggest.",
-      "you": "You",
-      "cities": {
-        "singapore": "Singapore",
-        "nairobi": "Nairobi",
-        "denver": "Denver",
-        "reykjavik": "Reykjavík"
-      },
-      "shareText": "Here's how the UV index compares between where I am and a few places around the world, right now:"
+      "iarc": "Why it's a Group 1 carcinogen",
+      "sources": "Sources"
     },
     "burnHeatmap": {
       "title": "Minutes to burn, by skin type and UV index",
@@ -286,6 +289,23 @@
       "skinTypeHeader": "Type {skinType}",
       "source": "See \"How the index works\" above for the Fitzpatrick scale itself.",
       "shareText": "How fast does unprotected skin actually burn, by skin type and UV index? The real numbers:"
+    },
+    "airQuality": {
+      "title": "What \"good air quality\" actually means",
+      "p1": "Alongside UV, this app also shows the European Air Quality Index (European AQI) for your location — a single number that summarizes five separately measured pollutants: PM2.5, PM10, ground-level ozone, nitrogen dioxide, and sulphur dioxide.",
+      "p2": "The index always reports whichever pollutant is worst at that moment, not an average — and its six bands (Good, Fair, Moderate, Poor, Very Poor, Extremely Poor) are calibrated against the WHO's 2021 air quality guidelines, so each band corresponds to a comparable level of health risk regardless of which pollutant is driving it.",
+      "p3": "Long-term exposure to these pollutants is linked to respiratory and cardiovascular disease — the European Environment Agency estimates that most of Europe's urban population breathes levels above WHO guidelines for at least one of these five pollutants.",
+      "categoriesCaption": "The six bands of the European Air Quality Index",
+      "categories": {
+        "good": "Good",
+        "fair": "Fair",
+        "moderate": "Moderate",
+        "poor": "Poor",
+        "veryPoor": "Very poor",
+        "extremelyPoor": "Extremely poor"
+      },
+      "source": "Source:",
+      "shareText": "What does \"Good air\" in the app actually mean? Here's how the European Air Quality Index works:"
     },
     "ozone": {
       "title": "The ozone layer is healing — here's the actual chart",
@@ -309,6 +329,10 @@
         }
       },
       "shareText": "Solar UV radiation is officially a Group 1 carcinogen — here's when and why:"
+    },
+    "sources": {
+      "title": "Sources",
+      "intro": "Every scientific claim on this page is checkable — the full list, in one place."
     },
     "footer": {
       "tagline": "Built to answer one question quickly — and to show its work.",

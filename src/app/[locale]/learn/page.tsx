@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
+import { MYTH_KEYS } from "@/lib/mythSources";
 import LearnClient from "./LearnClient";
 
 const SITE_URL = "https://uvindex.pixari.dev";
@@ -44,5 +45,47 @@ export default async function LearnPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  return <LearnClient />;
+  const t = await getTranslations({ locale, namespace: "learn" });
+
+  // The myths section is the one part of this page that's naturally
+  // Q&A-shaped — FAQPage schema for it, plus a plain Article entry for
+  // the page as a whole. MYTH_KEYS/MYTH_SOURCES are shared with
+  // LearnClient so this can never list a different set of myths than
+  // what's actually rendered on the page.
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        headline: t("title"),
+        description: t("metaDescription"),
+        url: `${SITE_URL}/${locale}/learn`,
+        inLanguage: locale,
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: MYTH_KEYS.map((key) => ({
+          "@type": "Question",
+          name: t(`myths.items.${key}.myth`),
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: t(`myths.items.${key}.fact`),
+          },
+        })),
+      },
+    ],
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        // Content is our own translated strings, not user input — escaping
+        // "<" is still cheap insurance against a "</script>" breaking out
+        // of the tag if a translation ever contained one.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
+      <LearnClient />
+    </>
+  );
 }
