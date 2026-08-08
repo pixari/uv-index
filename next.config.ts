@@ -50,6 +50,16 @@ const SECURITY_HEADERS = [
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  // The OG-image routes (opengraph-image.tsx under /, /learn, /privacy)
+  // read the Fraunces font files at runtime via fs.readFile — since that's
+  // a raw filesystem read rather than a JS import, `output: "standalone"`'s
+  // automatic file tracing doesn't discover it on its own and the build
+  // would otherwise ship without them. `/*` rather than route-scoped keys
+  // because those routes live under the `[locale]` dynamic segment and the
+  // two font files are tiny (140KB total) either way.
+  outputFileTracingIncludes: {
+    "/*": ["./src/assets/fonts/**/*"],
+  },
   async headers() {
     return [{ source: "/(.*)", headers: SECURITY_HEADERS }];
   },

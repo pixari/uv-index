@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { BRAND_MARK_GRADIENT } from "@/lib/brandGradient";
 
 export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
@@ -21,8 +22,7 @@ export default function AppleIcon() {
             width: 96,
             height: 96,
             borderRadius: "50%",
-            background:
-              "linear-gradient(135deg, #3EA72D 0%, #FFF300 35%, #F18B00 65%, #E53210 100%)",
+            background: BRAND_MARK_GRADIENT,
           }}
         />
       </div>

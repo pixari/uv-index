@@ -6,16 +6,16 @@ import { EditorialOgCard } from "../ogCard";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-// Makes the /learn link itself look intentional in a chat/social preview,
-// not just a bare title — same light/editorial look the page itself has,
-// with the app's own WHO gradient bar as the graphic anchor.
+// /privacy previously had no image of its own at all — sharing it fell
+// back to Home's, which also meant the whole card (title, description,
+// URL) looked like a link to the homepage, not the privacy policy.
 export default async function Image({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "learn" });
+  const t = await getTranslations({ locale, namespace: "privacy" });
   const fonts = await loadFrauncesFonts();
 
   return new ImageResponse(

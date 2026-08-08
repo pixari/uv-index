@@ -35,6 +35,17 @@ export async function generateMetadata({
       locale,
       type: "article",
     },
+    // Without its own `twitter` object here, this page silently inherited
+    // the root layout's — meaning sharing /learn on X showed Home's title
+    // and description under /learn's own (correct) image. Metadata fields
+    // aren't deep-merged per sub-field the way `openGraph.title` above
+    // might suggest; a child page's `twitter` object fully replaces the
+    // parent's rather than filling in the gaps.
+    twitter: {
+      card: "summary_large_image",
+      title: t("title"),
+      description: t("metaDescription"),
+    },
   };
 }
 
