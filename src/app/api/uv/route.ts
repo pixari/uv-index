@@ -3,6 +3,7 @@ import { uvLevel } from "@/lib/uvLevel";
 import { parseCoords } from "@/lib/validateCoords";
 import { clientIp, rateLimit } from "@/lib/rateLimit";
 import { currentUvFrom, currentWeatherFrom, fetchMetTimeseries } from "@/lib/metForecast";
+import { fetchCurrentAqi } from "@/lib/airQualityForecast";
 
 // Look no further than 24h ahead for a "safe after" estimate — beyond
 // that the forecast is coarser and the number stops being actionable
@@ -24,7 +25,13 @@ export async function GET(req: NextRequest) {
   }
   const { lat, lon } = coords;
 
-  const forecast = await fetchMetTimeseries(lat, lon);
+  // Run alongside the MET fetch, not after it — air quality is a second,
+  // independent provider (Open-Meteo) and shouldn't add its own latency
+  // on top of MET's. A failure here (null) doesn't fail the UV response.
+  const [forecast, aqi] = await Promise.all([
+    fetchMetTimeseries(lat, lon),
+    fetchCurrentAqi(lat, lon),
+  ]);
   if (!forecast) {
     return NextResponse.json(
       { error: "upstream fetch failed" },
@@ -53,5 +60,5 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  return NextResponse.json({ uv, updatedAt, safeAfter, temperature, cloudCover });
+  return NextResponse.json({ uv, updatedAt, safeAfter, temperature, cloudCover, aqi });
 }

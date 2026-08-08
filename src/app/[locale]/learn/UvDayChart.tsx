@@ -6,8 +6,21 @@ const WIDTH = 320;
 const HEIGHT = 140;
 const PADDING = { top: 10, right: 10, bottom: 24, left: 22 };
 
-export default function UvDayChart({ points }: { points: Point[] }) {
+export default function UvDayChart({
+  points,
+  dark = false,
+}: {
+  points: Point[];
+  // Home's ForecastSheet reuses this chart on dark frosted glass instead
+  // of /learn's light background — same shapes, white-opacity ink instead
+  // of the light theme's CSS custom properties.
+  dark?: boolean;
+}) {
   if (points.length < 2) return null;
+
+  const axisColor = dark ? "rgba(255,255,255,0.6)" : "var(--muted-foreground)";
+  const lineColor = dark ? "#fff" : "var(--brand)";
+  const nowLineColor = dark ? "#fff" : "var(--ink)";
 
   const maxUv = Math.max(...points.map((p) => p.uv), 3);
   const plotW = WIDTH - PADDING.left - PADDING.right;
@@ -46,7 +59,7 @@ export default function UvDayChart({ points }: { points: Point[] }) {
         x={PADDING.left - 6}
         y={PADDING.top + plotH}
         fontSize={9}
-        fill="var(--muted-foreground)"
+        fill={axisColor}
         textAnchor="end"
       >
         0
@@ -55,17 +68,17 @@ export default function UvDayChart({ points }: { points: Point[] }) {
         x={PADDING.left - 6}
         y={PADDING.top + 8}
         fontSize={9}
-        fill="var(--muted-foreground)"
+        fill={axisColor}
         textAnchor="end"
       >
         {maxUvRounded}
       </text>
 
-      <path d={areaPath} fill="var(--brand)" opacity={0.12} />
+      <path d={areaPath} fill={lineColor} opacity={dark ? 0.18 : 0.12} />
       <path
         d={linePath}
         fill="none"
-        stroke="var(--brand)"
+        stroke={lineColor}
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -76,7 +89,7 @@ export default function UvDayChart({ points }: { points: Point[] }) {
           x2={PADDING.left + nowFraction * plotW}
           y1={PADDING.top}
           y2={PADDING.top + plotH}
-          stroke="var(--ink)"
+          stroke={nowLineColor}
           strokeWidth={1}
           strokeDasharray="3 3"
           opacity={0.4}
@@ -89,7 +102,7 @@ export default function UvDayChart({ points }: { points: Point[] }) {
             x={x(i)}
             y={HEIGHT - 6}
             fontSize={9}
-            fill="var(--muted-foreground)"
+            fill={axisColor}
             textAnchor="middle"
           >
             {new Date(p.time).getHours()}

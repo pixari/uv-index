@@ -39,6 +39,33 @@
         "partlyCloudy": "Partly cloudy",
         "mostlyCloudy": "Mostly cloudy",
         "cloudy": "Cloudy"
+      },
+      "aqi": {
+        "good": "Good air",
+        "fair": "Fair air",
+        "moderate": "Moderate air",
+        "poor": "Poor air",
+        "veryPoor": "Very poor air",
+        "extremelyPoor": "Extremely poor air"
+      }
+    },
+    "openForecastLabel": "Open forecast",
+    "forecastSheet": {
+      "title": "Forecast",
+      "todayLabel": "Today",
+      "chartTitle": "Today's UV",
+      "daysTitle": "Upcoming days",
+      "bestWindow": {
+        "title": "Best time to be outside",
+        "none": "No low-risk window in the next 24 hours — bring protection regardless"
+      },
+      "vitaminD": {
+        "title": "Vitamin D window",
+        "body": "For your skin type, roughly {minutes} min of midday direct sun is enough, on average, to produce a useful amount.",
+        "compare": "At today's UV, burn risk instead sets in after about {burnMinutes} min.",
+        "noSkinType": "Set your skin type in Settings to see a personalized estimate.",
+        "disclaimer": "Not medical advice — a population-level estimate, not a personal one. See the note on /privacy.",
+        "sourceLabel": "Source"
       }
     }
   },
@@ -141,7 +168,8 @@
     "uses": {
       "met": "Real-time UV index — free, updated roughly hourly",
       "openMeteo": "City search when you manually look up a place",
-      "bigDataCloud": "Place name when you use GPS"
+      "bigDataCloud": "Place name when you use GPS",
+      "openMeteoAir": "Air quality (European index) for the same location"
     },
     "analyticsNote": "We use Umami, a cookie-free analytics tool that doesn't collect personal data — just aggregate stats on how many people use the app.",
     "fullPolicyLink": "Read the full privacy policy & disclaimer →"
@@ -296,7 +324,7 @@
     "eyebrow": "Legal",
     "back": "← Back to home",
     "intro": "The short version: no accounts, no data for sale, and — unless you turn on background push alerts — everything about you stays on your own device. Here's the full picture — what this app's guidance does and doesn't mean, and exactly what happens to your data.",
-    "lastUpdated": "Last updated 7 August 2026",
+    "lastUpdated": "Last updated 8 August 2026",
     "toc": {
       "title": "In this page",
       "disclaimer": "Disclaimer",
@@ -331,7 +359,7 @@
       "intro": "This is the actual GDPR detail: what data moves, where, on what legal basis, and for how long.",
       "location": {
         "title": "Location (GPS or a searched place)",
-        "body": "When you allow location access or search for a place, your coordinates are sent to our server just long enough to ask MET Norway (and, for search, Open-Meteo or BigDataCloud) for a UV reading — then discarded. We don't write it to a database or attach it to any identity. It's kept only on your own device, so the app can show your last reading if you reopen it offline.",
+        "body": "When you allow location access or search for a place, your coordinates are sent to our server just long enough to ask MET Norway (for the UV reading), Open-Meteo Air Quality (for current air quality), and, for search, Open-Meteo or BigDataCloud — then discarded. We don't write it to a database or attach it to any identity. It's kept only on your own device, so the app can show your last reading if you reopen it offline.",
         "legalBasis": "Legal basis: Art. 6(1)(b) GDPR — necessary to do the specific thing you asked for.",
         "retention": "Retention: none — it exists only for the duration of the request."
       },
@@ -367,7 +395,8 @@
       "bigDataCloud": "BigDataCloud — turning GPS coordinates into a place name.",
       "umami": "Umami, self-hosted on our own infrastructure — anonymous usage counts.",
       "note": "None of these receive anything that identifies you personally, and we don't share data with advertisers, data brokers, or anyone else. Some may process requests on infrastructure outside the EU/EEA; where that's the case, it's on them to secure it under their own compliance obligations (e.g. standard contractual clauses).",
-      "pushService": "Your browser's own push service (e.g. Google for Chrome, Mozilla for Firefox, Apple for Safari) — delivers the alert to your device if you've turned background alerts on. They see that a notification was sent, not its contents: Web Push payloads are encrypted end-to-end with keys your browser generates itself."
+      "pushService": "Your browser's own push service (e.g. Google for Chrome, Mozilla for Firefox, Apple for Safari) — delivers the alert to your device if you've turned background alerts on. They see that a notification was sent, not its contents: Web Push payloads are encrypted end-to-end with keys your browser generates itself.",
+      "openMeteoAir": "Open-Meteo Air Quality — the same air-quality reading shown in the app, for your coordinates."
     },
     "cookiesStorage": {
       "title": "Cookies and local storage",

@@ -193,7 +193,9 @@ export default function PrivacyClient() {
       <Section id="thirdParties" title={t("thirdParties.title")}>
         <p className="mb-4 text-ink leading-relaxed">{t("thirdParties.intro")}</p>
         <ul className="mb-4 space-y-2">
-          {(["met", "openMeteo", "bigDataCloud", "umami", "pushService"] as const).map((key) => (
+          {(
+            ["met", "openMeteo", "bigDataCloud", "openMeteoAir", "umami", "pushService"] as const
+          ).map((key) => (
             <li
               key={key}
               className="rounded-lg border border-border px-4 py-3 text-sm text-foreground"
