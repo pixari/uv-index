@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { clientIp, rateLimit } from "@/lib/rateLimit";
 import { deletePushSubscription, isPushDbAvailable } from "@/lib/pushDb";
+import { parseJsonBody } from "@/lib/pushValidation";
 
 export async function POST(req: NextRequest) {
   if (!(await isPushDbAvailable())) {
@@ -18,10 +19,8 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  let body: unknown;
-  try {
-    body = await req.json();
-  } catch {
+  const body = await parseJsonBody(req);
+  if (body === undefined) {
     return NextResponse.json({ error: "invalid JSON" }, { status: 400 });
   }
 

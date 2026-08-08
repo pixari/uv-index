@@ -3,7 +3,7 @@
 // just doesn't offer background push — the rest of the app doesn't care.
 // See .env.example for how to generate a real pair.
 
-export type VapidConfig = {
+type VapidConfig = {
   publicKey: string;
   privateKey: string;
   subject: string;

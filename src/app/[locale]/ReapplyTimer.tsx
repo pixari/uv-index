@@ -17,13 +17,13 @@ import {
 import { burnMinutes, type SkinType } from "@/lib/skinType";
 import { getReapplyNotifPref, showNotification } from "@/lib/notifications";
 import { cancelReapplyPush, scheduleReapplyPush } from "@/lib/pushClient";
+import { GLASS_CARD } from "./glassCard";
 
 function spfLabel(spf: Spf) {
   return spf > 50 ? "50+" : String(spf);
 }
 
-const GLASS =
-  "w-full max-w-xs rounded-3xl bg-white/12 shadow-lg ring-1 ring-white/15 backdrop-blur-xl";
+const GLASS = `w-full max-w-xs ${GLASS_CARD}`;
 
 const EYEBROW = "text-xs font-semibold uppercase tracking-wide text-white/60";
 

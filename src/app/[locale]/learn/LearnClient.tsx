@@ -8,6 +8,7 @@ import { groupDailyPeaks, type DailyPeak } from "@/lib/dailyForecast";
 import { OZONE_HOLE_AREA, OZONE_RECOVERY_YEAR_ANTARCTIC, OZONE_SOURCE_URL } from "@/lib/ozoneData";
 import { UV_REFLECTANCE, UV_INCREASE_PERCENT_PER_1000M, UV_PHYSICS_SOURCE_URL } from "@/lib/uvPhysics";
 import { IARC_TIMELINE } from "@/lib/iarcTimeline";
+import { getLastPlace, type LastPlace } from "@/lib/lastPlace";
 import DailyForecast from "./DailyForecast";
 import UvDayChart from "./UvDayChart";
 import OzoneChart from "./OzoneChart";
@@ -18,9 +19,6 @@ import IarcTimeline from "./IarcTimeline";
 import ArticleShareButton from "./ArticleShareButton";
 import WhoGradientBar from "./WhoGradientBar";
 
-const LAST_PLACE_KEY = "uv-index:last-place";
-
-type Coords = { lat: number; lon: number; label: string };
 type Point = { time: string; uv: number };
 type ReferenceReading = { key: string; uv: number | null };
 
@@ -83,15 +81,14 @@ function ArticleHeader({
 export default function LearnClient() {
   const t = useTranslations("learn");
   const locale = useLocale();
-  const [coords, setCoords] = useState<Coords | null>(null);
+  const [coords, setCoords] = useState<LastPlace | null>(null);
   const [points, setPoints] = useState<Point[] | null>(null);
   const [dailyPeaks, setDailyPeaks] = useState<DailyPeak[]>([]);
   const [referenceReadings, setReferenceReadings] = useState<ReferenceReading[]>([]);
 
   useEffect(() => {
-    const saved = localStorage.getItem(LAST_PLACE_KEY);
-    if (!saved) return;
-    const parsed: Coords = JSON.parse(saved);
+    const parsed = getLastPlace();
+    if (!parsed) return;
     setCoords(parsed);
     fetch(`/api/uv-timeseries?lat=${parsed.lat}&lon=${parsed.lon}&hours=120`)
       .then((r) => r.json())

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { clientIp, rateLimit } from "@/lib/rateLimit";
 import { getVapidConfig } from "@/lib/vapid";
 import { isPushDbAvailable, upsertPushReminder } from "@/lib/pushDb";
-import { parseLocale, parseSubscriptionInput } from "@/lib/pushValidation";
+import { parseJsonBody, parseLocale, parseSubscriptionInput } from "@/lib/pushValidation";
 
 // One-shot reapply-sunscreen reminder — arms a background push for
 // `dueAt`. Called right alongside startReapplyTimer() on the client, so
@@ -22,10 +22,8 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  let body: unknown;
-  try {
-    body = await req.json();
-  } catch {
+  const body = await parseJsonBody(req);
+  if (body === undefined) {
     return NextResponse.json({ error: "invalid JSON" }, { status: 400 });
   }
 

@@ -17,6 +17,7 @@ import { isPushSubscribedLocally, subscribeToHighUvPush } from "@/lib/pushClient
 import { getCachedUv, setCachedUv } from "@/lib/uvCache";
 import { reapplyStatus, type ReapplyStatus } from "@/lib/reapplyTimer";
 import { setAppBadgeCount } from "@/lib/appBadge";
+import { getLastPlace, setLastPlace, type LastPlace } from "@/lib/lastPlace";
 import { Link } from "@/i18n/navigation";
 import InstallPrompt from "./InstallPrompt";
 import LocationSheet, { type Place } from "./LocationSheet";
@@ -24,16 +25,13 @@ import ReapplyTimer from "./ReapplyTimer";
 import SettingsSheet from "./SettingsSheet";
 import ShareButton from "./ShareButton";
 import UvScaleBar from "./UvScaleBar";
-
-type Coords = { lat: number; lon: number; label: string };
-
-const LAST_PLACE_KEY = "uv-index:last-place";
+import { GLASS_CARD } from "./glassCard";
 
 export default function HomeClient() {
   const t = useTranslations("home");
   const tn = useTranslations("notify");
   const locale = useLocale();
-  const [coords, setCoords] = useState<Coords | null>(null);
+  const [coords, setCoords] = useState<LastPlace | null>(null);
   const [uv, setUv] = useState<number | null>(null);
   const [updatedAt, setUpdatedAt] = useState<string | null>(null);
   const [safeAfter, setSafeAfter] = useState<string | null>(null);
@@ -63,9 +61,9 @@ export default function HomeClient() {
 
   // Restore last-used place, or fall back to GPS prompt.
   useEffect(() => {
-    const saved = localStorage.getItem(LAST_PLACE_KEY);
+    const saved = getLastPlace();
     if (saved) {
-      setCoords(JSON.parse(saved));
+      setCoords(saved);
       return;
     }
     setShowLocation(true);
@@ -115,7 +113,7 @@ export default function HomeClient() {
   // Persist on every change, including a label resolved after the fact.
   useEffect(() => {
     if (!coords) return;
-    localStorage.setItem(LAST_PLACE_KEY, JSON.stringify(coords));
+    setLastPlace(coords);
   }, [coords]);
 
   function maybeNotifyHighUv(value: number) {
@@ -408,7 +406,7 @@ export default function HomeClient() {
 
               {/* Secondary: today's forecast — frosted glass, not a white
                   card; depth comes from blur + translucency here. */}
-              <div className="flex w-full max-w-xs flex-col gap-3 rounded-3xl bg-white/12 px-5 py-5 shadow-lg ring-1 ring-white/15 backdrop-blur-xl">
+              <div className={`flex w-full max-w-xs flex-col gap-3 px-5 py-5 ${GLASS_CARD}`}>
                 <span className="text-xs font-semibold uppercase tracking-wide text-white/60">
                   {t("scaleLabel")}
                 </span>

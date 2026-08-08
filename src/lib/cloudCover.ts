@@ -2,7 +2,7 @@
 // the same way uvLevel.ts buckets UV — a handful of named levels a person
 // reads at a glance beats a bare percentage next to the UV number.
 
-export type CloudCoverLevel = "clear" | "partlyCloudy" | "mostlyCloudy" | "cloudy";
+type CloudCoverLevel = "clear" | "partlyCloudy" | "mostlyCloudy" | "cloudy";
 
 export function cloudCoverLevel(percent: number): CloudCoverLevel {
   if (percent < 20) return "clear";

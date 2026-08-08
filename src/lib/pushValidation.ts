@@ -1,10 +1,19 @@
-// Shared request-body parsing for the push API routes — subscribe,
-// schedule-reminder, and cancel-reminder all receive the same
-// PushSubscriptionJSON shape from the browser and need to validate it
-// identically, so this is one place rather than three copies quietly
-// drifting on what counts as valid.
+// Shared request-body parsing for the push API routes — all four receive
+// JSON bodies and need the same "is this even valid JSON" and (three of
+// them) "is this a real PushSubscriptionJSON" checks, so this is one
+// place rather than four copies quietly drifting on what counts as valid.
 
+import type { NextRequest } from "next/server";
 import { routing } from "@/i18n/routing";
+
+/** Parses the request body as JSON. Returns `undefined` (never throws) if it isn't valid JSON. */
+export async function parseJsonBody(req: NextRequest): Promise<unknown> {
+  try {
+    return await req.json();
+  } catch {
+    return undefined;
+  }
+}
 
 export function parseSubscriptionInput(
   body: unknown,
