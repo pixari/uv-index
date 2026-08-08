@@ -75,7 +75,6 @@ export function gridKey(lat: number, lon: number): string {
 }
 
 let started = false;
-let timer: ReturnType<typeof setInterval> | null = null;
 
 type SendResult = "sent" | "gone" | "failed";
 
@@ -181,7 +180,7 @@ export async function startPushScheduler() {
     await checkDueReminders().catch((err) => console.warn("[push] reminder tick failed", err));
   }
 
-  timer = setInterval(() => {
+  const timer = setInterval(() => {
     tick();
   }, CHECK_INTERVAL_MS);
   // Don't hold the process open just for this timer during graceful
@@ -191,10 +190,4 @@ export async function startPushScheduler() {
 
   // Also run once shortly after boot rather than waiting a full interval.
   tick();
-}
-
-export function stopPushScheduler() {
-  if (timer) clearInterval(timer);
-  timer = null;
-  started = false;
 }

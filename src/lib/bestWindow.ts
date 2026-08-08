@@ -1,6 +1,6 @@
 import { uvLevel } from "./uvLevel";
 
-export type LowRiskWindow = { start: string; end: string };
+type LowRiskWindow = { start: string; end: string };
 
 /**
  * Finds contiguous stretches of low-risk UV (below 3) in an hourly

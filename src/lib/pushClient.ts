@@ -13,7 +13,7 @@
 
 const PUSH_SUBSCRIBED_KEY = "uv-index:push-subscribed";
 
-export function pushSupported(): boolean {
+function pushSupported(): boolean {
   return (
     typeof window !== "undefined" &&
     "serviceWorker" in navigator &&

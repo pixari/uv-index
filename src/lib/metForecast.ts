@@ -5,9 +5,9 @@
 // place a correctness requirement, not just tidiness: the scheduler and
 // /api/uv need to agree on exactly what "the current UV reading" means.
 
-export const MET_URL = "https://api.met.no/weatherapi/locationforecast/2.0/complete";
+const MET_URL = "https://api.met.no/weatherapi/locationforecast/2.0/complete";
 
-export type MetTimeseriesEntry = {
+type MetTimeseriesEntry = {
   time: string;
   data: {
     instant: {

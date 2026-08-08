@@ -11,8 +11,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { Slider } from "@/components/ui/slider";
-import { SKIN_TYPES, SKIN_TONE_SWATCH, type SkinType } from "@/lib/skinType";
+import type { SkinType } from "@/lib/skinType";
 import {
   getProfiles,
   addProfile,
@@ -25,104 +24,18 @@ import {
 } from "@/lib/profiles";
 import { clearReapplyTimer, clearStoredSpf } from "@/lib/reapplyTimer";
 import { markSettingsForReopen } from "@/lib/pendingSettingsReopen";
-import {
-  ensureNotificationPermission,
-  getHighUvNotifPref,
-  getReapplyNotifPref,
-  notificationsSupported,
-  setHighUvNotifPref,
-  setReapplyNotifPref,
-} from "@/lib/notifications";
-import {
-  cancelReapplyPush,
-  isPushSubscribedLocally,
-  subscribeToHighUvPush,
-  unsubscribeFromHighUvPush,
-} from "@/lib/pushClient";
+import { cancelReapplyPush } from "@/lib/pushClient";
 import DataSourcesSheet from "./DataSourcesSheet";
 import ScienceSheet from "./ScienceSheet";
+import ProfileManager from "./ProfileManager";
+import NotificationSettings from "./NotificationSettings";
+import SkinTypePicker from "./SkinTypePicker";
 
 const LOCALE_LABEL: Record<string, string> = {
   it: "Italiano",
   en: "English",
   de: "Deutsch",
 };
-
-// Same key HomeClient/LearnClient already read/write independently —
-// there's no shared "current place" module, each screen that needs it
-// just agrees on the storage key.
-const LAST_PLACE_KEY = "uv-index:last-place";
-
-type LastPlace = { lat: number; lon: number; label: string };
-
-function readLastPlace(): LastPlace | null {
-  if (typeof window === "undefined") return null;
-  const raw = localStorage.getItem(LAST_PLACE_KEY);
-  if (!raw) return null;
-  try {
-    return JSON.parse(raw) as LastPlace;
-  } catch {
-    return null;
-  }
-}
-
-function ProfileAvatar({ profile }: { profile: Profile }) {
-  // Skin type doesn't apply to an infant profile — the avatar shouldn't
-  // imply it does by tinting itself from a value that's not being used.
-  const tone =
-    !profile.isInfant && profile.skinType ? SKIN_TONE_SWATCH[profile.skinType] : undefined;
-  const initial = profile.name.trim().charAt(0).toUpperCase() || "?";
-  return (
-    <span
-      aria-hidden
-      className={
-        "flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold " +
-        (tone
-          ? profile.skinType! >= 4
-            ? "text-white"
-            : "text-ink"
-          : "bg-border text-muted-foreground")
-      }
-      style={tone ? { backgroundColor: tone } : undefined}
-    >
-      {initial}
-    </span>
-  );
-}
-
-function Toggle({
-  checked,
-  onChange,
-  label,
-  disabled,
-}: {
-  checked: boolean;
-  onChange: (next: boolean) => void;
-  label: string;
-  disabled?: boolean;
-}) {
-  return (
-    <button
-      type="button"
-      role="switch"
-      aria-checked={checked}
-      aria-label={label}
-      disabled={disabled}
-      onClick={() => onChange(!checked)}
-      className={
-        "relative h-6 w-11 shrink-0 rounded-full transition-colors disabled:opacity-40 " +
-        (checked ? "bg-brand" : "bg-border")
-      }
-    >
-      <span
-        className={
-          "absolute top-0.5 h-5 w-5 rounded-full bg-white transition-transform " +
-          (checked ? "translate-x-[22px]" : "translate-x-0.5")
-        }
-      />
-    </button>
-  );
-}
 
 export default function SettingsSheet({
   open,
@@ -143,73 +56,14 @@ export default function SettingsSheet({
   const [showScience, setShowScience] = useState(false);
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [selectedProfileId, setSelectedProfileId] = useState<string | null>(null);
-  const [addingProfile, setAddingProfile] = useState(false);
-  const [newProfileName, setNewProfileName] = useState("");
-  const [reapplyNotif, setReapplyNotif] = useState(false);
-  const [highUvNotif, setHighUvNotif] = useState(false);
-  // Whether the high-UV toggle is actually backed by a live push
-  // subscription (alerts even when the app is closed) rather than just
-  // the foreground Notification permission — shown as a small hint so
-  // "on" doesn't silently mean two different things depending on the
-  // browser/deployment.
-  const [pushActive, setPushActive] = useState(false);
-  // Browser-level, sticky until the person changes it in their browser's
-  // own site settings — distinct from just "not decided yet".
-  const [notifBlocked, setNotifBlocked] = useState(false);
 
   useEffect(() => {
     if (!open) return;
     const list = getProfiles(tHome("defaultProfileName"));
     setProfiles(list);
     setSelectedProfileId(resolveActiveProfileId(tHome("defaultProfileName")));
-    setReapplyNotif(getReapplyNotifPref());
-    setHighUvNotif(getHighUvNotifPref());
-    setPushActive(isPushSubscribedLocally());
-    setNotifBlocked(notificationsSupported() && Notification.permission === "denied");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
-
-  // Turning a toggle on needs permission first; if it's denied (or the
-  // browser can't do notifications at all), the toggle snaps back off
-  // instead of silently claiming to be on — and, if it was denied, a hint
-  // explains why rather than leaving it a mystery.
-  async function toggleReapplyNotif(next: boolean) {
-    if (next) {
-      const granted = await ensureNotificationPermission();
-      setNotifBlocked(notificationsSupported() && Notification.permission === "denied");
-      if (!granted) {
-        setReapplyNotif(false);
-        setReapplyNotifPref(false);
-        return;
-      }
-    }
-    setReapplyNotif(next);
-    setReapplyNotifPref(next);
-  }
-
-  async function toggleHighUvNotif(next: boolean) {
-    if (next) {
-      const granted = await ensureNotificationPermission();
-      setNotifBlocked(notificationsSupported() && Notification.permission === "denied");
-      if (!granted) {
-        setHighUvNotif(false);
-        setHighUvNotifPref(false);
-        return;
-      }
-      // Best-effort — a browser without Push support, or a deployment
-      // that hasn't configured VAPID keys, still gets the foreground
-      // alert above; this just adds the "even when closed" half on top
-      // where it's actually available.
-      const place = readLastPlace();
-      const subscribed = place ? await subscribeToHighUvPush(place, locale) : false;
-      setPushActive(subscribed);
-    } else {
-      await unsubscribeFromHighUvPush();
-      setPushActive(false);
-    }
-    setHighUvNotif(next);
-    setHighUvNotifPref(next);
-  }
 
   function changeLocale(next: string) {
     // Switching language navigates to a different /[locale]/ URL, which
@@ -223,16 +77,15 @@ export default function SettingsSheet({
     setActiveProfileId(id);
   }
 
-  function chooseSkinType(value: number | readonly number[]) {
+  function handleChangeSkinType(type: SkinType) {
     if (!selectedProfileId) return;
-    const type = (Array.isArray(value) ? value[0] : value) as SkinType;
     setProfileSkinType(selectedProfileId, type);
     setProfiles((prev) =>
       prev.map((p) => (p.id === selectedProfileId ? { ...p, skinType: type } : p)),
     );
   }
 
-  function toggleIsInfant(next: boolean) {
+  function handleToggleInfant(next: boolean) {
     if (!selectedProfileId) return;
     setProfileIsInfant(selectedProfileId, next);
     setProfiles((prev) =>
@@ -240,19 +93,10 @@ export default function SettingsSheet({
     );
   }
 
-  function confirmAddProfile() {
-    const name = newProfileName.trim();
-    if (!name) return;
+  function handleAddProfile(name: string) {
     const created = addProfile(name);
     setProfiles((prev) => [...prev, created]);
     selectProfile(created.id);
-    setNewProfileName("");
-    setAddingProfile(false);
-  }
-
-  function cancelAddProfile() {
-    setAddingProfile(false);
-    setNewProfileName("");
   }
 
   function handleRemoveProfile(id: string) {
@@ -272,7 +116,6 @@ export default function SettingsSheet({
   }
 
   const selectedProfile = profiles.find((p) => p.id === selectedProfileId);
-  const displayedType = selectedProfile?.skinType ?? 3;
 
   return (
     <>
@@ -303,233 +146,21 @@ export default function SettingsSheet({
               </div>
             </div>
 
-            <div>
-              <h3 className="mb-2 text-sm font-medium text-muted-foreground">
-                {t("profiles")}
-              </h3>
-              <div className="flex flex-wrap items-center gap-2">
-                {profiles.map((p) => (
-                  <div
-                    key={p.id}
-                    className={
-                      "flex items-center rounded-full text-sm font-medium transition-colors " +
-                      (p.id === selectedProfileId
-                        ? "bg-brand text-primary-foreground"
-                        : "bg-surface text-foreground hover:bg-border")
-                    }
-                  >
-                    <button
-                      onClick={() => selectProfile(p.id)}
-                      className="flex items-center gap-1.5 py-1 pl-1 pr-1.5"
-                    >
-                      <ProfileAvatar profile={p} />
-                      {p.name}
-                    </button>
-                    {profiles.length > 1 && (
-                      <button
-                        onClick={() => handleRemoveProfile(p.id)}
-                        aria-label={t("removeProfile", { name: p.name })}
-                        className="p-1.5 pr-2.5 opacity-70 transition-opacity hover:opacity-100"
-                      >
-                        <svg
-                          width="12"
-                          height="12"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2.5"
-                          strokeLinecap="round"
-                        >
-                          <line x1="18" y1="6" x2="6" y2="18" />
-                          <line x1="6" y1="6" x2="18" y2="18" />
-                        </svg>
-                      </button>
-                    )}
-                  </div>
-                ))}
+            <ProfileManager
+              profiles={profiles}
+              selectedProfileId={selectedProfileId}
+              onSelect={selectProfile}
+              onAdd={handleAddProfile}
+              onRemove={handleRemoveProfile}
+            />
 
-                {addingProfile ? (
-                  <div className="flex items-center gap-1 rounded-full border border-brand bg-surface py-1 pr-1 pl-3">
-                    <input
-                      autoFocus
-                      type="text"
-                      value={newProfileName}
-                      onChange={(e) => setNewProfileName(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") confirmAddProfile();
-                        if (e.key === "Escape") {
-                          // Cancel just this composer — without stopping
-                          // propagation, Escape also bubbles to the sheet's
-                          // own dismiss handler and closes the whole panel.
-                          e.stopPropagation();
-                          cancelAddProfile();
-                        }
-                      }}
-                      placeholder={t("newProfileNamePlaceholder")}
-                      className="w-24 bg-transparent text-sm text-foreground placeholder:text-muted-foreground outline-none"
-                    />
-                    <button
-                      onClick={confirmAddProfile}
-                      aria-label={t("addProfileConfirm")}
-                      className="flex h-6 w-6 items-center justify-center rounded-full text-brand-ink transition-colors hover:bg-brand/10"
-                    >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="20 6 9 17 4 12" />
-                      </svg>
-                    </button>
-                    <button
-                      onClick={cancelAddProfile}
-                      aria-label={t("cancelAddProfile")}
-                      className="flex h-6 w-6 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                        <line x1="18" y1="6" x2="6" y2="18" />
-                        <line x1="6" y1="6" x2="18" y2="18" />
-                      </svg>
-                    </button>
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => setAddingProfile(true)}
-                    aria-label={t("addProfile")}
-                    className="flex h-8 w-8 items-center justify-center rounded-full border border-dashed border-border text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground"
-                  >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                      <line x1="12" y1="5" x2="12" y2="19" />
-                      <line x1="5" y1="12" x2="19" y2="12" />
-                    </svg>
-                  </button>
-                )}
-              </div>
-            </div>
+            <NotificationSettings open={open} />
 
-            <div>
-              <h3 className="mb-2 text-sm font-medium text-muted-foreground">
-                {t("notifications.title")}
-              </h3>
-              {notificationsSupported() ? (
-                <div className="flex flex-col gap-3 rounded-2xl border border-border bg-surface p-4">
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="text-sm text-foreground">
-                      {t("notifications.reapplyLabel")}
-                    </span>
-                    <Toggle
-                      checked={reapplyNotif}
-                      onChange={toggleReapplyNotif}
-                      label={t("notifications.reapplyLabel")}
-                    />
-                  </div>
-                  <div className="border-t border-border pt-3">
-                    <div className="flex items-center justify-between gap-3">
-                      <span className="text-sm text-foreground">
-                        {t("notifications.highUvLabel")}
-                      </span>
-                      <Toggle
-                        checked={highUvNotif}
-                        onChange={toggleHighUvNotif}
-                        label={t("notifications.highUvLabel")}
-                      />
-                    </div>
-                    {highUvNotif && (
-                      <p className="mt-1.5 text-xs leading-snug text-muted-foreground">
-                        {pushActive
-                          ? t("notifications.pushActive")
-                          : t("notifications.pushInactive")}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              ) : (
-                <p className="text-sm text-muted-foreground">
-                  {t("notifications.unsupported")}
-                </p>
-              )}
-              {notifBlocked && (
-                <p className="mt-2 text-xs leading-snug text-muted-foreground">
-                  {t("notifications.blocked")}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <div className="mb-1 flex items-center justify-between gap-3">
-                <h3 className="text-sm font-medium text-muted-foreground">
-                  {t("skinType")}
-                </h3>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-medium text-muted-foreground">
-                    {t("infantToggleLabel")}
-                  </span>
-                  <Toggle
-                    checked={!!selectedProfile?.isInfant}
-                    onChange={toggleIsInfant}
-                    label={t("infantToggleLabel")}
-                  />
-                </div>
-              </div>
-
-              {selectedProfile?.isInfant ? (
-                // AAP/AAD guidance for infants under 6 months is "no direct
-                // sun at all" — the Fitzpatrick slider below doesn't apply
-                // and would misleadingly imply a burn-time budget exists.
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {t("infantHint")}
-                </p>
-              ) : (
-                <>
-                  <p className="mb-4 text-sm text-muted-foreground">
-                    {t("skinTypeHint")}
-                  </p>
-
-                  <div className="flex flex-col items-center gap-4 rounded-2xl border border-border bg-surface p-5">
-                    <div
-                      className="h-14 w-14 rounded-full border border-border transition-colors"
-                      style={{ backgroundColor: SKIN_TONE_SWATCH[displayedType as SkinType] }}
-                      aria-hidden
-                    />
-                    <div className="flex flex-col items-center gap-1">
-                      <p className="text-center text-sm font-semibold text-foreground">
-                        {t(`skinTypes.${displayedType}`)}
-                      </p>
-                      <p className="max-w-[30ch] text-center text-xs leading-snug text-muted-foreground">
-                        {t(`skinTypeExamples.${displayedType}`)}
-                      </p>
-                    </div>
-                    <Slider
-                      value={[displayedType]}
-                      min={1}
-                      max={6}
-                      step={1}
-                      onValueChange={chooseSkinType}
-                      className="w-full max-w-[220px]"
-                    />
-                    <div className="flex w-full max-w-[220px] justify-between px-0.5">
-                      {SKIN_TYPES.map((n) => (
-                        <button
-                          key={n}
-                          type="button"
-                          aria-label={t(`skinTypes.${n}`)}
-                          onClick={() => chooseSkinType(n)}
-                          className="h-4 w-4 rounded-full transition-transform"
-                          style={{
-                            backgroundColor: SKIN_TONE_SWATCH[n],
-                            outline:
-                              n === displayedType
-                                ? "2px solid var(--brand)"
-                                : "2px solid transparent",
-                            outlineOffset: 2,
-                          }}
-                        />
-                      ))}
-                    </div>
-                  </div>
-
-                  <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-                    {t("skinTypeWhy")}
-                  </p>
-                </>
-              )}
-            </div>
+            <SkinTypePicker
+              profile={selectedProfile}
+              onChangeSkinType={handleChangeSkinType}
+              onToggleInfant={handleToggleInfant}
+            />
 
             {/* "More info" cluster — the app's second, more prominent
                 path to /learn (the first is the quiet link at the bottom

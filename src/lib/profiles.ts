@@ -84,10 +84,6 @@ export function removeProfile(id: string): Profile[] {
   return remaining;
 }
 
-export function renameProfile(id: string, name: string) {
-  writeProfiles((readProfiles() ?? []).map((p) => (p.id === id ? { ...p, name } : p)));
-}
-
 export function setProfileSkinType(id: string, skinType: SkinType) {
   writeProfiles(
     (readProfiles() ?? []).map((p) => (p.id === id ? { ...p, skinType } : p)),

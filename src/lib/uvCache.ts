@@ -4,7 +4,7 @@
 
 const CACHE_KEY = "uv-index:last-reading";
 
-export type UvReading = {
+type UvReading = {
   lat: number;
   lon: number;
   uv: number;

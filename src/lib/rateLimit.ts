@@ -20,7 +20,7 @@ function sweepExpired(now: number) {
   }
 }
 
-export type RateLimitResult = { ok: boolean; retryAfterSeconds: number };
+type RateLimitResult = { ok: boolean; retryAfterSeconds: number };
 
 /**
  * `now` is injectable for tests; real callers should leave it as
