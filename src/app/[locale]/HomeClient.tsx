@@ -214,7 +214,31 @@ export default function HomeClient() {
   // reverse-geocoded label arrives later for the same point.
   useEffect(() => {
     if (!coords) return;
-    fetchUv(coords.lat, coords.lon);
+
+    // Paint any cached reading for this place immediately instead of
+    // blanking to the loading text — on mobile, "reopening the app" is
+    // very often actually a cold mount (iOS/Android both discard
+    // backgrounded tabs under memory pressure far more readily than a
+    // desktop browser would), so without this, every reopen showed a
+    // loading flash while a perfectly good recent reading was already
+    // sitting in localStorage. Not marked `stale`: this is an optimistic
+    // paint while a fetch is about to confirm it, not the offline
+    // fallback (that's still applyCachedOrError, used when the fetch
+    // below actually fails).
+    const cached = getCachedUv(coords.lat, coords.lon);
+    if (cached) {
+      setUv(cached.uv);
+      setUpdatedAt(new Date(cached.fetchedAt).toISOString());
+      setSafeAfter(cached.safeAfter);
+      setTemperature(cached.temperature ?? null);
+      setCloudCover(cached.cloudCover ?? null);
+      setAqi(cached.aqi ?? null);
+      setError(null);
+      setStale(false);
+      setRevealed(true);
+    }
+
+    fetchUv(coords.lat, coords.lon, { silent: !!cached });
     // Keep an existing push subscription pointed at wherever the person
     // actually is now — without this, switching places would leave a
     // background alert silently watching the old one. No-ops if push
