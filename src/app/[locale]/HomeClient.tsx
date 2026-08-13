@@ -259,11 +259,23 @@ export default function HomeClient() {
         fetchUv(coords.lat, coords.lon, { silent: true });
       }
     }
+    // iOS Safari — especially the installed/home-screen PWA — often
+    // restores a backgrounded tab from the back/forward cache without
+    // ever firing `visibilitychange` or `focus` at all: the page comes
+    // back "frozen" rather than reloaded, and neither event is guaranteed
+    // to fire on that resume. `pageshow` with `event.persisted` is the
+    // one signal that reliably fires for exactly that case, which is why
+    // it's here alongside the other two rather than instead of them.
+    function onPageShow(event: PageTransitionEvent) {
+      if (event.persisted) onVisible();
+    }
     document.addEventListener("visibilitychange", onVisible);
     window.addEventListener("focus", onVisible);
+    window.addEventListener("pageshow", onPageShow);
     return () => {
       document.removeEventListener("visibilitychange", onVisible);
       window.removeEventListener("focus", onVisible);
+      window.removeEventListener("pageshow", onPageShow);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [coords?.lat, coords?.lon]);
